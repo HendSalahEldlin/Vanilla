@@ -8,20 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		329C985F23143B90006B81A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329C985E23143B90006B81A3 /* AppDelegate.swift */; };
-		329C986123143B90006B81A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329C986023143B90006B81A3 /* ViewController.swift */; };
 		329C986423143B90006B81A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 329C986223143B90006B81A3 /* Main.storyboard */; };
 		329C986623143B91006B81A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 329C986523143B91006B81A3 /* Assets.xcassets */; };
 		329C986923143B91006B81A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 329C986723143B91006B81A3 /* LaunchScreen.storyboard */; };
+		32AC097B2315936F00D35FFE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097A2315936F00D35FFE /* Constants.swift */; };
+		32AC097D231593D200D35FFE /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097C231593D200D35FFE /* Client.swift */; };
+		32AC097F2315A10500D35FFE /* Recipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097E2315A10500D35FFE /* Recipes.swift */; };
+		32AC09812315AF2100D35FFE /* spoonacularMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC09802315AF2100D35FFE /* spoonacularMethods.swift */; };
+		32AC09832315C0DB00D35FFE /* RecipesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC09822315C0DB00D35FFE /* RecipesTableViewController.swift */; };
+		32AC09852315E64200D35FFE /* TVRecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC09842315E64200D35FFE /* TVRecipeCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		329C985B23143B90006B81A3 /* Vanilla.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vanilla.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		329C985E23143B90006B81A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		329C986023143B90006B81A3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		329C986323143B90006B81A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		329C986523143B91006B81A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		329C986823143B91006B81A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		329C986A23143B91006B81A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		32AC097A2315936F00D35FFE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		32AC097C231593D200D35FFE /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		32AC097E2315A10500D35FFE /* Recipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipes.swift; sourceTree = "<group>"; };
+		32AC09802315AF2100D35FFE /* spoonacularMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = spoonacularMethods.swift; sourceTree = "<group>"; };
+		32AC09822315C0DB00D35FFE /* RecipesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesTableViewController.swift; sourceTree = "<group>"; };
+		32AC09842315E64200D35FFE /* TVRecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVRecipeCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,13 +65,42 @@
 			isa = PBXGroup;
 			children = (
 				329C985E23143B90006B81A3 /* AppDelegate.swift */,
-				329C986023143B90006B81A3 /* ViewController.swift */,
+				32AC09782315933900D35FFE /* Model */,
+				32AC09772315933900D35FFE /* Controller */,
+				32AC09792315933900D35FFE /* View */,
 				329C986223143B90006B81A3 /* Main.storyboard */,
-				329C986523143B91006B81A3 /* Assets.xcassets */,
 				329C986723143B91006B81A3 /* LaunchScreen.storyboard */,
+				329C986523143B91006B81A3 /* Assets.xcassets */,
 				329C986A23143B91006B81A3 /* Info.plist */,
 			);
 			path = Vanilla;
+			sourceTree = "<group>";
+		};
+		32AC09772315933900D35FFE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				32AC09822315C0DB00D35FFE /* RecipesTableViewController.swift */,
+				32AC09842315E64200D35FFE /* TVRecipeCell.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		32AC09782315933900D35FFE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				32AC097A2315936F00D35FFE /* Constants.swift */,
+				32AC097C231593D200D35FFE /* Client.swift */,
+				32AC097E2315A10500D35FFE /* Recipes.swift */,
+				32AC09802315AF2100D35FFE /* spoonacularMethods.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		32AC09792315933900D35FFE /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,8 +174,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				329C986123143B90006B81A3 /* ViewController.swift in Sources */,
+				32AC09812315AF2100D35FFE /* spoonacularMethods.swift in Sources */,
+				32AC097F2315A10500D35FFE /* Recipes.swift in Sources */,
 				329C985F23143B90006B81A3 /* AppDelegate.swift in Sources */,
+				32AC09852315E64200D35FFE /* TVRecipeCell.swift in Sources */,
+				32AC097D231593D200D35FFE /* Client.swift in Sources */,
+				32AC09832315C0DB00D35FFE /* RecipesTableViewController.swift in Sources */,
+				32AC097B2315936F00D35FFE /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
