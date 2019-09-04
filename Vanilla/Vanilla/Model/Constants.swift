@@ -53,17 +53,5 @@ extension spoonacular {
         static let readyInMinutes = "readyInMinutes"
         static let baseUri = "baseUri"
     }
-    
-    enum RecipeType {
-        case mainCourse, sideDish, dessert, appetizer, salad, bread, breakfast, soup, beverage, sauce, marinade, fingerfood, snack, drink
-    }
-    
-    enum Cuisines {
-        case African, American, British, Cajun, Caribbean, Chinese, EasternEuropean, European, French, German, Greek, Indian, Irish, Italian, Japanese, Jewish, Korean, LatinAmerican, Mediterranean, Mexican, MiddleEastern, Nordic, Southern, Spanish, Thai, Vietnamese
-    }
-    
-    enum Diet {
-        case GlutenFree, Ketogenic, Vegetarian, Lacto_Vegetarian, Ovo_Vegetarian, Vegan, Pescetarian, Paleo, Primal, Whole30
-    }
 }
 
