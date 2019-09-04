@@ -10,16 +10,15 @@
 struct Recipe{
     
     // MARK: Properties
-    let id : String
+    let id : String!
     let title : String?
     let image : String?
     let readyInMinutes : Int?
-    
     // MARK: Initializers
     
     // construct a Recipes from a dictionary
     init(dictionary: [String:AnyObject]) {
-        id = String(describing: dictionary[spoonacular.JSONResponseKeys.id])
+        id = String(describing: dictionary[spoonacular.JSONResponseKeys.id]!)
         title = dictionary[spoonacular.JSONResponseKeys.title] as? String
         image = dictionary[spoonacular.JSONResponseKeys.image] as? String
         readyInMinutes = dictionary[spoonacular.JSONResponseKeys.readyInMinutes] as? Int

@@ -11,14 +11,15 @@ import UIKit
 
 
 protocol CellActionDelegate {
-    func shareARecipe()
-    func addToFav()
+    func shareARecipe(indexPath: IndexPath)
+    func addToFav(indexPath: IndexPath)
 }
 
 
 class TVRecipeCell: UITableViewCell {
     
     var delegate: CellActionDelegate?
+    var indexPath: IndexPath!
     
      var mainImageView : UIImageView  = {
      var imageView = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
@@ -49,14 +50,11 @@ class TVRecipeCell: UITableViewCell {
         return button
     }()
     
-    
-    
     var favBtn : UIButton = {
         let button  = UIButton(type: .custom) as UIButton
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: "whiteHeart-30x30") as UIImage?
+        let image = UIImage(named: "emptyHeart-30x30") as UIImage?
         button.setImage(image, for: .normal)
-        //button.addTarget(self, action: #selector(favBtnTouched(_:)), for:.touchUpInside)
         return button
     }()
      
@@ -80,14 +78,15 @@ class TVRecipeCell: UITableViewCell {
         minutesLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 20).isActive = true
         
         self.addSubview(shareBtn)
-        shareBtn.rightAnchor.constraint(equalTo: self.mainImageView.rightAnchor, constant: -30).isActive = true
-        shareBtn.bottomAnchor.constraint(equalTo: self.mainImageView.bottomAnchor, constant: -20).isActive = true
+        shareBtn.rightAnchor.constraint(equalTo: self.mainImageView.rightAnchor, constant: -15).isActive = true
+        shareBtn.bottomAnchor.constraint(equalTo: self.mainImageView.bottomAnchor, constant: -10).isActive = true
         shareBtn.addTarget(self, action: #selector(share), for:.touchUpInside)
         
         self.addSubview(favBtn)
         favBtn.rightAnchor.constraint(equalTo: self.shareBtn.leftAnchor, constant: -15).isActive = true
-        favBtn.bottomAnchor.constraint(equalTo: self.mainImageView.bottomAnchor, constant: -20).isActive = true
+        favBtn.bottomAnchor.constraint(equalTo: self.mainImageView.bottomAnchor, constant: -10).isActive = true
         favBtn.addTarget(self, action: #selector(favourite), for:.touchUpInside)
+        
         
      }
      required init?(coder aDecoder: NSCoder) {
@@ -95,11 +94,11 @@ class TVRecipeCell: UITableViewCell {
      }
     
     @objc func share(sender: UIButton!){
-        delegate?.shareARecipe()
+        delegate?.shareARecipe(indexPath: self.indexPath)
     }
     
     @objc func favourite(){
-        delegate?.addToFav()
+        delegate?.addToFav(indexPath: self.indexPath)
     }
     
 }

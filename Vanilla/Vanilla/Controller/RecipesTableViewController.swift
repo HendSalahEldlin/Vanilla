@@ -15,22 +15,20 @@ class RecipesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.tableView.register(TVRecipeCell.self, forCellReuseIdentifier: "TVRecipeCell")
-        spoonacular.sharedInstance().getRecipes() {(success, error) in
-            DispatchQueue.main.async {
-                if success{
-                    self.recipes = spoonacular.sharedInstance().recipes
-                    self.tableView.reloadData()
+        /*spoonacular.sharedInstance().getRecipes() {(success, error) in
+            if success{
+                DispatchQueue.main.async {
+                self.recipes = spoonacular.sharedInstance().recipes
+                self.tableView.reloadData()
                 }
             }
-        }
+        }*/
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         self.recipes = spoonacular.sharedInstance().recipes
-        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -40,6 +38,7 @@ class RecipesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TVRecipeCell")! as! TVRecipeCell
         
+        cell.indexPath = indexPath
         cell.delegate = self
         let recipe = self.recipes[(indexPath as NSIndexPath).row]
         
@@ -75,14 +74,6 @@ class RecipesTableViewController: UITableViewController {
         let data = try? Data(contentsOf: url)
         return data
     }
-    
-    
-    /*@objc func favBtnTouched(_ sender: UIButton){
-        print("favBtnTouched")
-        /*let cell = tableView.dequeueReusableCell(withIdentifier: "TVRecipeCell", for: indexPath) as! TVRecipeCell
-        let image = UIImage(named: "redHeart-30x30") as UIImage?
-        cell.favBtn.setImage(image, for: .normal)*/
-    }*/
 }
 
 extension UIImage {
@@ -94,13 +85,31 @@ extension UIImage {
 
 
 extension RecipesTableViewController: CellActionDelegate {
-    func shareARecipe() {
-        print("share")
+    func shareARecipe(indexPath: IndexPath) {
+        print("share for index: \(indexPath)")
+        let recipe = self.recipes[(indexPath as NSIndexPath).row]
+        spoonacular.sharedInstance().getRecipeLink(recipeId: recipe.id)
+        {(SourceUrl, error) in
+            if error == nil{
+                print(SourceUrl)
+                let activityVC = UIActivityViewController(activityItems: [SourceUrl as Any], applicationActivities: nil)
+                self.present(activityVC, animated: true, completion: nil)
+                activityVC.completionWithItemsHandler = {
+                    (activity, success, items, error) in
+                    if success{
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
+            }
+        }
     }
     
-    func addToFav() {
-        print("favourite")
+    
+    func addToFav(indexPath: IndexPath) {
+        print("favourite \(indexPath)")
+        let cell = tableView.cellForRow(at: indexPath) as! TVRecipeCell
+        let image = UIImage(named: "redHeart-30x30") as UIImage?
+        cell.favBtn.setImage(image, for: .normal)
     }
-    
-    
+
 }

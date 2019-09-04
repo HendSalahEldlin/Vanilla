@@ -13,14 +13,15 @@ extension spoonacular {
         static let ApiScheme = "https"
         static let subdomain = "api."
         static let ApiHost = "spoonacular.com"
-        static let baseUri = "https://spoonacular.com/recipeImages/"
+        static let baseUri = "https://spoonacular.com/"
     }
-    
+  
     // MARK: Methods
     struct URLExtentions {
+        static let recipes = "/recipes/"
         static let searchRecipes = "/recipes/search"
-        static let Ingredients = "/food/ingredients"
-        static let Products = "/food/products"
+        static let autoCompleteIngredients = "/food/ingredients/autocomplete"
+        static let autoCompleteRecipes = "/recipes/autocomplete"
     }
     
     // MARK: Parameter Keys
@@ -34,6 +35,7 @@ extension spoonacular {
         static let diet = "diet"
         static let intolerances = "intolerances"
         static let instructionsRequired = "instructionsRequired"
+        static let recipeId = "id"
     }
     
     struct ParameterValues {
@@ -52,6 +54,10 @@ extension spoonacular {
         static let baseUri = "baseUri"
     }
     
+    enum RecipeType {
+        case mainCourse, sideDish, dessert, appetizer, salad, bread, breakfast, soup, beverage, sauce, marinade, fingerfood, snack, drink
+    }
+    
     enum Cuisines {
         case African, American, British, Cajun, Caribbean, Chinese, EasternEuropean, European, French, German, Greek, Indian, Irish, Italian, Japanese, Jewish, Korean, LatinAmerican, Mediterranean, Mexican, MiddleEastern, Nordic, Southern, Spanish, Thai, Vietnamese
     }
@@ -59,8 +65,5 @@ extension spoonacular {
     enum Diet {
         case GlutenFree, Ketogenic, Vegetarian, Lacto_Vegetarian, Ovo_Vegetarian, Vegan, Pescetarian, Paleo, Primal, Whole30
     }
-    
-    enum Intolerances{
-        case DairyFree, EggFree, GlutenFree, GrainFree, PeanutFree, SeafoodFree, SesameFree, ShellfishFree, SoyFree, SulfiteFree, TreeNutFree, WheatFree}
 }
 
