@@ -56,7 +56,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         configureTV(arrName: "recipeTypes")
         configureTV(arrName: "Cuisines")
         configureTV(arrName: "Diets")
-        slider.isContinuous = false
+        minField.delegate = self
     }
     
     @IBAction func searchBtnClicked(_ sender: UIButton) {
@@ -95,11 +95,13 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     @IBAction func sliderChanged(_ sender: UISlider) {
-        minField.text = String(sender.value)
+        minField.text = "\(Int(sender.value))"
     }
     
-    @IBAction func minFieldChanged(_ sender: UITextField) {
-        slider.value = Float(Int(sender.text!) as! Int)
+    @IBAction func textFieldChanged(_ sender: UITextField) {
+        if sender == minField{
+            slider.value = Float(sender.text!) as! Float ?? 0
+        }
     }
     
     private func configureTV(arrName:String){
