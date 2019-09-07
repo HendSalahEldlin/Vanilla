@@ -162,6 +162,12 @@
                                                     <outlet property="delegate" destination="cMK-xo-CBa" id="WBn-Pa-w3Q"/>
                                                 </connections>
                                             </tableView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="N76-1J-BrE" userLabel="RecipesStackView">
+                                                <rect key="frame" x="0.0" y="30" width="349" height="0.0"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" id="cxW-Mk-IWl"/>
+                                                </constraints>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4oV-D5-CiN" userLabel="IngredientsStackView">
@@ -216,6 +222,12 @@
                                                     <outlet property="delegate" destination="cMK-xo-CBa" id="KmQ-1D-UV7"/>
                                                 </connections>
                                             </tableView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="sOt-4n-qYG" userLabel="IngredientsStackView">
+                                                <rect key="frame" x="0.0" y="30" width="349" height="0.0"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" id="MAF-rp-KnI"/>
+                                                </constraints>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DU0-FH-Mm3" userLabel="TypeStackView">
@@ -264,6 +276,12 @@
                                                     <outlet property="delegate" destination="cMK-xo-CBa" id="sc1-pH-kXn"/>
                                                 </connections>
                                             </tableView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="cLL-BC-zRm" userLabel="TypesStackView">
+                                                <rect key="frame" x="0.0" y="30" width="349" height="0.0"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" id="ozX-KK-hEU"/>
+                                                </constraints>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dlk-Yw-j4i" userLabel="CusineView">
@@ -312,6 +330,12 @@
                                                     <outlet property="delegate" destination="cMK-xo-CBa" id="2rD-oc-qyZ"/>
                                                 </connections>
                                             </tableView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="eJh-En-HPx" userLabel="CuisinesStackView">
+                                                <rect key="frame" x="0.0" y="30" width="349" height="0.0"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" id="gNX-8g-A1j"/>
+                                                </constraints>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="M0p-vy-bDV" userLabel="DietView">
@@ -360,6 +384,12 @@
                                                     <outlet property="delegate" destination="cMK-xo-CBa" id="rSE-9w-izd"/>
                                                 </connections>
                                             </tableView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Um2-RE-kao" userLabel="DietsStackView">
+                                                <rect key="frame" x="0.0" y="30" width="349" height="0.0"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" id="XL3-sx-GHb"/>
+                                                </constraints>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="P4n-Be-OJi" userLabel="Minutes Stack View">
@@ -428,22 +458,32 @@
                         <outlet property="cuisineBtn" destination="eds-mO-nX6" id="5Xl-Ch-V4M"/>
                         <outlet property="cuisineHC" destination="ubm-3d-Oaa" id="MZp-O7-oop"/>
                         <outlet property="cuisineTV" destination="j4R-Tc-UhK" id="znI-CQ-IdH"/>
+                        <outlet property="cuisinesStackView" destination="eJh-En-HPx" id="FTS-Fo-37c"/>
+                        <outlet property="cuisinesStackViewHC" destination="gNX-8g-A1j" id="9WB-5m-lpc"/>
                         <outlet property="dietBtn" destination="0Ov-o6-HXj" id="dEp-fl-a4T"/>
                         <outlet property="dietHC" destination="HlS-4r-L1E" id="tZH-Zl-vAj"/>
                         <outlet property="dietTV" destination="B1E-hY-2sI" id="t6P-yo-77q"/>
+                        <outlet property="dietsStackView" destination="Um2-RE-kao" id="IhT-M0-Hw8"/>
+                        <outlet property="dietsStackViewHC" destination="XL3-sx-GHb" id="j8p-Wt-CBE"/>
                         <outlet property="ingredientsBtn" destination="aU0-x7-1ce" id="f88-b1-fpJ"/>
                         <outlet property="ingredientsField" destination="baW-6U-rVf" id="VEe-sj-5tY"/>
                         <outlet property="ingredientsHC" destination="fIW-o6-cW2" id="dTb-dV-ZbJ"/>
+                        <outlet property="ingredientsStackView" destination="sOt-4n-qYG" id="2q1-lZ-88r"/>
+                        <outlet property="ingredientsStackViewHC" destination="MAF-rp-KnI" id="FKv-Tt-rAc"/>
                         <outlet property="ingredientsTV" destination="hak-xZ-gD5" id="naG-G5-3i5"/>
                         <outlet property="minField" destination="Xmp-Pj-zLL" id="NZc-vb-pnM"/>
                         <outlet property="recipeField" destination="dfH-eY-u14" id="3Pt-Hw-eUA"/>
                         <outlet property="recipesBtn" destination="GGc-Vo-h6Y" id="6sy-zw-dMD"/>
                         <outlet property="recipesHC" destination="Ab4-wn-wnQ" id="UWd-cY-jnJ"/>
+                        <outlet property="recipesStackView" destination="N76-1J-BrE" id="oFj-Ak-MRf"/>
+                        <outlet property="recipesStackViewHC" destination="cxW-Mk-IWl" id="bXh-ac-SvK"/>
                         <outlet property="recipesTV" destination="hDw-Cx-Qat" id="EOV-ly-P0D"/>
                         <outlet property="slider" destination="d1E-LZ-IMP" id="Zup-uh-hso"/>
                         <outlet property="typeBtn" destination="1YB-F4-Ybx" id="kOr-rO-SEC"/>
                         <outlet property="typeHC" destination="xoQ-x2-0L7" id="hIg-Uk-yjA"/>
+                        <outlet property="typeStackViewHC" destination="ozX-KK-hEU" id="6Kr-Hl-Ojj"/>
                         <outlet property="typeTV" destination="ORG-7C-Ebc" id="EaY-dl-26D"/>
+                        <outlet property="typesStackView" destination="cLL-BC-zRm" id="1VC-Jl-N9j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="00c-Be-Uxs" userLabel="First Responder" sceneMemberID="firstResponder"/>

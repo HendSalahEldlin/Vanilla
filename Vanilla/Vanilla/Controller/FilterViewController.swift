@@ -9,27 +9,38 @@
 import UIKit
 class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
-    @IBOutlet weak var ingredientsTV: UITableView!
-    @IBOutlet weak var ingredientsField: UITextField!
-    @IBOutlet weak var ingredientsHC: NSLayoutConstraint!
-    @IBOutlet weak var ingredientsBtn: UIButton!
     
     @IBOutlet weak var recipesTV: UITableView!
     @IBOutlet weak var recipeField: UITextField!
     @IBOutlet weak var recipesHC: NSLayoutConstraint!
     @IBOutlet weak var recipesBtn: UIButton!
+    @IBOutlet weak var recipesStackView: UIStackView!
+    @IBOutlet weak var recipesStackViewHC: NSLayoutConstraint!
+    
+    @IBOutlet weak var ingredientsTV: UITableView!
+    @IBOutlet weak var ingredientsField: UITextField!
+    @IBOutlet weak var ingredientsHC: NSLayoutConstraint!
+    @IBOutlet weak var ingredientsBtn: UIButton!
+    @IBOutlet weak var ingredientsStackView: UIStackView!
+    @IBOutlet weak var ingredientsStackViewHC: NSLayoutConstraint!
     
     @IBOutlet weak var typeTV: UITableView!
     @IBOutlet weak var typeHC: NSLayoutConstraint!
     @IBOutlet weak var typeBtn: UIButton!
+    @IBOutlet weak var typesStackView: UIStackView!
+    @IBOutlet weak var typeStackViewHC: NSLayoutConstraint!
     
     @IBOutlet weak var cuisineTV: UITableView!
     @IBOutlet weak var cuisineHC: NSLayoutConstraint!
     @IBOutlet weak var cuisineBtn: UIButton!
+    @IBOutlet weak var cuisinesStackView: UIStackView!
+    @IBOutlet weak var cuisinesStackViewHC: NSLayoutConstraint!
     
     @IBOutlet weak var dietTV: UITableView!
     @IBOutlet weak var dietHC: NSLayoutConstraint!
     @IBOutlet weak var dietBtn: UIButton!
+    @IBOutlet weak var dietsStackView: UIStackView!
+    @IBOutlet weak var dietsStackViewHC: NSLayoutConstraint!
     
     @IBOutlet weak var minField: UITextField!
     @IBOutlet weak var slider: UISlider!
@@ -138,9 +149,12 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     self.recipesHC.constant = 0
                     self.isRecipesTVVisiable = false
                 }else{
+                    if self.recipes.count == 0 {
+                        self.recipes.append("No recipes With this title")
+                    }
                     self.recipesTV.reloadData()
-                    self.recipesHC.constant = 30 * 3
                     self.isRecipesTVVisiable = true
+                    self.recipesHC.constant = CGFloat(30 * (self.recipes.count <= 3 ? self.recipes.count : 3) )
                 }
             }
         case "ingredients":
@@ -150,8 +164,11 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     self.ingredientsHC.constant = 0
                     self.isIngredTVVisiable = false
                 }else{
+                    if self.ingredients.count == 0 {
+                        self.ingredients.append("No ingredients With this title")
+                    }
                     self.ingredientsTV.reloadData()
-                    self.ingredientsHC.constant = 30 * 3
+                    self.ingredientsHC.constant = CGFloat(30 * (self.ingredients.count <= 3 ? self.ingredients.count : 3) )
                     self.isIngredTVVisiable = true
                 }
             }
@@ -161,6 +178,9 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     self.typeHC.constant = 0
                     self.isTypeTVVisiable = false
                 }else{
+                    if self.ingredients.count == 0 {
+                        self.ingredients.append("No recipes With this title")
+                    }
                     self.typeTV.reloadData()
                     self.typeHC.constant = 30 * 3
                     self.isTypeTVVisiable = true
@@ -194,7 +214,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     private func closeOtherTVs(UIControl : UIControl){
         switch UIControl {
-        case recipeField:
+        case recipeField, recipesBtn:
             ingredientsHC.constant = 0
             isIngredTVVisiable = false
             typeHC.constant = 0
@@ -203,7 +223,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             isCuisineTVVisiable = false
             dietHC.constant = 0
             isDietTVVisiable = false
-        case ingredientsField:
+        case ingredientsField, ingredientsBtn:
             recipesHC.constant = 0
             isRecipesTVVisiable = false
             typeHC.constant = 0
@@ -212,11 +232,11 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             isCuisineTVVisiable = false
             dietHC.constant = 0
             isDietTVVisiable = false
-        case recipesBtn:
+        case typeBtn:
             recipesHC.constant = 0
             isRecipesTVVisiable = false
-            typeHC.constant = 0
-            isTypeTVVisiable = false
+            ingredientsHC.constant = 0
+            isIngredTVVisiable = false
             cuisineHC.constant = 0
             isCuisineTVVisiable = false
             dietHC.constant = 0
@@ -242,11 +262,72 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         default:()
         }
     }
+   
+    private func generateColoredLabel(view : UIStackView, stackViewHC: NSLayoutConstraint, text : String){
+        //Text Label
+        let textLabel = UILabel()
+        textLabel.backgroundColor =  .random()
+        textLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
+        textLabel.text  = text
+        
+        //Button View
+        let deleteBtn   = UIButton(type: .custom) as UIButton
+        deleteBtn.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "X-30X30") as UIImage?
+        deleteBtn.setImage(image, for: .normal)
+        deleteBtn.backgroundColor = textLabel.backgroundColor
+        deleteBtn.addTarget(self, action: #selector(deletePressed), for:.touchUpInside)
+        
+        //Stack View
+        let stackView   = UIStackView()
+        stackView.axis  = NSLayoutConstraint.Axis.horizontal
+        stackView.alignment = UIStackView.Alignment.leading
+        stackView.distribution  = UIStackView.Distribution.fill
+        stackView.spacing   = 0
+        
+        stackView.addArrangedSubview(textLabel)
+        stackView.addArrangedSubview(deleteBtn)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if view.subviews.count > 0 {
+            var horizontalStackView = view.subviews[view.subviews.count - 1] as! UIStackView
+            if horizontalStackView.subviews.count > 0 && horizontalStackView.subviews.count < 3{
+                horizontalStackView.addArrangedSubview(stackView)
+                horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
+            }else{
+                let horizontalStackView   = UIStackView()
+                horizontalStackView.axis  = NSLayoutConstraint.Axis.horizontal
+                horizontalStackView.distribution  = UIStackView.Distribution.equalSpacing
+                horizontalStackView.spacing  = 0
+                horizontalStackView.addArrangedSubview(stackView)
+                horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
+                view.addArrangedSubview(horizontalStackView)
+            }
+        }else{
+            let horizontalStackView   = UIStackView()
+            horizontalStackView.axis  = NSLayoutConstraint.Axis.horizontal
+            horizontalStackView.distribution  = UIStackView.Distribution.equalSpacing
+            horizontalStackView.spacing  = 0
+            horizontalStackView.addArrangedSubview(stackView)
+            horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
+            view.addArrangedSubview(horizontalStackView)
+        }
+        
+        stackViewHC.constant = CGFloat(view.subviews.count * 20)
+    }
+    
+    private func random() -> UIColor {
+        return UIColor(red:  CGFloat(arc4random()), green: CGFloat(arc4random()), blue:  CGFloat(arc4random()), alpha: 1.0)
+    }
+    
+    @objc func deletePressed(){
+        print("Delete Pressed")
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         switch tableView {
         case recipesTV:
-            return 5
+            return recipes.count
         case ingredientsTV:
             return ingredients.count
         case typeTV:
@@ -294,24 +375,33 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        print(indexPath.row + 1)
         UIView.animate(withDuration: 0.5){
             switch tableView{
             case self.recipesTV:
                 self.recipesHC.constant = 0
                 self.isRecipesTVVisiable = false
+                let recipe = self.recipes[(indexPath as NSIndexPath).row]
+                self.generateColoredLabel(view: self.recipesStackView, stackViewHC: self.recipesStackViewHC, text: recipe)
             case self.ingredientsTV:
                 self.ingredientsHC.constant = 0
                 self.isIngredTVVisiable = false
+                let ingredient = self.ingredients[(indexPath as NSIndexPath).row]
+                self.generateColoredLabel(view: self.ingredientsStackView, stackViewHC: self.ingredientsStackViewHC, text: ingredient)
             case self.typeTV:
                 self.typeHC.constant = 0
                 self.isTypeTVVisiable = false
+                let type = self.recipeTypes[(indexPath as NSIndexPath).row]
+                self.generateColoredLabel(view: self.typesStackView, stackViewHC: self.typeStackViewHC, text: type)
             case self.cuisineTV:
                 self.cuisineHC.constant = 0
                 self.isCuisineTVVisiable = false
+                let cuisine = self.cuisines[(indexPath as NSIndexPath).row]
+                self.generateColoredLabel(view: self.cuisinesStackView, stackViewHC: self.cuisinesStackViewHC, text: cuisine)
             case self.dietTV:
                 self.dietHC.constant = 0
                 self.isDietTVVisiable = false
+                let diet = self.diets[(indexPath as NSIndexPath).row]
+                self.generateColoredLabel(view: self.dietsStackView, stackViewHC: self.dietsStackViewHC, text: diet)
             default: ()
             }
             self.view.layoutIfNeeded()
@@ -332,5 +422,15 @@ extension FilterViewController:  UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true;
+    }
+}
+
+extension UIColor {
+    static func random () -> UIColor {
+        return UIColor(
+            red: CGFloat.random(in: 0...1),
+            green: CGFloat.random(in: 0...1),
+            blue: CGFloat.random(in: 0...1),
+            alpha: 1.0)
     }
 }
