@@ -320,8 +320,32 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return UIColor(red:  CGFloat(arc4random()), green: CGFloat(arc4random()), blue:  CGFloat(arc4random()), alpha: 1.0)
     }
     
-    @objc func deletePressed(){
-        print("Delete Pressed")
+    @objc func deletePressed(_ sender: UIButton){
+        let parentView = sender.superview!
+        let horizontalSV = parentView.superview as! UIStackView
+        parentView.removeFromSuperview()
+        ArrangeStackViews(horizontalSV: horizontalSV )
+        
+    }
+    
+    // Shifts StackViews To be arranged by first added When labels deleted
+    private func ArrangeStackViews(horizontalSV : UIStackView){
+        let verticalSV = horizontalSV.superview as! UIStackView
+        
+        if horizontalSV.subviews.count ?? 0 == 0{
+            horizontalSV.removeFromSuperview()
+            if verticalSV.axis == NSLayoutConstraint.Axis.vertical{
+                verticalSV.heightAnchor.constraint(equalToConstant: CGFloat(verticalSV.subviews.count * 30))
+            }
+        }else if horizontalSV.subviews.count ?? 0 > 0 && verticalSV.subviews.count > 1 {
+            var index = verticalSV.arrangedSubviews.firstIndex(of: horizontalSV)! + 1
+            if index < verticalSV.subviews.count && verticalSV.arrangedSubviews[index].subviews.count > 0 {
+                let firstSubView = verticalSV.arrangedSubviews[index].subviews[0] as! UIStackView
+                firstSubView.removeFromSuperview()
+                horizontalSV.addArrangedSubview(firstSubView)
+                ArrangeStackViews(horizontalSV: verticalSV.arrangedSubviews[index] as! UIStackView)
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
