@@ -15,18 +15,17 @@ protocol CellActionDelegate {
     func addToFav(indexPath: IndexPath)
 }
 
-
 class TVRecipeCell: UITableViewCell {
     
     var delegate: CellActionDelegate?
     var indexPath: IndexPath!
     
-     var mainImageView : UIImageView  = {
-     var imageView = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
-     imageView.translatesAutoresizingMaskIntoConstraints = false
-     imageView.clipsToBounds = true
-     return imageView
-     }()
+    var mainImageView : UIImageView  = {
+    var imageView = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.clipsToBounds = true
+    return imageView
+    }()
     
     var titleLabel : UILabel = {
         var label = UILabel(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
@@ -99,6 +98,5 @@ class TVRecipeCell: UITableViewCell {
     
     @objc func favourite(){
         delegate?.addToFav(indexPath: self.indexPath)
-    }
-    
+    } 
 }

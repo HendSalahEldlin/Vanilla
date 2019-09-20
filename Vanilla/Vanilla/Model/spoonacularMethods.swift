@@ -89,4 +89,24 @@ extension spoonacular{
         }
         
     }
+    
+    func recipesComplexSearch(recipes : String, ingredients : String, type : String, cuisine : String, diet : String, maxReadyTime : Int, completionHandlerForComplexSearch: @escaping (_ success : Bool, _ errorString: String?) -> Void){
+        /* 1. Specify parameters, method */
+        let parameters = [ParameterKeys.apiKey:ParameterValues.apiKey, ParameterKeys.number:ParameterValues.number, ParameterKeys.query:recipes, ParameterKeys.ingredients:ingredients, ParameterKeys.type:type, ParameterKeys.cuisine:cuisine, ParameterKeys.diet:diet, ParameterKeys.maxReadyTime:maxReadyTime] as! [String : AnyObject]
+        
+        let extention = URLExtentions.recipesComplexSearch
+        taskForGETMethod(Constants.subdomain, method: extention, parameters: parameters){(results, error) in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                completionHandlerForComplexSearch(false, error.userInfo["NSLocalizedDescription"] as! String)
+            } else {
+                let mainDictionary = results as! [String: AnyObject]
+                let resultDictionry = mainDictionary["results"] as? [[String: AnyObject]]
+                self.recipes = Recipe.getRecipesFromResults(resultDictionry!)
+                completionHandlerForComplexSearch(true, nil)
+            }
+        }
+        
+    }
 }

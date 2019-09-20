@@ -7,18 +7,20 @@
 //
 
 import UIKit
-class CuisineCell: UITableViewCell {
+protocol TVCellActionDelegate {
+    func CellChecked(indexPath: IndexPath, tableView : UITableView)
+}
+
+class TVCell: UITableViewCell {
     
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var CheckBtn: UIButton!
 
+    var delegate : TVCellActionDelegate?
+    var tableView : UITableView?
     var indexPath : IndexPath?
     
     @IBAction func CellChecked(_ sender: Any) {
-        if CheckBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
-            CheckBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-        }else{
-            CheckBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-        }
+        delegate?.CellChecked(indexPath: indexPath!, tableView : tableView!)
     }
 }

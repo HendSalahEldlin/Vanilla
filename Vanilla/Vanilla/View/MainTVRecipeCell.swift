@@ -6,4 +6,7 @@
 //  Copyright © 2019 Hend . All rights reserved.
 //
 
-import Foundation
+import UIKit
+class MainTVRecipeCell: UITableViewCell {
+    
+}

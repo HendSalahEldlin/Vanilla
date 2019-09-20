@@ -14,8 +14,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var recipeField: UITextField!
     @IBOutlet weak var recipesHC: NSLayoutConstraint!
     @IBOutlet weak var recipesBtn: UIButton!
-    @IBOutlet weak var recipesStackView: UIStackView!
-    @IBOutlet weak var recipesStackViewHC: NSLayoutConstraint!
     
     @IBOutlet weak var ingredientsTV: UITableView!
     @IBOutlet weak var ingredientsField: UITextField!
@@ -23,29 +21,28 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var ingredientsBtn: UIButton!
     @IBOutlet weak var ingredientsStackView: UIStackView!
     @IBOutlet weak var ingredientsStackViewHC: NSLayoutConstraint!
+    @IBOutlet weak var ingredientSubStackView: UIStackView!
     
     @IBOutlet weak var typeTV: UITableView!
     @IBOutlet weak var typeHC: NSLayoutConstraint!
     @IBOutlet weak var typeBtn: UIButton!
-    @IBOutlet weak var typesStackView: UIStackView!
-    @IBOutlet weak var typeStackViewHC: NSLayoutConstraint!
     
     @IBOutlet weak var cuisineTV: UITableView!
     @IBOutlet weak var cuisineHC: NSLayoutConstraint!
     @IBOutlet weak var cuisineBtn: UIButton!
-    @IBOutlet weak var cuisinesStackView: UIStackView!
-    @IBOutlet weak var cuisinesStackViewHC: NSLayoutConstraint!
     
     @IBOutlet weak var dietTV: UITableView!
     @IBOutlet weak var dietHC: NSLayoutConstraint!
     @IBOutlet weak var dietBtn: UIButton!
-    @IBOutlet weak var dietsStackView: UIStackView!
-    @IBOutlet weak var dietsStackViewHC: NSLayoutConstraint!
     
     @IBOutlet weak var minField: UITextField!
     @IBOutlet weak var slider: UISlider!
     
+    @IBOutlet weak var mainSearchBtn: UIButton!
+    
     var ingredients = [String]()
+    var ingredientsQuery = [String]()
+    var ingredientsDic = [String:Bool]()
     var isIngredTVVisiable = false
     
     var recipes = [String]()
@@ -55,19 +52,26 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var isTypeTVVisiable = false
     
     let cuisines = ["African", "American", "British", "Cajun", "Caribbean", "Chinese", "EasternEuropean", "European", "French", "German", "Greek", "Indian", "Irish", "Italian", "Japanese", "Jewish", "Korean", "LatinAmerican", "Mediterranean", "Mexican", "MiddleEastern", "Nordic", "Southern", "Spanish", "Thai", "Vietnamese"]
+    var cuisinesQuery = [String]()
+    var cuisinesDic = [String:Bool]()
     var isCuisineTVVisiable = false
     
     let diets = ["GlutenFree", "Ketogenic", "Vegetarian", "Lacto_Vegetarian", "Ovo_Vegetarian", "Vegan", "Pescetarian", "Paleo", "Primal", "Whole30"]
     var isDietTVVisiable = false
     
+    let colors : [UIColor] = [#colorLiteral(red: 0.2674680898, green: 0.9852552817, blue: 0.9153829225, alpha: 1), #colorLiteral(red: 1, green: 0.7254621479, blue: 1, alpha: 1), #colorLiteral(red: 1, green: 0.506867155, blue: 0.4642497881, alpha: 1), #colorLiteral(red: 0.9995340705, green: 0.988355577, blue: 0.4726552367, alpha: 1)]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        cuisineTV.register(UINib(nibName: "TVCell", bundle: nil), forCellReuseIdentifier: "TVCell")
+        ingredientsTV.register(UINib(nibName: "TVCell", bundle: nil), forCellReuseIdentifier: "TVCell")
         configureTV(arrName: "Recipes")
         configureTV(arrName: "Ingredients")
         configureTV(arrName: "recipeTypes")
         configureTV(arrName: "Cuisines")
         configureTV(arrName: "Diets")
         minField.delegate = self
+        slider.value = 300
     }
     
     @IBAction func searchBtnClicked(_ sender: UIButton) {
@@ -86,9 +90,18 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             spoonacular.sharedInstance().autoCompleteIngredients(ingredient: self.ingredientsField.text ?? "") {(ingredients, error) in
                 if error == nil{
                     self.ingredients = ingredients
+                    for item in ingredients{
+                        self.ingredientsDic[item] = false
+                        for i in self.ingredientsQuery{
+                            if i == item{
+                                self.ingredientsDic[item] = true
+                            }
+                        }
+                    }
                     DispatchQueue.main.async {
                         self.UpdateUI(arrName: "ingredients")
                         self.closeOtherTVs(UIControl: sender)
+                        self.AddDoneBtn()
                     }
                 }
             }
@@ -96,23 +109,56 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.UpdateUI(arrName: "recipeTypes")
             closeOtherTVs(UIControl: sender)
         case cuisineBtn:
+            for item in cuisines{
+                cuisinesDic[item] = false
+                for i in self.cuisinesQuery{
+                    if i == item{
+                        self.cuisinesDic[item] = true
+                    }
+                }
+            }
             self.UpdateUI(arrName: "Cuisines")
             closeOtherTVs(UIControl: sender)
         case dietBtn:
             self.UpdateUI(arrName: "Diets")
             closeOtherTVs(UIControl: sender)
+        case mainSearchBtn:
+            let type = (typeBtn.titleLabel?.text != "Select a Recipe Type" ? typeBtn.titleLabel?.text : "")!
+            let cuisine = (cuisineBtn.titleLabel?.text != "Select a Cuisine" ? cuisineBtn.titleLabel?.text : "")!
+            let diet = (dietBtn.titleLabel?.text != "Select a Diet" ? dietBtn.titleLabel?.text : "")!
+            let maxMin = Int(minField.text! == "" ? "300" : minField.text!) as! Int ?? 300
+            
+            spoonacular.sharedInstance().recipesComplexSearch(recipes: recipeField.text!, ingredients: ingredientsQuery.joined(separator: ","), type: type, cuisine: cuisine, diet: diet, maxReadyTime: maxMin){(success, error) in
+                if success{
+                    DispatchQueue.main.async {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
+            }
         default:()
         }
     }
     
     @IBAction func sliderChanged(_ sender: UISlider) {
+        closeOtherTVs(UIControl: sender)
         minField.text = "\(Int(sender.value))"
     }
     
     @IBAction func textFieldChanged(_ sender: UITextField) {
         if sender == minField{
+            closeOtherTVs(UIControl: sender)
             slider.value = Float(sender.text!) as! Float ?? 0
         }
+    }
+    
+    @objc func deletePressed(_ sender: UIButton){
+        let parentView = sender.superview!
+        let label = parentView.subviews[0] as! UILabel
+        ingredientsQuery.remove(at: ingredients.firstIndex(of: label.text!)!)
+        let horizontalSV = parentView.superview as! UIStackView
+        parentView.removeFromSuperview()
+        ArrangeStackViews(horizontalSV: horizontalSV)
+        self.view.layoutIfNeeded()
     }
     
     private func configureTV(arrName:String){
@@ -153,8 +199,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.recipes.append("No recipes With this title")
                     }
                     self.recipesTV.reloadData()
+                    self.recipesHC.constant = self.recipesTV.rowHeight * CGFloat((self.recipes.count <= 3 ? self.recipes.count : 3) )
                     self.isRecipesTVVisiable = true
-                    self.recipesHC.constant = CGFloat(30 * (self.recipes.count <= 3 ? self.recipes.count : 3) )
                 }
             }
         case "ingredients":
@@ -168,7 +214,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.ingredients.append("No ingredients With this title")
                     }
                     self.ingredientsTV.reloadData()
-                    self.ingredientsHC.constant = CGFloat(30 * (self.ingredients.count <= 3 ? self.ingredients.count : 3) )
+                    self.ingredientsHC.constant = self.ingredientsTV.rowHeight  * CGFloat((self.ingredients.count <= 3 ? self.ingredients.count : 3))
                     self.isIngredTVVisiable = true
                 }
             }
@@ -178,11 +224,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     self.typeHC.constant = 0
                     self.isTypeTVVisiable = false
                 }else{
-                    if self.ingredients.count == 0 {
-                        self.ingredients.append("No recipes With this title")
-                    }
                     self.typeTV.reloadData()
-                    self.typeHC.constant = 30 * 3
+                    self.typeHC.constant = self.typeTV.rowHeight  * 3
                     self.isTypeTVVisiable = true
                 }
             }
@@ -193,7 +236,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     self.isCuisineTVVisiable = false
                 }else{
                     self.cuisineTV.reloadData()
-                    self.cuisineHC.constant = 30 * 3
+                    self.cuisineHC.constant = self.cuisineTV.rowHeight * 3
                     self.isCuisineTVVisiable = true
                 }
             }
@@ -204,7 +247,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     self.isDietTVVisiable = false
                 }else{
                     self.dietTV.reloadData()
-                    self.dietHC.constant = 30 * 3
+                    self.dietHC.constant = self.dietTV.rowHeight * 3
                     self.isDietTVVisiable = true
                 }
             }
@@ -217,6 +260,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case recipeField, recipesBtn:
             ingredientsHC.constant = 0
             isIngredTVVisiable = false
+            removeDoneBtn()
+            doneBtnPressed()
             typeHC.constant = 0
             isTypeTVVisiable = false
             cuisineHC.constant = 0
@@ -237,6 +282,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             isRecipesTVVisiable = false
             ingredientsHC.constant = 0
             isIngredTVVisiable = false
+            removeDoneBtn()
+            doneBtnPressed()
             cuisineHC.constant = 0
             isCuisineTVVisiable = false
             dietHC.constant = 0
@@ -246,6 +293,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             isRecipesTVVisiable = false
             ingredientsHC.constant = 0
             isIngredTVVisiable = false
+            removeDoneBtn()
+            doneBtnPressed()
             typeHC.constant = 0
             isTypeTVVisiable = false
             dietHC.constant = 0
@@ -255,33 +304,58 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             isRecipesTVVisiable = false
             ingredientsHC.constant = 0
             isIngredTVVisiable = false
+            removeDoneBtn()
+            doneBtnPressed()
             typeHC.constant = 0
             isTypeTVVisiable = false
             cuisineHC.constant = 0
             isCuisineTVVisiable = false
+        case minField, slider:
+            recipesHC.constant = 0
+            isRecipesTVVisiable = false
+            ingredientsHC.constant = 0
+            isIngredTVVisiable = false
+            removeDoneBtn()
+            doneBtnPressed()
+            typeHC.constant = 0
+            isTypeTVVisiable = false
+            cuisineHC.constant = 0
+            isCuisineTVVisiable = false
+            dietHC.constant = 0
+            isDietTVVisiable = false
         default:()
         }
     }
-   
+    
+    fileprivate func addHorizontalSubView(_ stackView: UIStackView, _ view: UIStackView) {
+        let horizontalStackView = UIStackView()
+        horizontalStackView.axis  = NSLayoutConstraint.Axis.horizontal
+        horizontalStackView.distribution  = UIStackView.Distribution.equalSpacing
+        horizontalStackView.spacing  = 8
+        horizontalStackView.addArrangedSubview(stackView)
+        horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addArrangedSubview(horizontalStackView)
+    }
+    
     private func generateColoredLabel(view : UIStackView, stackViewHC: NSLayoutConstraint, text : String){
         //Text Label
         let textLabel = UILabel()
-        textLabel.backgroundColor =  .random()
+        textLabel.backgroundColor =  #colorLiteral(red: 0.5960784314, green: 0.7520280394, blue: 0.9921568627, alpha: 0.8766588185)
+        textLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         textLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         textLabel.text  = text
         
         //Button View
-        let deleteBtn   = UIButton(type: .custom) as UIButton
+        let deleteBtn   = UIButton(type: .roundedRect) as UIButton
         deleteBtn.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: "X-30X30") as UIImage?
-        deleteBtn.setImage(image, for: .normal)
+        deleteBtn.setImage(#imageLiteral(resourceName: "icons8-delete-30 (3)"), for: .normal)
         deleteBtn.backgroundColor = textLabel.backgroundColor
         deleteBtn.addTarget(self, action: #selector(deletePressed), for:.touchUpInside)
         
         //Stack View
         let stackView   = UIStackView()
         stackView.axis  = NSLayoutConstraint.Axis.horizontal
-        stackView.alignment = UIStackView.Alignment.leading
+        stackView.alignment = UIStackView.Alignment.fill
         stackView.distribution  = UIStackView.Distribution.fill
         stackView.spacing   = 0
         
@@ -289,43 +363,29 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         stackView.addArrangedSubview(deleteBtn)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
+        /* if vertical stack view is empty then add the new horizontal stack view
+            else add the new subView to the last horizontal stack view*/
         if view.subviews.count > 0 {
             var horizontalStackView = view.subviews[view.subviews.count - 1] as! UIStackView
+            /*let horizontalStackViewWidth = Double(horizontalStackView.frame.size.width)
+            var subviewsWidth = 0.0
+            for subview in horizontalStackView.arrangedSubviews{
+                subviewsWidth = Double(+subview.frame.size.width)
+            }
+             if horizontalStackViewWidth - subviewsWidth >= Double(stackView.frame.width){
+             */
+            
+            /* if current horizontalStackView.subviews  between 0:2 then add the new subview to it else create new horizontalStackView and add the subview to it */
             if horizontalStackView.subviews.count > 0 && horizontalStackView.subviews.count < 3{
-                horizontalStackView.addArrangedSubview(stackView)
+             horizontalStackView.addArrangedSubview(stackView)
                 horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
             }else{
-                let horizontalStackView   = UIStackView()
-                horizontalStackView.axis  = NSLayoutConstraint.Axis.horizontal
-                horizontalStackView.distribution  = UIStackView.Distribution.equalSpacing
-                horizontalStackView.spacing  = 0
-                horizontalStackView.addArrangedSubview(stackView)
-                horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
-                view.addArrangedSubview(horizontalStackView)
+                addHorizontalSubView(stackView, view)
             }
         }else{
-            let horizontalStackView   = UIStackView()
-            horizontalStackView.axis  = NSLayoutConstraint.Axis.horizontal
-            horizontalStackView.distribution  = UIStackView.Distribution.equalSpacing
-            horizontalStackView.spacing  = 0
-            horizontalStackView.addArrangedSubview(stackView)
-            horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
-            view.addArrangedSubview(horizontalStackView)
+            addHorizontalSubView(stackView, view)
         }
-        
         stackViewHC.constant = CGFloat(view.subviews.count * 20)
-    }
-    
-    private func random() -> UIColor {
-        return UIColor(red:  CGFloat(arc4random()), green: CGFloat(arc4random()), blue:  CGFloat(arc4random()), alpha: 1.0)
-    }
-    
-    @objc func deletePressed(_ sender: UIButton){
-        let parentView = sender.superview!
-        let horizontalSV = parentView.superview as! UIStackView
-        parentView.removeFromSuperview()
-        ArrangeStackViews(horizontalSV: horizontalSV )
-        
     }
     
     // Shifts StackViews To be arranged by first added When labels deleted
@@ -346,6 +406,35 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 ArrangeStackViews(horizontalSV: verticalSV.arrangedSubviews[index] as! UIStackView)
             }
         }
+    }
+    
+    private func AddDoneBtn(){
+        if ingredientSubStackView.subviews.count == 2{
+            let doneBtn  = UIButton(type: .custom) as UIButton
+            doneBtn.translatesAutoresizingMaskIntoConstraints = false
+            doneBtn.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+            doneBtn.setImage(#imageLiteral(resourceName: "icons8-checked-30"), for: .normal)
+            doneBtn.addTarget(self, action: #selector(doneBtnPressed), for:.touchUpInside)
+            ingredientSubStackView.addArrangedSubview(doneBtn)
+        }
+    }
+    
+    private func removeDoneBtn(){
+        if ingredientSubStackView.subviews.count == 3{
+            (ingredientSubStackView.subviews[2]).removeFromSuperview()
+        }
+    }
+    
+    @objc func doneBtnPressed(){
+        self.ingredientsHC.constant = 0
+        self.isIngredTVVisiable = false
+        for view in ingredientsStackView.subviews{
+            view.removeFromSuperview()
+        }
+        for item in ingredientsQuery{
+            self.generateColoredLabel(view: self.ingredientsStackView, stackViewHC: self.ingredientsStackViewHC, text: item)
+        }
+        removeDoneBtn()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
@@ -374,20 +463,38 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.textLabel!.text = recipe
         }
         else if tableView == ingredientsTV{
-            cell = tableView.dequeueReusableCell(withIdentifier: "IngredeintsCell")!
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TVCell", for: indexPath) as! TVCell
             let ingredient = self.ingredients[(indexPath as NSIndexPath).row]
             // Set the name
-            cell.textLabel!.text = ingredient
+            cell.delegate = self
+            cell.label.text = ingredient
+            cell.indexPath = indexPath
+            cell.tableView = tableView
+            if self.ingredientsDic[ingredient] == false{
+                cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-unchecked-checkbox-30"), for: .normal)
+            }else{
+                cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-checked-checkbox-30"), for: .normal)
+            }
+            return cell
         }else if tableView == typeTV{
             cell = tableView.dequeueReusableCell(withIdentifier: "TypeCell")!
             let type = self.recipeTypes[(indexPath as NSIndexPath).row]
             // Set the name
             cell.textLabel!.text = type
         }else if tableView == cuisineTV{
-            cell = tableView.dequeueReusableCell(withIdentifier: "CuisineCell")!
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TVCell", for: indexPath) as! TVCell
             let cuisine = self.cuisines[(indexPath as NSIndexPath).row]
             // Set the name
-            cell.textLabel!.text = cuisine
+            cell.delegate = self
+            cell.label!.text = cuisine
+            cell.indexPath = indexPath
+            cell.tableView = tableView
+            if self.cuisinesDic[cuisine] == false{
+                cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-unchecked-checkbox-30"), for: .normal)
+            }else{
+                cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-checked-checkbox-30"), for: .normal)
+            }
+            return cell
         }else if tableView == dietTV{
             cell = tableView.dequeueReusableCell(withIdentifier: "DietCell")!
             let diet = self.diets[(indexPath as NSIndexPath).row]
@@ -405,27 +512,22 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.recipesHC.constant = 0
                 self.isRecipesTVVisiable = false
                 let recipe = self.recipes[(indexPath as NSIndexPath).row]
-                self.generateColoredLabel(view: self.recipesStackView, stackViewHC: self.recipesStackViewHC, text: recipe)
-            case self.ingredientsTV:
-                self.ingredientsHC.constant = 0
-                self.isIngredTVVisiable = false
-                let ingredient = self.ingredients[(indexPath as NSIndexPath).row]
-                self.generateColoredLabel(view: self.ingredientsStackView, stackViewHC: self.ingredientsStackViewHC, text: ingredient)
+                self.recipeField.text = recipe
             case self.typeTV:
                 self.typeHC.constant = 0
                 self.isTypeTVVisiable = false
                 let type = self.recipeTypes[(indexPath as NSIndexPath).row]
-                self.generateColoredLabel(view: self.typesStackView, stackViewHC: self.typeStackViewHC, text: type)
-            case self.cuisineTV:
+                self.typeBtn.titleLabel?.text = type
+            /*case self.cuisineTV:
                 self.cuisineHC.constant = 0
                 self.isCuisineTVVisiable = false
                 let cuisine = self.cuisines[(indexPath as NSIndexPath).row]
-                self.generateColoredLabel(view: self.cuisinesStackView, stackViewHC: self.cuisinesStackViewHC, text: cuisine)
+                self.generateColoredLabel(view: self.cuisinesStackView, stackViewHC: self.cuisinesStackViewHC, text: cuisine)*/
             case self.dietTV:
                 self.dietHC.constant = 0
                 self.isDietTVVisiable = false
                 let diet = self.diets[(indexPath as NSIndexPath).row]
-                self.generateColoredLabel(view: self.dietsStackView, stackViewHC: self.dietsStackViewHC, text: diet)
+                self.dietBtn.titleLabel?.text = diet
             default: ()
             }
             self.view.layoutIfNeeded()
@@ -449,12 +551,31 @@ extension FilterViewController:  UITextFieldDelegate {
     }
 }
 
-extension UIColor {
-    static func random () -> UIColor {
-        return UIColor(
-            red: CGFloat.random(in: 0...1),
-            green: CGFloat.random(in: 0...1),
-            blue: CGFloat.random(in: 0...1),
-            alpha: 1.0)
+extension FilterViewController:TVCellActionDelegate{
+    func CellChecked(indexPath: IndexPath, tableView: UITableView) {
+        let cell = tableView.cellForRow(at: indexPath) as! TVCell
+        if cell.CheckBtn.currentImage == #imageLiteral(resourceName: "icons8-unchecked-checkbox-30"){
+            cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-checked-checkbox-30"), for: .normal)
+            if tableView == ingredientsTV{
+                ingredientsDic[cell.label.text!] = true
+                ingredientsQuery.append(cell.label.text!)
+            }else{
+                cuisinesDic[cell.label.text!] = true
+                cuisinesQuery.append(cell.label.text!)
+                self.cuisineBtn.titleLabel?.text = cuisinesQuery.joined(separator: ",")
+                print(cuisinesQuery)
+            }
+        }else{
+            cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-unchecked-checkbox-30"), for: .normal)
+            if tableView == ingredientsTV{
+                ingredientsDic[cell.label.text!] = false
+                ingredientsQuery.remove(at: ingredientsQuery.firstIndex(of: cell.label.text!)!)
+            }else{
+                cuisinesDic[cell.label.text!] = false
+                cuisinesQuery.remove(at: cuisinesQuery.firstIndex(of: cell.label.text!)!)
+                self.cuisineBtn.titleLabel?.text = cuisinesQuery.joined(separator: ",")
+                print(cuisinesQuery)
+            }
+        }
     }
 }

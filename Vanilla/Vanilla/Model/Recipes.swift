@@ -13,7 +13,7 @@ struct Recipe{
     let id : String!
     let title : String?
     let image : String?
-    let readyInMinutes : Int?
+    var readyInMinutes : Int? = 300
     // MARK: Initializers
     
     // construct a Recipes from a dictionary
@@ -21,7 +21,9 @@ struct Recipe{
         id = String(describing: dictionary[spoonacular.JSONResponseKeys.id]!)
         title = dictionary[spoonacular.JSONResponseKeys.title] as? String
         image = dictionary[spoonacular.JSONResponseKeys.image] as? String
-        readyInMinutes = dictionary[spoonacular.JSONResponseKeys.readyInMinutes] as? Int
+        if let readyMins = dictionary[spoonacular.JSONResponseKeys.readyInMinutes] as? Int {
+            readyInMinutes = readyMins
+        }
        }
     
     static func getRecipesFromResults(_ results: [[String:AnyObject]]) -> [Recipe] {

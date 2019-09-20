@@ -18,6 +18,10 @@
 		32AC09812315AF2100D35FFE /* spoonacularMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC09802315AF2100D35FFE /* spoonacularMethods.swift */; };
 		32AC09832315C0DB00D35FFE /* RecipesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC09822315C0DB00D35FFE /* RecipesTableViewController.swift */; };
 		32AC09852315E64200D35FFE /* TVRecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC09842315E64200D35FFE /* TVRecipeCell.swift */; };
+		32D29A1D23351A7600D75D27 /* MainTVRecipeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D29A1C23351A7600D75D27 /* MainTVRecipeCell.xib */; };
+		32D29A1F2335276F00D75D27 /* MainTVRecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D29A1E2335276F00D75D27 /* MainTVRecipeCell.swift */; };
+		32D8816A2332C42D00886917 /* TVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D881692332C42D00886917 /* TVCell.xib */; };
+		32F9F32B2333580400730786 /* TVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F9F32A2333580400730786 /* TVCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +38,10 @@
 		32AC09802315AF2100D35FFE /* spoonacularMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = spoonacularMethods.swift; sourceTree = "<group>"; };
 		32AC09822315C0DB00D35FFE /* RecipesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesTableViewController.swift; sourceTree = "<group>"; };
 		32AC09842315E64200D35FFE /* TVRecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVRecipeCell.swift; sourceTree = "<group>"; };
+		32D29A1C23351A7600D75D27 /* MainTVRecipeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainTVRecipeCell.xib; sourceTree = "<group>"; };
+		32D29A1E2335276F00D75D27 /* MainTVRecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTVRecipeCell.swift; sourceTree = "<group>"; };
+		32D881692332C42D00886917 /* TVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TVCell.xib; sourceTree = "<group>"; };
+		32F9F32A2333580400730786 /* TVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,8 +76,8 @@
 			children = (
 				329C985E23143B90006B81A3 /* AppDelegate.swift */,
 				32AC09782315933900D35FFE /* Model */,
+				32D881682332C41700886917 /* View */,
 				32AC09772315933900D35FFE /* Controller */,
-				32AC09792315933900D35FFE /* View */,
 				329C986223143B90006B81A3 /* Main.storyboard */,
 				329C986723143B91006B81A3 /* LaunchScreen.storyboard */,
 				329C986523143B91006B81A3 /* Assets.xcassets */,
@@ -99,9 +107,13 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		32AC09792315933900D35FFE /* View */ = {
+		32D881682332C41700886917 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				32D881692332C42D00886917 /* TVCell.xib */,
+				32F9F32A2333580400730786 /* TVCell.swift */,
+				32D29A1C23351A7600D75D27 /* MainTVRecipeCell.xib */,
+				32D29A1E2335276F00D75D27 /* MainTVRecipeCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -164,7 +176,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32D8816A2332C42D00886917 /* TVCell.xib in Resources */,
 				329C986923143B91006B81A3 /* LaunchScreen.storyboard in Resources */,
+				32D29A1D23351A7600D75D27 /* MainTVRecipeCell.xib in Resources */,
 				329C986623143B91006B81A3 /* Assets.xcassets in Resources */,
 				329C986423143B90006B81A3 /* Main.storyboard in Resources */,
 			);
@@ -181,9 +195,11 @@
 				32AC097F2315A10500D35FFE /* Recipes.swift in Sources */,
 				329DC871231D89980074577F /* FilterViewController.swift in Sources */,
 				329C985F23143B90006B81A3 /* AppDelegate.swift in Sources */,
+				32F9F32B2333580400730786 /* TVCell.swift in Sources */,
 				32AC09852315E64200D35FFE /* TVRecipeCell.swift in Sources */,
 				32AC097D231593D200D35FFE /* Client.swift in Sources */,
 				32AC09832315C0DB00D35FFE /* RecipesTableViewController.swift in Sources */,
+				32D29A1F2335276F00D75D27 /* MainTVRecipeCell.swift in Sources */,
 				32AC097B2315936F00D35FFE /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

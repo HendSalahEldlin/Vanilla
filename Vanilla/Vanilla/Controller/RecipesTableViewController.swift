@@ -16,19 +16,20 @@ class RecipesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.register(TVRecipeCell.self, forCellReuseIdentifier: "TVRecipeCell")
-        /*spoonacular.sharedInstance().getRecipes() {(success, error) in
+        spoonacular.sharedInstance().getRecipes() {(success, error) in
             if success{
                 DispatchQueue.main.async {
                 self.recipes = spoonacular.sharedInstance().recipes
                 self.tableView.reloadData()
                 }
             }
-        }*/
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         self.recipes = spoonacular.sharedInstance().recipes
+        self.tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -47,14 +48,15 @@ class RecipesTableViewController: UITableViewController {
         cell.minutesLabel.text = "\(recipe.readyInMinutes ?? 0) minutes"
         
         if let imageData = getImage(indexPath: indexPath) {
-            cell.imageView?.image = UIImage(data: imageData)
+            let image = UIImage(data: imageData)
+            cell.imageView?.image = image!
         }
+        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let recipe = self.recipes[(indexPath as NSIndexPath).row]
-        print(recipe.title!)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -70,10 +72,14 @@ class RecipesTableViewController: UITableViewController {
         guard let image = recipe.image else{
             return nil
         }
-        let url = URL(string: spoonacular.Constants.baseUri + image)!
-        let data = try? Data(contentsOf: url)
+        var url = URL(string: image)
+        if !UIApplication.shared.canOpenURL(url!){
+            url = URL(string: spoonacular.Constants.baseUri + image)!
+        }
+        let data = try? Data(contentsOf: url!)
         return data
     }
+    
 }
 
 extension UIImage {
@@ -81,17 +87,54 @@ extension UIImage {
         let imageRatio = CGFloat(self.size.width / self.size.height)
         return imageRatio
     }
+    
+    func resizeImage(_ dimension: CGFloat, opaque: Bool, contentMode: UIView.ContentMode = .scaleAspectFit) -> UIImage {
+        var width: CGFloat
+        var height: CGFloat
+        var newImage: UIImage
+        
+        let size = self.size
+        let aspectRatio =  size.width/size.height
+        
+        switch contentMode {
+        case .scaleAspectFit:
+            if aspectRatio > 1 {                            // Landscape image
+                width = dimension
+                height = dimension / aspectRatio
+            } else {                                        // Portrait image
+                height = dimension
+                width = dimension * aspectRatio
+            }
+            
+        default:
+            fatalError("UIIMage.resizeToFit(): FATAL: Unimplemented ContentMode")
+        }
+        
+        if #available(iOS 10.0, *) {
+            let renderFormat = UIGraphicsImageRendererFormat.default()
+            renderFormat.opaque = opaque
+            let renderer = UIGraphicsImageRenderer(size: CGSize(width: width, height: height), format: renderFormat)
+            newImage = renderer.image {
+                (context) in
+                self.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+            }
+        } else {
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), opaque, 0)
+            self.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+            newImage = UIGraphicsGetImageFromCurrentImageContext()!
+            UIGraphicsEndImageContext()
+        }
+        
+        return newImage
+    }
 }
-
 
 extension RecipesTableViewController: CellActionDelegate {
     func shareARecipe(indexPath: IndexPath) {
-        print("share for index: \(indexPath)")
         let recipe = self.recipes[(indexPath as NSIndexPath).row]
         spoonacular.sharedInstance().getRecipeLink(recipeId: recipe.id)
         {(SourceUrl, error) in
             if error == nil{
-                print(SourceUrl)
                 let activityVC = UIActivityViewController(activityItems: [SourceUrl as Any], applicationActivities: nil)
                 self.present(activityVC, animated: true, completion: nil)
                 activityVC.completionWithItemsHandler = {
@@ -104,12 +147,14 @@ extension RecipesTableViewController: CellActionDelegate {
         }
     }
     
-    
     func addToFav(indexPath: IndexPath) {
-        print("favourite \(indexPath)")
         let cell = tableView.cellForRow(at: indexPath) as! TVRecipeCell
-        let image = UIImage(named: "redHeart-30x30") as UIImage?
-        cell.favBtn.setImage(image, for: .normal)
+        if cell.favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
+            cell.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+        }else{
+            cell.favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
+        }
+        
     }
 
 }
