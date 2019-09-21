@@ -7,13 +7,17 @@
 //
 
 import UIKit
-class MainTVC: UITableViewController {
+class MainTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet weak var tableView: UITableView!
     
     // MARK: Properties
     var recipes = spoonacular.sharedInstance().recipes
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
         self.recipes = spoonacular.sharedInstance().recipes
         self.tableView.register(MainTVRecipeCell.self, forCellReuseIdentifier: "RecipeCell")
         /*spoonacular.sharedInstance().getRecipes() {(success, error) in
@@ -26,15 +30,15 @@ class MainTVC: UITableViewController {
         }*/
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipes.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell")! as! MainTVRecipeCell
         
         cell.indexPath = indexPath
-        cell.delegate = self
+        //cell.delegate = self
         let recipe = self.recipes[(indexPath as NSIndexPath).row]
         
         // Set the name and image
@@ -49,7 +53,7 @@ class MainTVC: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let recipe = self.recipes[(indexPath as NSIndexPath).row]
         let detailsVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
         detailsVC.recipeIndex = (indexPath as NSIndexPath).row
@@ -67,14 +71,6 @@ class MainTVC: UITableViewController {
         }
     }
     
-    /*override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let imageData = getImage(indexPath: indexPath) else{
-            return 0
-        }
-        let imageRatio = UIImage(data: imageData)!.getImageRatio()
-        return tableView.frame.width / imageRatio
-    }*/
-    
     func getImage(indexPath : IndexPath) -> Data? {
         let recipe = self.recipes[(indexPath as NSIndexPath).row]
         guard let image = recipe.image else{
@@ -90,7 +86,7 @@ class MainTVC: UITableViewController {
     
 }
 
-extension MainTVC: CellActionDelegate {
+/*extension MainTVC: CellActionDelegate {
     func shareARecipe(indexPath: IndexPath) {
         let recipe = self.recipes[(indexPath as NSIndexPath).row]
         spoonacular.sharedInstance().getRecipeLink(recipeId: recipe.id)
@@ -118,4 +114,4 @@ extension MainTVC: CellActionDelegate {
         
     }
     
-}
+}*/

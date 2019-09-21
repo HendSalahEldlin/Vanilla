@@ -11,78 +11,32 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeCell" rowHeight="187" id="h7E-Zn-Lb4" customClass="MainTVRecipeCell" customModule="Vanilla" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="RecipeCell" id="h7E-Zn-Lb4" customClass="MainTVRecipeCell" customModule="Vanilla" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="187"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="h7E-Zn-Lb4" id="6A5-RL-yyy">
                 <rect key="frame" x="0.0" y="0.0" width="414" height="186.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4WN-kr-7ul">
-                        <rect key="frame" x="0.0" y="10" width="414" height="166.5"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="166.5" id="XFJ-qn-2OK"/>
-                            <constraint firstAttribute="width" constant="414" id="fTj-4c-q0H"/>
-                        </constraints>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="X-30X30" translatesAutoresizingMaskIntoConstraints="NO" id="4WN-kr-7ul">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="186.5"/>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOC-pt-m3d">
-                        <rect key="frame" x="0.0" y="136.5" width="414" height="40"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xu6-5X-4aW" userLabel="ShareBtn">
-                                <rect key="frame" x="338" y="5" width="30" height="30"/>
-                                <state key="normal" backgroundImage="share_30x30"/>
-                                <connections>
-                                    <action selector="shareBtnPressed:" destination="h7E-Zn-Lb4" eventType="touchUpInside" id="wN3-Cs-zVD"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6vH-c7-W3n" userLabel="FavBtn">
-                                <rect key="frame" x="376" y="5" width="30" height="30"/>
-                                <state key="normal" backgroundImage="emptyHeart-30x30"/>
-                                <connections>
-                                    <action selector="favBtnPressed:" destination="h7E-Zn-Lb4" eventType="touchUpInside" id="5H3-bR-MHN"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsd-h5-IfT" userLabel="TitleLabel">
-                                <rect key="frame" x="8" y="8" width="52" height="24"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="0.76677506345177671" green="0.66697918597112071" blue="0.50877521697907491" alpha="0.095729880136986301" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="6vH-c7-W3n" firstAttribute="leading" secondItem="xu6-5X-4aW" secondAttribute="trailing" constant="8" id="0nb-MO-9MD"/>
-                            <constraint firstItem="fsd-h5-IfT" firstAttribute="centerY" secondItem="yOC-pt-m3d" secondAttribute="centerY" id="7m2-a1-1nH"/>
-                            <constraint firstAttribute="trailing" secondItem="6vH-c7-W3n" secondAttribute="trailing" constant="8" id="LvU-Rd-ayh"/>
-                            <constraint firstItem="xu6-5X-4aW" firstAttribute="centerY" secondItem="6vH-c7-W3n" secondAttribute="centerY" id="QV9-o0-BeL"/>
-                            <constraint firstAttribute="height" constant="40" id="Wkj-DZ-wIP"/>
-                            <constraint firstItem="6vH-c7-W3n" firstAttribute="centerY" secondItem="yOC-pt-m3d" secondAttribute="centerY" id="h0y-Km-wG5"/>
-                            <constraint firstItem="xu6-5X-4aW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fsd-h5-IfT" secondAttribute="trailing" constant="15" id="lg7-9o-rO3"/>
-                            <constraint firstItem="fsd-h5-IfT" firstAttribute="leading" secondItem="yOC-pt-m3d" secondAttribute="leading" constant="8" id="sjg-tY-SpH"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="yOC-pt-m3d" firstAttribute="leading" secondItem="6A5-RL-yyy" secondAttribute="leading" id="1RH-BL-Bj7"/>
-                    <constraint firstAttribute="trailing" secondItem="yOC-pt-m3d" secondAttribute="trailing" id="ChP-BY-nFY"/>
-                    <constraint firstItem="4WN-kr-7ul" firstAttribute="top" secondItem="6A5-RL-yyy" secondAttribute="top" constant="10" id="GWn-kg-VmM"/>
-                    <constraint firstAttribute="bottom" secondItem="yOC-pt-m3d" secondAttribute="bottom" constant="10" id="NyI-3S-wi8"/>
-                    <constraint firstAttribute="bottom" secondItem="4WN-kr-7ul" secondAttribute="bottom" constant="10" id="iqX-EZ-eX6"/>
-                    <constraint firstAttribute="trailing" secondItem="4WN-kr-7ul" secondAttribute="trailing" id="lJz-AB-ZfN"/>
-                    <constraint firstItem="4WN-kr-7ul" firstAttribute="leading" secondItem="6A5-RL-yyy" secondAttribute="leading" id="ytt-AN-CcW"/>
+                    <constraint firstItem="4WN-kr-7ul" firstAttribute="centerY" secondItem="6A5-RL-yyy" secondAttribute="centerY" id="2iu-Kv-JTA"/>
+                    <constraint firstItem="4WN-kr-7ul" firstAttribute="centerX" secondItem="6A5-RL-yyy" secondAttribute="centerX" id="5Vo-Jv-Oi2"/>
+                    <constraint firstItem="4WN-kr-7ul" firstAttribute="height" secondItem="6A5-RL-yyy" secondAttribute="height" id="5cJ-Ft-j08"/>
+                    <constraint firstItem="4WN-kr-7ul" firstAttribute="width" secondItem="6A5-RL-yyy" secondAttribute="width" id="hYb-RV-fVC"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="1" green="0.53283507590000001" blue="0.44125603860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="ImageView" destination="4WN-kr-7ul" id="wLa-Q6-Bo1"/>
-                <outlet property="favBtn" destination="6vH-c7-W3n" id="iim-Gc-RQ1"/>
-                <outlet property="shareBtn" destination="xu6-5X-4aW" id="kfm-5p-mya"/>
-                <outlet property="titleLabel" destination="fsd-h5-IfT" id="ZHh-lH-raF"/>
             </connections>
             <point key="canvasLocation" x="380" y="-45"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="emptyHeart-30x30" width="30" height="30"/>
-        <image name="share_30x30" width="30" height="30"/>
+        <image name="X-30X30" width="30" height="30"/>
     </resources>
 </document>

@@ -52,7 +52,7 @@
         <scene sceneID="Gp3-ai-94l">
             <objects>
                 <tableViewController storyboardIdentifier="RecipesTableViewController" id="rzD-dJ-akR" customClass="RecipesTableViewController" customModule="Vanilla" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="400" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ec3-St-TMU">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ec3-St-TMU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -464,17 +464,24 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y9R-bA-no1">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="342.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="gjK-Ky-Wgn">
                                                 <rect key="frame" x="7" y="8" width="400" height="326.5"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ejF-1c-dJy">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ejF-1c-dJy">
                                                         <rect key="frame" x="0.0" y="0.0" width="400" height="200"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="200" id="5Rd-55-K9w"/>
+                                                            <constraint firstAttribute="height" constant="200" id="5Rd-55-K9w">
+                                                                <variation key="heightClass=compact-widthClass=regular" constant="300"/>
+                                                            </constraint>
                                                             <constraint firstAttribute="width" constant="400" id="P4J-ZD-irc"/>
                                                         </constraints>
+                                                        <variation key="heightClass=compact-widthClass=regular">
+                                                            <mask key="constraints">
+                                                                <exclude reference="P4J-ZD-irc"/>
+                                                            </mask>
+                                                        </variation>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jC3-pj-4Qa" userLabel="TitleLabel">
                                                         <rect key="frame" x="0.0" y="202" width="400" height="32.5"/>
@@ -597,12 +604,24 @@
                                         <constraints>
                                             <constraint firstItem="gjK-Ky-Wgn" firstAttribute="centerX" secondItem="y9R-bA-no1" secondAttribute="centerX" id="FDj-u3-RSc"/>
                                             <constraint firstItem="gjK-Ky-Wgn" firstAttribute="top" secondItem="y9R-bA-no1" secondAttribute="top" constant="8" id="IVg-eo-hLR"/>
+                                            <constraint firstItem="ejF-1c-dJy" firstAttribute="width" secondItem="y9R-bA-no1" secondAttribute="width" id="LPI-pM-2IE"/>
+                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gjK-Ky-Wgn" secondAttribute="bottom" constant="8" id="M9M-VL-3ga"/>
+                                            <constraint firstItem="gjK-Ky-Wgn" firstAttribute="centerY" secondItem="y9R-bA-no1" secondAttribute="centerY" id="dhk-zj-8ey"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="LPI-pM-2IE"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=compact-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="LPI-pM-2IE"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="y9R-bA-no1" secondAttribute="bottom" id="WJt-Ih-ked"/>
-                                    <constraint firstItem="y9R-bA-no1" firstAttribute="centerY" secondItem="8d7-KY-zDa" secondAttribute="centerY" id="luc-y1-akY"/>
                                     <constraint firstItem="y9R-bA-no1" firstAttribute="leading" secondItem="8d7-KY-zDa" secondAttribute="leading" id="o2t-7o-Z1W"/>
                                     <constraint firstAttribute="trailing" secondItem="y9R-bA-no1" secondAttribute="trailing" id="tF3-Y1-513"/>
                                     <constraint firstItem="y9R-bA-no1" firstAttribute="top" secondItem="8d7-KY-zDa" secondAttribute="top" id="uCD-KM-Xxr"/>
@@ -635,6 +654,37 @@
             </objects>
             <point key="canvasLocation" x="3076.811594202899" y="-714.50892857142856"/>
         </scene>
+        <!--MainTVC-->
+        <scene sceneID="mGx-Pd-W52">
+            <objects>
+                <viewController id="bDz-fI-nDi" customClass="MainTVC" customModule="Vanilla" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="d1h-1q-TkD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4np-Oh-OOJ">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="4np-Oh-OOJ" firstAttribute="leading" secondItem="F2l-ZT-YdG" secondAttribute="leading" id="1cn-HE-qSo"/>
+                            <constraint firstItem="F2l-ZT-YdG" firstAttribute="trailing" secondItem="4np-Oh-OOJ" secondAttribute="trailing" id="D8m-Yj-Ktt"/>
+                            <constraint firstItem="F2l-ZT-YdG" firstAttribute="bottom" secondItem="4np-Oh-OOJ" secondAttribute="bottom" id="crP-NO-PZJ"/>
+                            <constraint firstItem="4np-Oh-OOJ" firstAttribute="top" secondItem="F2l-ZT-YdG" secondAttribute="top" id="dA5-n6-ZNj"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="F2l-ZT-YdG"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="KWl-A5-56V"/>
+                    <connections>
+                        <outlet property="tableView" destination="4np-Oh-OOJ" id="r8t-Mo-AMP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="z2J-7a-l8S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1355" y="19"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="oe0-Nq-dwH">
             <objects>
@@ -647,7 +697,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="njv-4S-DS9" kind="relationship" relationship="rootViewController" id="XC9-68-qua"/>
+                        <segue destination="bDz-fI-nDi" kind="relationship" relationship="rootViewController" id="GRI-So-TIy"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u9z-nT-p3T" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -658,20 +708,10 @@
         <scene sceneID="1GO-VI-TBg">
             <objects>
                 <tableViewController storyboardIdentifier="MainTVC" id="njv-4S-DS9" customClass="MainTVC" customModule="Vanilla" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="9ZM-rh-k6y">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" id="9ZM-rh-k6y">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ZuN-zD-Fwf">
-                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZuN-zD-Fwf" id="u6c-kA-OIp">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="njv-4S-DS9" id="FC2-tk-z82"/>
                             <outlet property="delegate" destination="njv-4S-DS9" id="J2N-qf-K8D"/>

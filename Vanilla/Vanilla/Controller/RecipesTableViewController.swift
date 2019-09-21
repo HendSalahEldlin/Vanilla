@@ -66,13 +66,13 @@ class RecipesTableViewController: UITableViewController {
         }
     }
     
-    /*override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let imageData = getImage(indexPath: indexPath) else{
-            return 0
-        }
-        let imageRatio = UIImage(data: imageData)!.getImageRatio()
-        return tableView.frame.width / imageRatio
-    }*/
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        guard let imageData = getImage(indexPath: indexPath) else{
+//            return 0
+//        }
+//        let imageRatio = UIImage(data: imageData)!.getImageRatio()
+//        return tableView.frame.width / imageRatio
+//    }
     
     
     func getImage(indexPath : IndexPath) -> Data? {
