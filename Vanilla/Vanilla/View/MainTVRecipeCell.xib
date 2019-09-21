@@ -11,15 +11,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="vHV-L8-6dw">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vHV-L8-6dw" id="aGi-Fb-1tA">
-                <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                <autoresizingMask key="autoresizingMask"/>
-            </tableViewCellContentView>
-            <point key="canvasLocation" x="1" y="20"/>
-        </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeCell" rowHeight="187" id="h7E-Zn-Lb4" customClass="MainTVRecipeCell" customModule="Vanilla" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="187"/>
             <autoresizingMask key="autoresizingMask"/>
@@ -27,10 +18,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="186.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4WN-kr-7ul">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4WN-kr-7ul">
                         <rect key="frame" x="0.0" y="10" width="414" height="166.5"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="166.5" id="2Ls-Ex-qJ6"/>
+                            <constraint firstAttribute="height" constant="166.5" id="XFJ-qn-2OK"/>
+                            <constraint firstAttribute="width" constant="414" id="fTj-4c-q0H"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOC-pt-m3d">
@@ -39,10 +31,16 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xu6-5X-4aW" userLabel="ShareBtn">
                                 <rect key="frame" x="338" y="5" width="30" height="30"/>
                                 <state key="normal" backgroundImage="share_30x30"/>
+                                <connections>
+                                    <action selector="shareBtnPressed:" destination="h7E-Zn-Lb4" eventType="touchUpInside" id="wN3-Cs-zVD"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6vH-c7-W3n" userLabel="FavBtn">
                                 <rect key="frame" x="376" y="5" width="30" height="30"/>
                                 <state key="normal" backgroundImage="emptyHeart-30x30"/>
+                                <connections>
+                                    <action selector="favBtnPressed:" destination="h7E-Zn-Lb4" eventType="touchUpInside" id="5H3-bR-MHN"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsd-h5-IfT" userLabel="TitleLabel">
                                 <rect key="frame" x="8" y="8" width="52" height="24"/>
@@ -74,7 +72,13 @@
                     <constraint firstItem="4WN-kr-7ul" firstAttribute="leading" secondItem="6A5-RL-yyy" secondAttribute="leading" id="ytt-AN-CcW"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="379.71014492753625" y="9.0401785714285712"/>
+            <connections>
+                <outlet property="ImageView" destination="4WN-kr-7ul" id="wLa-Q6-Bo1"/>
+                <outlet property="favBtn" destination="6vH-c7-W3n" id="iim-Gc-RQ1"/>
+                <outlet property="shareBtn" destination="xu6-5X-4aW" id="kfm-5p-mya"/>
+                <outlet property="titleLabel" destination="fsd-h5-IfT" id="ZHh-lH-raF"/>
+            </connections>
+            <point key="canvasLocation" x="380" y="-45"/>
         </tableViewCell>
     </objects>
     <resources>

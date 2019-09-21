@@ -30,7 +30,13 @@ class TVRecipeCell: UITableViewCell {
     var titleLabel : UILabel = {
         var label = UILabel(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor.red
+        label.backgroundColor = #colorLiteral(red: 0.4976205584, green: 0.4678901179, blue: 0.2717226436, alpha: 0.5754227312)
+        let font = UIFont.boldSystemFont(ofSize: 20)
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: UIColor.white,
+        ]
+        label.attributedText = NSAttributedString(string: "", attributes: attributes)
         return label
     }()
     
@@ -56,25 +62,38 @@ class TVRecipeCell: UITableViewCell {
         button.setImage(image, for: .normal)
         return button
     }()
+    
+    var view : UIView = {
+       var view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = #colorLiteral(red: 0.4976205584, green: 0.4678901179, blue: 0.2717226436, alpha: 0.5754227312)
+        return view
+    }()
      
      override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = UIColor.black
         self.addSubview(mainImageView)
         mainImageView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        mainImageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
+        mainImageView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         mainImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         mainImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
+        
+        
+        mainImageView.addSubview(view)
+        view.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        view.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         mainImageView.addSubview(titleLabel)
         titleLabel.leftAnchor.constraint(equalTo: self.mainImageView.leftAnchor, constant: 30).isActive = true
         titleLabel.topAnchor.constraint(equalTo: self.mainImageView.topAnchor, constant: 20).isActive = true
         
         
-        mainImageView.addSubview(minutesLabel)
+        /*mainImageView.addSubview(minutesLabel)
         minutesLabel.leftAnchor.constraint(equalTo: self.mainImageView.leftAnchor, constant: 30).isActive = true
-        minutesLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 20).isActive = true
+        minutesLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 20).isActive = true*/
         
         self.addSubview(shareBtn)
         shareBtn.rightAnchor.constraint(equalTo: self.mainImageView.rightAnchor, constant: -15).isActive = true
