@@ -22,6 +22,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="zJZ-3T-twr" kind="relationship" relationship="viewControllers" id="fnZ-ZF-VSA"/>
+                        <segue destination="D4s-Xm-sqN" kind="relationship" relationship="viewControllers" id="REg-WX-dcU"/>
                         <segue destination="541-XE-IyL" kind="relationship" relationship="viewControllers" id="m2q-Nc-w6N"/>
                     </connections>
                 </tabBarController>
@@ -32,7 +33,7 @@
         <!--Navigation Controller-->
         <scene sceneID="AfQ-fV-uu0">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zJZ-3T-twr" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainRecipes" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zJZ-3T-twr" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="table_30x30" id="Oty-09-Z5R"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Isg-Ae-YYo">
@@ -702,7 +703,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u9z-nT-p3T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="437.68115942028987" y="-624.10714285714278"/>
+            <point key="canvasLocation" x="-210" y="-279"/>
         </scene>
         <!--MainTVC-->
         <scene sceneID="1GO-VI-TBg">
@@ -725,6 +726,26 @@
             </objects>
             <point key="canvasLocation" x="1393" y="-624"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="qwx-pj-KfQ">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jZ2-GA-gTd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController storyboardIdentifier="FavRecipes" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="D4s-Xm-sqN" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="FgC-F3-bgA"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="SPy-YH-bVq">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rzD-dJ-akR" kind="relationship" relationship="rootViewController" id="u4l-gV-3X0"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="457" y="-624"/>
+        </scene>
     </scenes>
     <resources>
         <image name="down-30x30" width="30" height="30"/>
@@ -737,4 +758,7 @@
         <image name="table_30x30" width="30" height="30"/>
         <image name="user-30" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="u4l-gV-3X0"/>
+    </inferredMetricsTieBreakers>
 </document>

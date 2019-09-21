@@ -14,6 +14,7 @@ extension spoonacular {
         static let subdomain = "api."
         static let ApiHost = "spoonacular.com"
         static let baseUri = "https://spoonacular.com/recipeImages/"
+        static let ingredientsBaseUri = "https://spoonacular.com/cdn/ingredients_100x100/"
     }
   
     // MARK: Methods
@@ -23,6 +24,7 @@ extension spoonacular {
         static let autoCompleteIngredients = "/food/ingredients/autocomplete"
         static let autoCompleteRecipes = "/recipes/autocomplete"
         static let recipesComplexSearch = "/recipes/complexSearch"
+        static let recipesInformationBulk = "/recipes/informationBulk"
     }
     
     // MARK: Parameter Keys
@@ -38,6 +40,7 @@ extension spoonacular {
         static let cuisine = "cuisine"
         static let diet = "diet"
         static let maxReadyTime = "maxReadyTime"
+        static let ids = "ids"
     }
     
     struct ParameterValues {
@@ -55,6 +58,7 @@ extension spoonacular {
         static let readyInMinutes = "readyInMinutes"
         static let baseUri = "baseUri"
         static let servings = "servings"
+        static let sourceUrl = "sourceUrl"
         static let ingredients = "extendedIngredients"
         static let instructions = "analyzedInstructions"
     }

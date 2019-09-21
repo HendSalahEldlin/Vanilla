@@ -15,6 +15,7 @@ struct Recipe{
     let image : String?
     var readyInMinutes : Int?
     var servings: Int?
+    var recipeURL : String?
     var ingredients : [String]?
     var instructions : [String]?
     // MARK: Initializers
@@ -41,6 +42,7 @@ struct Recipe{
     mutating func setRemainPropertires(_ dictionary: [String:AnyObject]){
         readyInMinutes = dictionary[spoonacular.JSONResponseKeys.readyInMinutes] as! Int
         servings = dictionary[spoonacular.JSONResponseKeys.servings] as! Int
+        recipeURL = dictionary[spoonacular.JSONResponseKeys.sourceUrl] as! String
         
         guard let ingredientsArr = dictionary[spoonacular.JSONResponseKeys.ingredients] as? [[String:AnyObject]] else { return }
         ingredients = [String]()

@@ -10,6 +10,7 @@ import Foundation
 class spoonacular : NSObject{
     // MARK: Properties
     public var recipes = [Recipe]()
+    public var favRecipes = [String:Date]()
     
     // shared session
     var session = URLSession.shared

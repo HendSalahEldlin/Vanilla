@@ -12,6 +12,9 @@
 		329C986623143B91006B81A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 329C986523143B91006B81A3 /* Assets.xcassets */; };
 		329C986923143B91006B81A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 329C986723143B91006B81A3 /* LaunchScreen.storyboard */; };
 		329DC871231D89980074577F /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329DC870231D89980074577F /* FilterViewController.swift */; };
+		32A2525123368DCC00D090A8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A2525023368DCC00D090A8 /* DataController.swift */; };
+		32A25253233694BE00D090A8 /* FavouritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A25252233694BE00D090A8 /* FavouritesViewController.swift */; };
+		32A252562336C72200D090A8 /* Vanilla.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32A252542336C72200D090A8 /* Vanilla.xcdatamodeld */; };
 		32AC097B2315936F00D35FFE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097A2315936F00D35FFE /* Constants.swift */; };
 		32AC097D231593D200D35FFE /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097C231593D200D35FFE /* Client.swift */; };
 		32AC097F2315A10500D35FFE /* Recipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097E2315A10500D35FFE /* Recipes.swift */; };
@@ -34,6 +37,9 @@
 		329C986823143B91006B81A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		329C986A23143B91006B81A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		329DC870231D89980074577F /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		32A2525023368DCC00D090A8 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		32A25252233694BE00D090A8 /* FavouritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewController.swift; sourceTree = "<group>"; };
+		32A252552336C72200D090A8 /* Vanilla.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Vanilla.xcdatamodel; sourceTree = "<group>"; };
 		32AC097A2315936F00D35FFE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		32AC097C231593D200D35FFE /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		32AC097E2315A10500D35FFE /* Recipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipes.swift; sourceTree = "<group>"; };
@@ -98,6 +104,7 @@
 				329DC870231D89980074577F /* FilterViewController.swift */,
 				32D29A2023352CA700D75D27 /* MainTVC.swift */,
 				32D29A222335572300D75D27 /* DetailsViewController.swift */,
+				32A25252233694BE00D090A8 /* FavouritesViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -109,6 +116,8 @@
 				32AC097C231593D200D35FFE /* Client.swift */,
 				32AC097E2315A10500D35FFE /* Recipes.swift */,
 				32AC09802315AF2100D35FFE /* spoonacularMethods.swift */,
+				32A2525023368DCC00D090A8 /* DataController.swift */,
+				32A252542336C72200D090A8 /* Vanilla.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -200,13 +209,16 @@
 				32AC09812315AF2100D35FFE /* spoonacularMethods.swift in Sources */,
 				32AC097F2315A10500D35FFE /* Recipes.swift in Sources */,
 				329DC871231D89980074577F /* FilterViewController.swift in Sources */,
+				32A25253233694BE00D090A8 /* FavouritesViewController.swift in Sources */,
 				329C985F23143B90006B81A3 /* AppDelegate.swift in Sources */,
 				32F9F32B2333580400730786 /* TVCell.swift in Sources */,
 				32D29A2123352CA700D75D27 /* MainTVC.swift in Sources */,
 				32AC09852315E64200D35FFE /* TVRecipeCell.swift in Sources */,
+				32A2525123368DCC00D090A8 /* DataController.swift in Sources */,
 				32AC097D231593D200D35FFE /* Client.swift in Sources */,
 				32AC09832315C0DB00D35FFE /* RecipesTableViewController.swift in Sources */,
 				32D29A1F2335276F00D75D27 /* MainTVRecipeCell.swift in Sources */,
+				32A252562336C72200D090A8 /* Vanilla.xcdatamodeld in Sources */,
 				32AC097B2315936F00D35FFE /* Constants.swift in Sources */,
 				32D29A232335572300D75D27 /* DetailsViewController.swift in Sources */,
 			);
@@ -408,6 +420,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		32A252542336C72200D090A8 /* Vanilla.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				32A252552336C72200D090A8 /* Vanilla.xcdatamodel */,
+			);
+			currentVersion = 32A252552336C72200D090A8 /* Vanilla.xcdatamodel */;
+			path = Vanilla.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 329C985323143B90006B81A3 /* Project object */;
 }

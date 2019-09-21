@@ -61,8 +61,10 @@ class DetailsViewController: UIViewController {
     @IBAction func favBtnPressed(_ sender: UIButton) {
         if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
             favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+            spoonacular.sharedInstance().favRecipes[recipe!.id] = Date()
         }else{
             favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
+            spoonacular.sharedInstance().favRecipes.removeValue(forKey: recipe!.id)
         }
     }
     

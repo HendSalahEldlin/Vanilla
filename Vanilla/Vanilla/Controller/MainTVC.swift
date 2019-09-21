@@ -105,13 +105,15 @@ class MainTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func addToFav(indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! MainTVRecipeCell
-        if cell.favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
-            cell.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-        }else{
-            cell.favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-        }
-        
+         let cell = tableView.cellForRow(at: indexPath) as! TVRecipeCell
+         let recipe = self.recipes[(indexPath as! NSIndexPath).row]
+         if cell.favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
+         cell.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+         spoonacular.sharedInstance().favRecipes[recipe.id] = Date()
+         }else{
+         cell.favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
+         spoonacular.sharedInstance().favRecipes.removeValue(forKey: recipe.id)
+         }
     }
     
 }*/
