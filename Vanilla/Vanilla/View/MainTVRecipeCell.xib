@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="RecipeCell" id="h7E-Zn-Lb4" customClass="MainTVRecipeCell" customModule="Vanilla" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="RecipeCell" id="h7E-Zn-Lb4" customClass="MainTVRecipeCell" customModule="Vanilla" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="187"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="h7E-Zn-Lb4" id="6A5-RL-yyy">
@@ -21,22 +21,74 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="X-30X30" translatesAutoresizingMaskIntoConstraints="NO" id="4WN-kr-7ul">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="186.5"/>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dAp-lA-9JL">
+                        <rect key="frame" x="0.0" y="141.5" width="414" height="45"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mm,msad sad sdaD ADA Da,a daDLMAd sdada " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i0y-Ag-W0e" userLabel="TitleLabel">
+                                <rect key="frame" x="8" y="0.0" width="279" height="39"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZh-KE-sU2" userLabel="FavBtn">
+                                <rect key="frame" x="338" y="7.5" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="MAC-ar-ZHy"/>
+                                    <constraint firstAttribute="width" constant="30" id="zKq-0O-nhv"/>
+                                </constraints>
+                                <state key="normal" image="emptyHeart-30x30"/>
+                                <connections>
+                                    <action selector="favBtnPressed:" destination="h7E-Zn-Lb4" eventType="touchUpInside" id="yvT-6H-rNj"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jxj-B4-VGZ" userLabel="ShareBtn">
+                                <rect key="frame" x="376" y="7.5" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="IeP-tp-ek5"/>
+                                    <constraint firstAttribute="height" constant="30" id="o2W-L0-Qin"/>
+                                </constraints>
+                                <state key="normal" image="share_30x30"/>
+                                <connections>
+                                    <action selector="shareBtnPressed:" destination="h7E-Zn-Lb4" eventType="touchUpInside" id="s6K-IG-Wu0"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.40784313725490196" green="0.40784313725490196" blue="0.20392156862745098" alpha="0.66000000000000003" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="jxj-B4-VGZ" firstAttribute="leading" secondItem="CZh-KE-sU2" secondAttribute="trailing" constant="8" id="7G7-Dh-lE8"/>
+                            <constraint firstAttribute="height" constant="45" id="AhH-IH-kCL"/>
+                            <constraint firstAttribute="trailing" secondItem="jxj-B4-VGZ" secondAttribute="trailing" constant="8" id="DJv-Hi-4aw"/>
+                            <constraint firstItem="jxj-B4-VGZ" firstAttribute="centerY" secondItem="dAp-lA-9JL" secondAttribute="centerY" id="Tjf-RN-ek1"/>
+                            <constraint firstAttribute="trailing" secondItem="i0y-Ag-W0e" secondAttribute="trailing" constant="127" id="WCi-kp-63V"/>
+                            <constraint firstItem="i0y-Ag-W0e" firstAttribute="top" secondItem="dAp-lA-9JL" secondAttribute="top" id="gXh-F9-t0t"/>
+                            <constraint firstAttribute="bottom" secondItem="i0y-Ag-W0e" secondAttribute="bottom" constant="6" id="gZC-9Z-8Y7"/>
+                            <constraint firstItem="i0y-Ag-W0e" firstAttribute="leading" secondItem="dAp-lA-9JL" secondAttribute="leading" constant="8" id="oIS-AS-TxF"/>
+                            <constraint firstItem="CZh-KE-sU2" firstAttribute="centerY" secondItem="jxj-B4-VGZ" secondAttribute="centerY" id="uK1-KW-Jyg"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="4WN-kr-7ul" firstAttribute="centerY" secondItem="6A5-RL-yyy" secondAttribute="centerY" id="2iu-Kv-JTA"/>
                     <constraint firstItem="4WN-kr-7ul" firstAttribute="centerX" secondItem="6A5-RL-yyy" secondAttribute="centerX" id="5Vo-Jv-Oi2"/>
                     <constraint firstItem="4WN-kr-7ul" firstAttribute="height" secondItem="6A5-RL-yyy" secondAttribute="height" id="5cJ-Ft-j08"/>
+                    <constraint firstItem="dAp-lA-9JL" firstAttribute="leading" secondItem="6A5-RL-yyy" secondAttribute="leading" id="DLG-Vb-FIU"/>
+                    <constraint firstAttribute="bottom" secondItem="dAp-lA-9JL" secondAttribute="bottom" id="hC8-L9-QVb"/>
                     <constraint firstItem="4WN-kr-7ul" firstAttribute="width" secondItem="6A5-RL-yyy" secondAttribute="width" id="hYb-RV-fVC"/>
+                    <constraint firstAttribute="trailing" secondItem="dAp-lA-9JL" secondAttribute="trailing" id="nPu-Bo-Yj9"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="1" green="0.53283507590000001" blue="0.44125603860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
-                <outlet property="ImageView" destination="4WN-kr-7ul" id="wLa-Q6-Bo1"/>
+                <outlet property="favBtn" destination="CZh-KE-sU2" id="HFX-Fs-oXI"/>
+                <outlet property="myImageView" destination="4WN-kr-7ul" id="H63-qa-TKp"/>
+                <outlet property="shareBtn" destination="jxj-B4-VGZ" id="3Av-vv-vdq"/>
+                <outlet property="titleLabel" destination="i0y-Ag-W0e" id="fRx-5F-7lo"/>
             </connections>
-            <point key="canvasLocation" x="380" y="-45"/>
+            <point key="canvasLocation" x="379.71014492753625" y="-45.200892857142854"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="X-30X30" width="30" height="30"/>
+        <image name="emptyHeart-30x30" width="30" height="30"/>
+        <image name="share_30x30" width="30" height="30"/>
     </resources>
 </document>

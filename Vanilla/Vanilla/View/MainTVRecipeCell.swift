@@ -9,10 +9,10 @@
 import UIKit
 class MainTVRecipeCell: UITableViewCell {
     
-    @IBOutlet weak var ImageView: UIImageView!
-//    @IBOutlet weak var titleLabel: UILabel!
-//    @IBOutlet weak var shareBtn: UIButton!
-//    @IBOutlet weak var favBtn: UIButton!
+    @IBOutlet weak var myImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var shareBtn: UIButton!
+    @IBOutlet weak var favBtn: UIButton!
     
     var delegate: CellActionDelegate?
     var indexPath: IndexPath!

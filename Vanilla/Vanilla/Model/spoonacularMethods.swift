@@ -11,7 +11,7 @@ extension spoonacular{
     
     func getRecipes(completionHandlerForRecipes: @escaping (_ success : Bool, _ errorString: String?) -> Void){
         /* 1. Specify parameters, method */
-        let parameters = [ParameterKeys.apiKey:ParameterValues.apiKey, ParameterKeys.number:ParameterValues.number, ParameterKeys.instructionsRequired:ParameterValues.instructionsRequired] as! [String : AnyObject]
+        let parameters = [ParameterKeys.apiKey:ParameterValues.apiKey, ParameterKeys.number:ParameterValues.number] as! [String : AnyObject]
         taskForGETMethod(Constants.subdomain, method: URLExtentions.searchRecipes, parameters: parameters){(results, error) in
             
             /* 3. Send the desired value(s) to completion handler */
@@ -19,7 +19,7 @@ extension spoonacular{
                 completionHandlerForRecipes(false, error.userInfo["NSLocalizedDescription"] as! String)
             } else {
                 let mainDictionary = results as! [String: AnyObject]
-                let resultDictionry = mainDictionary["results"] as? [[String: AnyObject]]
+                let resultDictionry = mainDictionary["recipes"] as? [[String: AnyObject]]
                 self.recipes = Recipe.getRecipesFromResults(resultDictionry!)
                 completionHandlerForRecipes(true, nil)
             }

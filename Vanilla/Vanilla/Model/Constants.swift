@@ -20,7 +20,7 @@ extension spoonacular {
     // MARK: Methods
     struct URLExtentions {
         static let recipes = "/recipes/"
-        static let searchRecipes = "/recipes/search"
+        static let searchRecipes = "/recipes/random"
         static let autoCompleteIngredients = "/food/ingredients/autocomplete"
         static let autoCompleteRecipes = "/recipes/autocomplete"
         static let recipesComplexSearch = "/recipes/complexSearch"

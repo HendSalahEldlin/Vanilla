@@ -37,16 +37,16 @@ class FavouritesViewController: UIViewController {
     fileprivate func setUpFetchedResultController() {
         let fetchRequest : NSFetchRequest<FavRecipe> = FavRecipe.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        fetchedresultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedresultController.delegate = self
-        do{
-            try fetchedresultController.performFetch()
-        }catch{
-            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+            fetchRequest.sortDescriptors = [sortDescriptor]
+            fetchedresultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+            fetchedresultController.delegate = self
+            do{
+                try fetchedresultController.performFetch()
+            }catch{
+                fatalError("The fetch could not be performed: \(error.localizedDescription)")
+            }
         }
     }
-}
 
 extension FavouritesViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -88,7 +88,7 @@ extension FavouritesViewController: CellActionDelegate {
         //remove from tableView
         let recipeToDelete = fetchedresultController.object(at: indexPath)
         dataController.viewContext.delete(recipeToDelete)
-        //dataController.hasChanges()
+        dataController.hasChanges()
     }
     
 }

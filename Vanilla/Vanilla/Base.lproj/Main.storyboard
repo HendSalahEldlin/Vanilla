@@ -23,7 +23,6 @@
                     <connections>
                         <segue destination="zJZ-3T-twr" kind="relationship" relationship="viewControllers" id="fnZ-ZF-VSA"/>
                         <segue destination="D4s-Xm-sqN" kind="relationship" relationship="viewControllers" id="REg-WX-dcU"/>
-                        <segue destination="541-XE-IyL" kind="relationship" relationship="viewControllers" id="m2q-Nc-w6N"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lE3-2h-72B" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -42,47 +41,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="rzD-dJ-akR" kind="relationship" relationship="rootViewController" id="5fJ-cU-jmA"/>
+                        <segue destination="bDz-fI-nDi" kind="relationship" relationship="rootViewController" id="cVX-DT-Bfo"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BoY-jI-r2g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="437.68115942028987" y="-1286.3839285714284"/>
-        </scene>
-        <!--Recipes Table View Controller-->
-        <scene sceneID="Gp3-ai-94l">
-            <objects>
-                <tableViewController storyboardIdentifier="RecipesTableViewController" id="rzD-dJ-akR" customClass="RecipesTableViewController" customModule="Vanilla" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ec3-St-TMU">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TVRecipeCell" rowHeight="144" id="xac-3A-1zg" customClass="TVRecipeCell" customModule="Vanilla" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="144"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xac-3A-1zg" id="Rew-NT-Ki0">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="143.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="rzD-dJ-akR" id="x0P-qp-RjQ"/>
-                            <outlet property="delegate" destination="rzD-dJ-akR" id="rCu-xn-TR8"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="uER-iT-aCA">
-                        <barButtonItem key="rightBarButtonItem" image="filter-30x30" id="Vkw-X9-8cD">
-                            <connections>
-                                <segue destination="cMK-xo-CBa" kind="show" id="Oge-na-I34"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3bH-I6-X4o" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1394" y="-1286"/>
         </scene>
         <!--Filter View Controller-->
         <scene sceneID="KFF-LV-9rE">
@@ -93,7 +57,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="9fs-kI-KSC">
-                                <rect key="frame" x="32.5" y="101" width="349" height="374.5"/>
+                                <rect key="frame" x="32.5" y="57" width="349" height="374.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="sQm-zi-QGQ" userLabel="RecipeStackView">
                                         <rect key="frame" x="0.0" y="0.0" width="349" height="30"/>
@@ -684,26 +648,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z2J-7a-l8S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1355" y="19"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="oe0-Nq-dwH">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="541-XE-IyL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="user-30" id="Rso-Qq-9la"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hyS-Le-F5t">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="bDz-fI-nDi" kind="relationship" relationship="rootViewController" id="GRI-So-TIy"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="u9z-nT-p3T" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-210" y="-279"/>
+            <point key="canvasLocation" x="1329" y="-1286"/>
         </scene>
         <!--MainTVC-->
         <scene sceneID="1GO-VI-TBg">
@@ -721,15 +666,17 @@
                     <navigationItem key="navigationItem" id="6er-7d-wbh">
                         <barButtonItem key="rightBarButtonItem" image="filter-30x30" id="Ktz-g7-7wV"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="9ZM-rh-k6y" id="69J-Rf-ITu"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sxf-iP-tCa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1393" y="-624"/>
+            <point key="canvasLocation" x="2301" y="-573"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qwx-pj-KfQ">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jZ2-GA-gTd" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="FavRecipes" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="D4s-Xm-sqN" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="favorites" id="FgC-F3-bgA"/>
                     <toolbarItems/>
@@ -740,11 +687,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="rzD-dJ-akR" kind="relationship" relationship="rootViewController" id="u4l-gV-3X0"/>
+                        <segue destination="bDz-fI-nDi" kind="relationship" relationship="rootViewController" id="PGz-H6-WmO"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jZ2-GA-gTd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="457" y="-624"/>
+            <point key="canvasLocation" x="438" y="-589"/>
         </scene>
     </scenes>
     <resources>
@@ -756,9 +704,8 @@
         <image name="search-30x30" width="30" height="30"/>
         <image name="share_30x30" width="30" height="30"/>
         <image name="table_30x30" width="30" height="30"/>
-        <image name="user-30" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="u4l-gV-3X0"/>
+        <segue reference="cVX-DT-Bfo"/>
     </inferredMetricsTieBreakers>
 </document>

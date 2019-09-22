@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreData
+
 class DetailsViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
@@ -22,15 +24,59 @@ class DetailsViewController: UIViewController {
     var recipeIndex : Int?
     var recipe : Recipe?
     
+    var recipeId : String?
+    var dataController : DataController!
+    var recipesFetchedresultController : NSFetchedResultsController<FavRecipe>!
+    var IngredientsFetchedresultController : NSFetchedResultsController<Ingredient>!
+    var InstructionsFetchedresultController : NSFetchedResultsController<Instruction>!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        recipe = spoonacular.sharedInstance().recipes[recipeIndex!]
-        self.titleLabel.text = recipe!.title
-        self.imageView.image = UIImage(data: getImage(imageURL: (recipe?.image!)!)!)
-        self.timeLabel.text = "\(recipe!.readyInMinutes!)" + " Mins"
-        self.servingsLabel.text =  " serves " + "\(recipe!.servings!)"
-        ingredientsHC.constant = CGFloat(recipe?.ingredients?.count ?? 0) * 30
-        instruncionsHC.constant = CGFloat(recipe?.instructions?.count ?? 0) * 30
+        if recipeIndex != nil{
+            //From Main View
+            recipe = spoonacular.sharedInstance().recipes[recipeIndex!]
+            self.titleLabel.text = recipe!.title
+            self.imageView.image = UIImage(data: getImage(imageURL: (recipe?.image!)!)!)
+            self.timeLabel.text = "\(recipe!.readyInMinutes!)" + " Mins"
+            self.servingsLabel.text =  " serves " + "\(recipe!.servings!)"
+            ingredientsHC.constant = CGFloat(recipe?.ingredients?.count ?? 0) * 30
+            instruncionsHC.constant = CGFloat(recipe?.instructions?.count ?? 0) * 30
+        }else{
+            //From Fav View
+            setUpFetchedResultController()
+        }
+        
+    }
+    
+    fileprivate func setUpFetchedResultController() {
+        let recipeFetchRequest : NSFetchRequest<FavRecipe> = FavRecipe.fetchRequest()
+        let recipeSortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
+        recipeFetchRequest.sortDescriptors = [recipeSortDescriptor]
+        recipeFetchRequest.predicate = NSPredicate(format: "id == %@", recipeId!)
+        recipesFetchedresultController = NSFetchedResultsController(fetchRequest: recipeFetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        recipesFetchedresultController.delegate = self
+        
+        let IngredientFetchRequest : NSFetchRequest<Ingredient> = Ingredient.fetchRequest()
+        let IngredientSortDescriptor = NSSortDescriptor(key: "recipeId", ascending: false)
+        IngredientFetchRequest.sortDescriptors = [IngredientSortDescriptor]
+        IngredientFetchRequest.predicate = NSPredicate(format: "recipeId == %@", recipeId!)
+        IngredientsFetchedresultController = NSFetchedResultsController(fetchRequest: IngredientFetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        IngredientsFetchedresultController.delegate = self
+        
+        let InstructionFetchRequest : NSFetchRequest<Instruction> = Instruction.fetchRequest()
+        let InstructionSortDescriptor = NSSortDescriptor(key: "recipeId", ascending: false)
+        InstructionFetchRequest.sortDescriptors = [InstructionSortDescriptor]
+        InstructionFetchRequest.predicate = NSPredicate(format: "recipeId == %@", recipeId!)
+        InstructionsFetchedresultController = NSFetchedResultsController(fetchRequest: InstructionFetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        InstructionsFetchedresultController.delegate = self
+        
+        do{
+            try recipesFetchedresultController.performFetch()
+            try IngredientsFetchedresultController.performFetch()
+            try InstructionsFetchedresultController.performFetch()
+        }catch{
+            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
     }
     
     func getImage(imageURL : String) -> Data? {
@@ -98,4 +144,8 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource{
         }
         return cell
     }
+}
+
+extension DetailsViewController: NSFetchedResultsControllerDelegate{
+    
 }

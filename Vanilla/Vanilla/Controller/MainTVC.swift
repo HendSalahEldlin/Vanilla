@@ -7,68 +7,112 @@
 //
 
 import UIKit
-class MainTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+import CoreData
+
+class MainTVC: UIViewController {
+    
+    // MARK: IBOutlets
     
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Properties
+    
     var recipes = spoonacular.sharedInstance().recipes
+    var dataController : DataController!
+    var fetchedresultController : NSFetchedResultsController<FavRecipe>!
+    
+    // MARK: UIViewController Functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        self.navigationItem.title = parent?.restorationIdentifier
         self.recipes = spoonacular.sharedInstance().recipes
-        self.tableView.register(MainTVRecipeCell.self, forCellReuseIdentifier: "RecipeCell")
-        /*spoonacular.sharedInstance().getRecipes() {(success, error) in
-            if success{
-                DispatchQueue.main.async {
-                    self.recipes = spoonacular.sharedInstance().recipes
-                    self.tableView.reloadData()
-                }
-            }
-        }*/
-    }
-    
-     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recipes.count
-    }
-    
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell")! as! MainTVRecipeCell
-        
-        cell.indexPath = indexPath
-        //cell.delegate = self
-        let recipe = self.recipes[(indexPath as NSIndexPath).row]
-        
-        // Set the name and image
-        //cell.titleLabel?.text = recipe.title
-        //cell.minutesLabel.text = "\(recipe.readyInMinutes ?? 0) minutes"
-        
-        if let imageData = getImage(indexPath: indexPath) {
-            let image = UIImage(data: imageData)
-            cell.imageView?.image = image!
-        }
-        
-        return cell
-    }
-    
-     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let recipe = self.recipes[(indexPath as NSIndexPath).row]
-        let detailsVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
-        detailsVC.recipeIndex = (indexPath as NSIndexPath).row
-        
-        if recipe.ingredients == nil{
-            spoonacular.sharedInstance().getRecipeInformation(recipeId: recipe.id, recipeIndex: (indexPath as NSIndexPath).row) {(success, error) in
+        self.tableView.register(UINib(nibName: "MainTVRecipeCell", bundle: nil), forCellReuseIdentifier: "RecipeCell")
+         if parent?.restorationIdentifier == "MainRecipes"{
+            spoonacular.sharedInstance().getRecipes() {(success, error) in
                 if success{
                     DispatchQueue.main.async {
-                        self.navigationController?.pushViewController(detailsVC, animated: true)
+                        self.recipes = spoonacular.sharedInstance().recipes
+                        self.tableView.reloadData()
                     }
                 }
             }
-        }else{
-            self.navigationController?.pushViewController(detailsVC, animated: true)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        if parent?.restorationIdentifier == "FavRecipes"{
+            dataController = DataController(modelName: "Vanilla")
+            setUpFetchedResultController()
+            if spoonacular.sharedInstance().favRecipes.count>0{
+                let Ids = Array(spoonacular.sharedInstance().favRecipes.keys).joined(separator: ",")
+                
+                spoonacular.sharedInstance().getRecipeInformationBulk(Ids:Ids) {(results, error) in
+                    if error == nil{
+                        self.getLastAddedToFavs(results)
+                        /*DispatchQueue.main.async {
+                            //self.recipes = spoonacular.sharedInstance().recipes
+                            self.tableView.reloadData()
+                        }*/
+                    }
+                }
+            }
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        fetchedresultController = nil
+    }
+    
+    // MARK: Defined Functions
+    
+    fileprivate func setUpFetchedResultController() {
+        let fetchRequest : NSFetchRequest<FavRecipe> = FavRecipe.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchedresultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedresultController.delegate = self
+        do{
+            try fetchedresultController.performFetch()
+        }catch{
+            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
+    }
+    
+    fileprivate func getLastAddedToFavs(_ results: [[String : AnyObject]]) {
+        for i in 0..<results.count{
+            let favRecipe = FavRecipe(context: dataController.viewContext)
+            favRecipe.id = String(describing: results[i][spoonacular.JSONResponseKeys.id]!)
+            favRecipe.title = results[i][spoonacular.JSONResponseKeys.title] as? String
+            favRecipe.minutes = Int16(results[i][spoonacular.JSONResponseKeys.readyInMinutes] as! Int)
+            favRecipe.servings = Int16(results[i][spoonacular.JSONResponseKeys.servings] as! Int)
+            favRecipe.url = results[i][spoonacular.JSONResponseKeys.sourceUrl] as! String
+            favRecipe.creationDate = spoonacular.sharedInstance().favRecipes[favRecipe.id as! String]
+            favRecipe.image = try? Data(contentsOf: URL(string: (results[i][spoonacular.JSONResponseKeys.image] as? String)!)!)
+            
+            guard let ingredientsArr = results[i][spoonacular.JSONResponseKeys.ingredients] as? [[String:AnyObject]] else { return }
+            for ingredient in ingredientsArr{
+                let myIngredient = Ingredient(context: dataController.viewContext)
+                myIngredient.recipeId = favRecipe.id
+                myIngredient.original = ingredient["original"] as! String
+                myIngredient.image = try? Data(contentsOf: URL(string: spoonacular.Constants.ingredientsBaseUri + (ingredient["image"] as! String))!)
+            }
+            
+            guard let instructionsArr = results[i][spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }
+             for instruction in instructionsArr{
+                 let steps = instruction["steps"] as! [[String : AnyObject]]
+                 for step in steps{
+                    let myStep = Instruction(context: dataController.viewContext)
+                    myStep.recipeId = favRecipe.id
+                    myStep.step = step["step"] as! String
+                 }
+             }
+        }
+        dataController.hasChanges()
     }
     
     func getImage(indexPath : IndexPath) -> Data? {
@@ -86,34 +130,132 @@ class MainTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
 }
 
-/*extension MainTVC: CellActionDelegate {
-    func shareARecipe(indexPath: IndexPath) {
-        let recipe = self.recipes[(indexPath as NSIndexPath).row]
-        spoonacular.sharedInstance().getRecipeLink(recipeId: recipe.id)
-        {(SourceUrl, error) in
-            if error == nil{
-                let activityVC = UIActivityViewController(activityItems: [SourceUrl as Any], applicationActivities: nil)
-                self.present(activityVC, animated: true, completion: nil)
-                activityVC.completionWithItemsHandler = {
-                    (activity, success, items, error) in
-                    if success{
-                        self.navigationController?.popToRootViewController(animated: true)
-                    }
+extension MainTVC : UITableViewDelegate, UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return parent?.restorationIdentifier == "MainRecipes" ? recipes.count : fetchedresultController.fetchedObjects?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell")! as! MainTVRecipeCell
+        
+        cell.indexPath = indexPath
+        cell.delegate = self
+        
+        switch parent?.restorationIdentifier {
+        case "MainRecipes":
+            let recipe = self.recipes[(indexPath as NSIndexPath).row]
+            // Set the name and image
+            cell.titleLabel.text = recipe.title
+            if let imageData = getImage(indexPath: indexPath) {
+                let image = UIImage(data: imageData)
+                cell.myImageView.image = image!
+            }
+            cell.favBtn.setImage( spoonacular.sharedInstance().favRecipes[recipe.id] != nil ? #imageLiteral(resourceName: "redHeart-30x30") : #imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
+        case "FavRecipes":
+            let recipe = fetchedresultController.object(at: indexPath)
+            
+            // Set the name and image
+            cell.titleLabel.text = recipe.title
+            cell.myImageView.image = UIImage(data: recipe.image!)
+            cell.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+        default:()
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let imageData = getImage(indexPath: indexPath) else{
+            return 0
+        }
+        let imageRatio = UIImage(data: imageData)!.getImageRatio()
+        return tableView.frame.width / imageRatio
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch parent?.restorationIdentifier {
+        case "MainRecipes":
+            let recipe = self.recipes[(indexPath as NSIndexPath).row]
+            let detailsVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
+            detailsVC.recipeIndex = (indexPath as NSIndexPath).row
+            
+            spoonacular.sharedInstance().getRecipeInformation(recipeId: recipe.id, recipeIndex: (indexPath as NSIndexPath).row) {(success, error) in
+                if error != nil{
+                    print(error)
                 }
             }
+            self.navigationController?.pushViewController(detailsVC, animated: true)
+            
+        case "FavRecipes":
+            let recipe = fetchedresultController.object(at: indexPath)
+            let detailsVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
+            detailsVC.recipeId = recipe.id
+            detailsVC.dataController = self.dataController
+            self.navigationController?.pushViewController(detailsVC, animated: true)
+        default:()
         }
+    }
+}
+
+extension MainTVC: CellActionDelegate {
+    
+    func shareARecipe(indexPath: IndexPath) {
+        var sourceUrl : String?
+        switch parent?.restorationIdentifier {
+        case "MainRecipes":
+            let recipe = self.recipes[(indexPath as NSIndexPath).row]
+            if recipe.recipeURL == nil{
+                spoonacular.sharedInstance().getRecipeLink(recipeId: recipe.id)
+                {(SourceUrl, error) in
+                    if error == nil{
+                        sourceUrl = SourceUrl
+                    }
+                }
+            }else{
+                sourceUrl = recipe.recipeURL
+            }
+        case "FavRecipes":
+            let recipe = fetchedresultController.object(at: indexPath)
+            sourceUrl = recipe.url
+        default:()
+        }
+        
+        let activityVC = UIActivityViewController(activityItems: [sourceUrl as Any], applicationActivities: nil)
+        self.present(activityVC, animated: true, completion: nil)
     }
     
     func addToFav(indexPath: IndexPath) {
-         let cell = tableView.cellForRow(at: indexPath) as! TVRecipeCell
-         let recipe = self.recipes[(indexPath as! NSIndexPath).row]
-         if cell.favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
-         cell.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-         spoonacular.sharedInstance().favRecipes[recipe.id] = Date()
-         }else{
-         cell.favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-         spoonacular.sharedInstance().favRecipes.removeValue(forKey: recipe.id)
-         }
+        let cell = tableView.cellForRow(at: indexPath) as! MainTVRecipeCell
+        let recipeId = parent?.restorationIdentifier == "MainRecipes" ? self.recipes[(indexPath as! NSIndexPath).row].id : fetchedresultController.object(at: indexPath).id
+        if cell.favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
+            cell.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+            spoonacular.sharedInstance().favRecipes[recipeId!] = Date()
+        }else{
+            cell.favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
+            spoonacular.sharedInstance().favRecipes.removeValue(forKey: recipeId!)
+        }
     }
     
-}*/
+}
+
+extension MainTVC: NSFetchedResultsControllerDelegate{
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+          tableView.insertRows(at: [newIndexPath!], with: .right)
+        case .delete:
+            tableView.deleteRows(at: [indexPath!], with: .left)
+        default:
+            break
+        }
+    }
+}
+
+extension UIImage {
+    func getImageRatio() -> CGFloat {
+        let imageRatio = CGFloat(self.size.width / self.size.height)
+        return imageRatio
+    }
+}

@@ -18,9 +18,9 @@ class RecipesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = parent?.restorationIdentifier
+        self.tableView.register(TVRecipeCell.self, forCellReuseIdentifier: "TVRecipeCell")
         if parent?.restorationIdentifier == "MainRecipes"{
             //MainRecipes
-            self.tableView.register(TVRecipeCell.self, forCellReuseIdentifier: "TVRecipeCell")
             spoonacular.sharedInstance().getRecipes() {(success, error) in
                 if success{
                     DispatchQueue.main.async {
@@ -35,36 +35,38 @@ class RecipesTableViewController: UITableViewController {
     
     fileprivate func getLastAddedToFavs(_ results: [[String : AnyObject]]) {
         for i in 0..<results.count{
-            let favRecipe = FavRecipe()
+            let favRecipe = FavRecipe(context: dataController.viewContext)
             favRecipe.id = String(describing: results[i][spoonacular.JSONResponseKeys.id]!)
             favRecipe.title = results[i][spoonacular.JSONResponseKeys.title] as? String
             favRecipe.image = try? Data(contentsOf: URL(string: (results[i][spoonacular.JSONResponseKeys.image] as? String)!)!)
             favRecipe.minutes = Int16(results[i][spoonacular.JSONResponseKeys.readyInMinutes] as! Int)
             favRecipe.servings = Int16(results[i][spoonacular.JSONResponseKeys.servings] as! Int)
             favRecipe.url = results[i][spoonacular.JSONResponseKeys.sourceUrl] as! String
+            favRecipe.creationDate = spoonacular.sharedInstance().favRecipes[favRecipe.id as! String]
+            
+            dataController.viewContext.insert(favRecipe)
+            dataController.hasChanges()
             
             guard let ingredientsArr = results[i][spoonacular.JSONResponseKeys.ingredients] as? [[String:AnyObject]] else { return }
-            var ingredients = [Ingredient]()
             for ingredient in ingredientsArr{
-                let myIngredient = Ingredient()
+                let myIngredient = Ingredient(context: dataController.viewContext)
                 myIngredient.recipeId = favRecipe.id
                 myIngredient.original = ingredient["original"] as! String
-                myIngredient.image = try? Data(contentsOf: URL(string: spoonacular.Constants.ingredientsBaseUri + (ingredient["original"] as! String))!)
+                myIngredient.image = try? Data(contentsOf: URL(string: spoonacular.Constants.ingredientsBaseUri + (ingredient["image"] as! String))!)
+                dataController.viewContext.insert(myIngredient)
+                dataController.hasChanges()
             }
             
-            guard let instructionsArr = results[i][spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }
+            /*guard let instructionsArr = results[i][spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }
             
-            /*var instructions = [String]()
+            var instructions = [String]()
              for instruction in instructionsArr{
              let steps = instruction["steps"] as! [[String : AnyObject]]
              for step in steps{
              instructions.append(step["step"] as! String)
              }
              }*/
-            favRecipe.creationDate = spoonacular.sharedInstance().favRecipes[favRecipe.id as! String]
             
-            dataController.viewContext.insert(favRecipe)
-            dataController.hasChanges()
         }
     }
     
@@ -131,7 +133,7 @@ class RecipesTableViewController: UITableViewController {
             
             // Set the name and image
             cell.titleLabel.text = recipe.title
-            cell.imageView?.image = UIImage(data: recipe.image!)
+            cell.mainImageView.image = UIImage(data: recipe.image!)
         default:()
         }
         
@@ -186,13 +188,6 @@ class RecipesTableViewController: UITableViewController {
     
 }
 
-extension UIImage {
-    func getImageRatio() -> CGFloat {
-        let imageRatio = CGFloat(self.size.width / self.size.height)
-        return imageRatio
-    }
-}
-
 extension RecipesTableViewController: CellActionDelegate {
     func shareARecipe(indexPath: IndexPath) {
         var sourceUrl : String?
@@ -243,6 +238,9 @@ extension RecipesTableViewController: CellActionDelegate {
 extension RecipesTableViewController: NSFetchedResultsControllerDelegate{
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
+        case .insert:
+            break
+            //tableView.insertRows(at: [newIndexPath!], with: .right)
         case .delete:
             tableView.deleteRows(at: [indexPath!], with: .left)
         default:
