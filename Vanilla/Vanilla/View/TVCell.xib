@@ -32,7 +32,7 @@
                         </connections>
                     </button>
                 </subviews>
-                <color key="backgroundColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                <color key="backgroundColor" red="0.40784313729999999" green="0.40784313729999999" blue="0.20392156859999999" alpha="0.66000000000000003" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="iyK-zR-5jP" firstAttribute="centerY" secondItem="Oga-Cr-8lf" secondAttribute="centerY" id="9W5-tb-R0M"/>
                     <constraint firstItem="iyK-zR-5jP" firstAttribute="leading" secondItem="Oga-Cr-8lf" secondAttribute="leading" constant="10" id="CQI-s7-fyl"/>
