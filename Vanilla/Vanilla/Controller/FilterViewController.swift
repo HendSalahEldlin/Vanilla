@@ -59,8 +59,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let diets = ["GlutenFree", "Ketogenic", "Vegetarian", "Lacto_Vegetarian", "Ovo_Vegetarian", "Vegan", "Pescetarian", "Paleo", "Primal", "Whole30"]
     var isDietTVVisiable = false
     
-    let colors : [UIColor] = [#colorLiteral(red: 0.2674680898, green: 0.9852552817, blue: 0.9153829225, alpha: 1), #colorLiteral(red: 1, green: 0.7254621479, blue: 1, alpha: 1), #colorLiteral(red: 1, green: 0.506867155, blue: 0.4642497881, alpha: 1), #colorLiteral(red: 0.9995340705, green: 0.988355577, blue: 0.4726552367, alpha: 1)]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         cuisineTV.register(UINib(nibName: "TVCell", bundle: nil), forCellReuseIdentifier: "TVCell")
@@ -131,6 +129,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             spoonacular.sharedInstance().recipesComplexSearch(recipes: recipeField.text!, ingredients: ingredientsQuery.joined(separator: ","), type: type, cuisine: cuisine, diet: diet, maxReadyTime: maxMin){(success, error) in
                 if success{
                     DispatchQueue.main.async {
+                        let mainVC = self.navigationController?.viewControllers.first! as! MainTVC
+                        mainVC.fromFilter = true
                         self.navigationController?.popToRootViewController(animated: true)
                     }
                 }

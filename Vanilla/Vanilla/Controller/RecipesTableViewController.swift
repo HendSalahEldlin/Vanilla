@@ -33,43 +33,6 @@ class RecipesTableViewController: UITableViewController {
         
     }
     
-    fileprivate func getLastAddedToFavs(_ results: [[String : AnyObject]]) {
-        for i in 0..<results.count{
-            let favRecipe = FavRecipe(context: dataController.viewContext)
-            favRecipe.id = String(describing: results[i][spoonacular.JSONResponseKeys.id]!)
-            favRecipe.title = results[i][spoonacular.JSONResponseKeys.title] as? String
-            favRecipe.image = try? Data(contentsOf: URL(string: (results[i][spoonacular.JSONResponseKeys.image] as? String)!)!)
-            favRecipe.minutes = Int16(results[i][spoonacular.JSONResponseKeys.readyInMinutes] as! Int)
-            favRecipe.servings = Int16(results[i][spoonacular.JSONResponseKeys.servings] as! Int)
-            favRecipe.url = results[i][spoonacular.JSONResponseKeys.sourceUrl] as! String
-            favRecipe.creationDate = spoonacular.sharedInstance().favRecipes[favRecipe.id as! String]
-            
-            dataController.viewContext.insert(favRecipe)
-            dataController.hasChanges()
-            
-            guard let ingredientsArr = results[i][spoonacular.JSONResponseKeys.ingredients] as? [[String:AnyObject]] else { return }
-            for ingredient in ingredientsArr{
-                let myIngredient = Ingredient(context: dataController.viewContext)
-                myIngredient.recipeId = favRecipe.id
-                myIngredient.original = ingredient["original"] as! String
-                myIngredient.image = try? Data(contentsOf: URL(string: spoonacular.Constants.ingredientsBaseUri + (ingredient["image"] as! String))!)
-                dataController.viewContext.insert(myIngredient)
-                dataController.hasChanges()
-            }
-            
-            /*guard let instructionsArr = results[i][spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }
-            
-            var instructions = [String]()
-             for instruction in instructionsArr{
-             let steps = instruction["steps"] as! [[String : AnyObject]]
-             for step in steps{
-             instructions.append(step["step"] as! String)
-             }
-             }*/
-            
-        }
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         if parent?.restorationIdentifier == "FavRecipes"{
@@ -106,6 +69,43 @@ class RecipesTableViewController: UITableViewController {
             try fetchedresultController.performFetch()
         }catch{
             fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
+    }
+    
+    fileprivate func getLastAddedToFavs(_ results: [[String : AnyObject]]) {
+        for i in 0..<results.count{
+            let favRecipe = FavRecipe(context: dataController.viewContext)
+            favRecipe.id = String(describing: results[i][spoonacular.JSONResponseKeys.id]!)
+            favRecipe.title = results[i][spoonacular.JSONResponseKeys.title] as? String
+            favRecipe.image = try? Data(contentsOf: URL(string: (results[i][spoonacular.JSONResponseKeys.image] as? String)!)!)
+            favRecipe.minutes = Int16(results[i][spoonacular.JSONResponseKeys.readyInMinutes] as! Int)
+            favRecipe.servings = Int16(results[i][spoonacular.JSONResponseKeys.servings] as! Int)
+            favRecipe.url = results[i][spoonacular.JSONResponseKeys.sourceUrl] as! String
+            favRecipe.creationDate = spoonacular.sharedInstance().favRecipes[favRecipe.id as! String]
+            
+            dataController.viewContext.insert(favRecipe)
+            dataController.hasChanges()
+            
+            guard let ingredientsArr = results[i][spoonacular.JSONResponseKeys.ingredients] as? [[String:AnyObject]] else { return }
+            for ingredient in ingredientsArr{
+                let myIngredient = Ingredient(context: dataController.viewContext)
+                myIngredient.recipeId = favRecipe.id
+                myIngredient.original = ingredient["original"] as! String
+                myIngredient.image = try? Data(contentsOf: URL(string: spoonacular.Constants.ingredientsBaseUri + (ingredient["image"] as! String))!)
+                dataController.viewContext.insert(myIngredient)
+                dataController.hasChanges()
+            }
+            
+            /*guard let instructionsArr = results[i][spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }
+             
+             var instructions = [String]()
+             for instruction in instructionsArr{
+             let steps = instruction["steps"] as! [[String : AnyObject]]
+             for step in steps{
+             instructions.append(step["step"] as! String)
+             }
+             }*/
+            
         }
     }
     

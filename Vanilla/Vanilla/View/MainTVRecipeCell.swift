@@ -13,6 +13,7 @@ class MainTVRecipeCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var shareBtn: UIButton!
     @IBOutlet weak var favBtn: UIButton!
+    @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     
     var delegate: CellActionDelegate?
     var indexPath: IndexPath!

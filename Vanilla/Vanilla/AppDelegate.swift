@@ -12,9 +12,16 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    //let dataController = DataController(modelName: "Vanilla")
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        /*dataController.load()
+        
+        let tabBarController = self.window!.rootViewController as! UITabBarController
+        let navigationController = tabBarController.viewControllers![0] as! UINavigationController
+        let mainVC = navigationController.topViewController as! MainTVC
+        mainVC.dataController = dataController*/
         return true
     }
 
