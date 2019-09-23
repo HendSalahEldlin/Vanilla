@@ -70,6 +70,14 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         configureTV(arrName: "Diets")
         minField.delegate = self
         slider.value = 300
+        let buttonWidth = typeBtn.frame.width
+        let imageWidth = typeBtn.imageView!.frame.width
+        typeBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
+        typeBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+        cuisineBtn.imageEdgeInsets = typeBtn.imageEdgeInsets
+        cuisineBtn.titleEdgeInsets = typeBtn.titleEdgeInsets
+        dietBtn.imageEdgeInsets = typeBtn.imageEdgeInsets
+        dietBtn.titleEdgeInsets = typeBtn.titleEdgeInsets
     }
     
     @IBAction func searchBtnClicked(_ sender: UIButton) {
@@ -108,7 +116,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             closeOtherTVs(UIControl: sender)
         case cuisineBtn:
             for item in cuisines{
-                cuisinesDic[item] = false
                 for i in self.cuisinesQuery{
                     if i == item{
                         self.cuisinesDic[item] = true
@@ -166,12 +173,10 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case "Recipes":
             recipesTV.delegate = self
             recipesTV.dataSource = self
-            recipesHC.constant = 0
             recipeField.delegate = self
         case "Ingredients":
             ingredientsTV.delegate = self
             ingredientsTV.dataSource = self
-            ingredientsHC.constant = 0
             ingredientsField.delegate = self
         case "recipeTypes":
             typeTV.delegate = self
@@ -179,6 +184,14 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case "Cuisines":
             cuisineTV.delegate = self
             cuisineTV.dataSource = self
+            for item in cuisines{
+                cuisinesDic[item] = false
+                for i in self.cuisinesQuery{
+                    if i == item{
+                        self.cuisinesDic[item] = true
+                    }
+                }
+            }
         case "Diets":
             dietTV.delegate = self
             dietTV.dataSource = self
@@ -518,11 +531,12 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.isTypeTVVisiable = false
                 let type = self.recipeTypes[(indexPath as NSIndexPath).row]
                 self.typeBtn.titleLabel?.text = type
-            /*case self.cuisineTV:
+            case self.cuisineTV:
                 self.cuisineHC.constant = 0
                 self.isCuisineTVVisiable = false
                 let cuisine = self.cuisines[(indexPath as NSIndexPath).row]
-                self.generateColoredLabel(view: self.cuisinesStackView, stackViewHC: self.cuisinesStackViewHC, text: cuisine)*/
+                self.cuisineBtn.titleLabel?.text = cuisine
+                //self.generateColoredLabel(view: self.cuisinesStackView, stackViewHC: self.cuisinesStackViewHC, text: cuisine)
             case self.dietTV:
                 self.dietHC.constant = 0
                 self.isDietTVVisiable = false

@@ -99,11 +99,11 @@
 		32AC09772315933900D35FFE /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				32D29A2023352CA700D75D27 /* MainTVC.swift */,
+				32D29A222335572300D75D27 /* DetailsViewController.swift */,
+				329DC870231D89980074577F /* FilterViewController.swift */,
 				32AC09822315C0DB00D35FFE /* RecipesTableViewController.swift */,
 				32AC09842315E64200D35FFE /* TVRecipeCell.swift */,
-				32D29A2023352CA700D75D27 /* MainTVC.swift */,
-				329DC870231D89980074577F /* FilterViewController.swift */,
-				32D29A222335572300D75D27 /* DetailsViewController.swift */,
 				32A25252233694BE00D090A8 /* FavouritesViewController.swift */,
 			);
 			path = Controller;
