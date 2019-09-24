@@ -35,12 +35,17 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
         if recipeIndex != nil{
             //From Main View
             recipe = spoonacular.sharedInstance().recipes[recipeIndex!]
+            recipeId = recipe?.id
+            setUpFetchedResultController()
             self.titleLabel.text = recipe!.title
             self.imageView.image = UIImage(data: getImage(imageURL: (recipe?.image!)!)!)
             self.timeLabel.text = "\(recipe!.readyInMinutes!)" + " Mins"
             self.servingsLabel.text =  " serves " + "\(recipe!.servings!)"
             ingredientsHC.constant = CGFloat(recipe?.ingredients?.count ?? 0) * ingredientsTV.rowHeight
             instruncionsHC.constant = CGFloat(recipe?.instructions?.count ?? 0) * instruncionsTV.rowHeight
+            if recipesFetchedresultController.fetchedObjects?.first?.id != nil{
+                self.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+            }
         }else{
             //From Fav View
             setUpFetchedResultController()
@@ -97,7 +102,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
     }
     
     @IBAction func shareBtnPressed(_ sender: UIButton) {
-        if recipeId == nil{
+        if recipeIndex != nil{
             spoonacular.sharedInstance().getRecipeLink(recipeId: recipe!.id)
             {(SourceUrl, error) in
                 if error == nil{
@@ -115,7 +120,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
     }
         
     @IBAction func favBtnPressed(_ sender: UIButton) {
-        if recipeId == nil{
+        if recipeIndex != nil{
             if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
                 favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
                 spoonacular.sharedInstance().favRecipes[recipe!.id] = Date()
@@ -128,13 +133,11 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
                     dataController.viewContext.delete(favRecipe!)
                     dataController.hasChanges()
                 }
-                
             }
         }else{
-            
             if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
                 favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-                spoonacular.sharedInstance().favRecipes.removeValue(forKey: recipe!.id)
+                spoonacular.sharedInstance().favRecipes[recipe!.id] = Date()
             }else{
                 favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
                 guard let favRecipe = recipesFetchedresultController.fetchedObjects?.first else{
@@ -151,7 +154,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
 
 extension DetailsViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if recipeId == nil{
+        if recipeIndex != nil{
             if tableView == ingredientsTV{
                 return recipe?.ingredients?.count ?? 0
             }else{
@@ -164,17 +167,16 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource{
                 return InstructionsFetchedresultController.fetchedObjects?.count ?? 0
             }
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
         if tableView == ingredientsTV{
             cell = tableView.dequeueReusableCell(withIdentifier: "DetailsIngredientsTVCell")!
-            cell.textLabel?.text = recipeId == nil ? (recipe?.ingredients![(indexPath as NSIndexPath).row]) : IngredientsFetchedresultController.object(at: indexPath).original
+            cell.textLabel?.text = recipeIndex != nil ? (recipe?.ingredients![(indexPath as NSIndexPath).row]) : IngredientsFetchedresultController.object(at: indexPath).original
         }else{
             cell = tableView.dequeueReusableCell(withIdentifier: "InstructionsTVCell")!
-            cell.textLabel!.text = "\((indexPath as NSIndexPath).row + 1)) \(recipeId == nil ? (recipe?.instructions![(indexPath as NSIndexPath).row])! : InstructionsFetchedresultController.object(at: indexPath).step)"
+            cell.textLabel!.text = "\((indexPath as NSIndexPath).row + 1)) \(recipeIndex != nil ? (recipe?.instructions![(indexPath as NSIndexPath).row])! : InstructionsFetchedresultController.object(at: indexPath).step )"
         }
         cell.imageView?.image = #imageLiteral(resourceName: "icons8-filled-circle-30")
         cell.textLabel?.numberOfLines = 0

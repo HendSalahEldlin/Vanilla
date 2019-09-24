@@ -70,14 +70,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         configureTV(arrName: "Diets")
         minField.delegate = self
         slider.value = 300
-        let buttonWidth = typeBtn.frame.width
-        let imageWidth = typeBtn.imageView!.frame.width
-        typeBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
-        typeBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
-        cuisineBtn.imageEdgeInsets = typeBtn.imageEdgeInsets
-        cuisineBtn.titleEdgeInsets = typeBtn.titleEdgeInsets
-        dietBtn.imageEdgeInsets = typeBtn.imageEdgeInsets
-        dietBtn.titleEdgeInsets = typeBtn.titleEdgeInsets
     }
     
     @IBAction func searchBtnClicked(_ sender: UIButton) {
@@ -181,9 +173,21 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case "recipeTypes":
             typeTV.delegate = self
             typeTV.dataSource = self
+            let buttonWidth = typeBtn.frame.width
+            let imageWidth = typeBtn.imageView!.frame.width
+            let titlewidth = typeBtn.titleLabel?.frame.width
+            typeBtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (buttonWidth - (titlewidth!+imageWidth)-1))
+            typeBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
+            typeBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
         case "Cuisines":
             cuisineTV.delegate = self
             cuisineTV.dataSource = self
+            let buttonWidth = cuisineBtn.frame.width
+            let imageWidth = cuisineBtn.imageView!.frame.width
+            let titlewidth = cuisineBtn.titleLabel?.frame.width
+            cuisineBtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (buttonWidth - (titlewidth!+imageWidth)-1))
+            cuisineBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
+            cuisineBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
             for item in cuisines{
                 cuisinesDic[item] = false
                 for i in self.cuisinesQuery{
@@ -195,6 +199,12 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case "Diets":
             dietTV.delegate = self
             dietTV.dataSource = self
+            let buttonWidth = dietBtn.frame.width
+            let imageWidth = dietBtn.imageView!.frame.width
+            let titlewidth = dietBtn.titleLabel?.frame.width
+            dietBtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (buttonWidth - (titlewidth!+imageWidth)-1))
+            dietBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
+            dietBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
         default:()
         }
     }
@@ -474,8 +484,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let recipe = self.recipes[(indexPath as NSIndexPath).row]
             // Set the name
             cell.textLabel!.text = recipe
-        }
-        else if tableView == ingredientsTV{
+        }else if tableView == ingredientsTV{
             let cell = tableView.dequeueReusableCell(withIdentifier: "TVCell", for: indexPath) as! TVCell
             let ingredient = self.ingredients[(indexPath as NSIndexPath).row]
             // Set the name
@@ -535,8 +544,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.cuisineHC.constant = 0
                 self.isCuisineTVVisiable = false
                 let cuisine = self.cuisines[(indexPath as NSIndexPath).row]
-                self.cuisineBtn.titleLabel?.text = cuisine
-                //self.generateColoredLabel(view: self.cuisinesStackView, stackViewHC: self.cuisinesStackViewHC, text: cuisine)
+                self.cuisineBtn.titleLabel?.text = self.cuisinesQuery.joined(separator: ",")
             case self.dietTV:
                 self.dietHC.constant = 0
                 self.isDietTVVisiable = false
