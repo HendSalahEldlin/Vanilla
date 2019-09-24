@@ -101,6 +101,19 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
         return data
     }
     
+    func showAlert(){
+        let alert = UIAlertController(title: "OOPS!", message: "Something went wrong, Do you prefer to reload Vanilla", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "ok", style: .default, handler: { action in
+            switch action.style{
+            case .default:
+                self.viewWillAppear(true)
+            @unknown default:()
+            }
+        }))
+        self.present(alert, animated: true)
+    }
+    
     @IBAction func shareBtnPressed(_ sender: UIButton) {
         if recipeIndex != nil{
             spoonacular.sharedInstance().getRecipeLink(recipeId: recipe!.id)
@@ -109,6 +122,10 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
                     let activityVC = UIActivityViewController(activityItems: [SourceUrl as Any], applicationActivities: nil)
                     DispatchQueue.main.async {
                         self.present(activityVC, animated: true, completion: nil)
+                    }
+                }else{
+                    DispatchQueue.main.async {
+                        self.showAlert()
                     }
                 }
             }
