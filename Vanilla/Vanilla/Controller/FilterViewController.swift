@@ -153,11 +153,21 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @objc func deletePressed(_ sender: UIButton){
         let parentView = sender.superview!
         let label = parentView.subviews[0] as! UILabel
-        ingredientsQuery.remove(at: ingredients.firstIndex(of: label.text!)!)
+        ingredientsQuery.removeAll(where: { $0 == label.text! })
+        //ingredientsQuery.remove(at: ingredients.firstIndex(of: label.text!)!)
         let horizontalSV = parentView.superview as! UIStackView
         parentView.removeFromSuperview()
         ArrangeStackViews(horizontalSV: horizontalSV)
         self.view.layoutIfNeeded()
+    }
+    
+    fileprivate func setBtnEdgeInsets(btn: UIButton) {
+        let buttonWidth = btn.frame.width
+        let imageWidth = btn.imageView!.frame.width
+        let titlewidth = btn.titleLabel?.frame.width
+        btn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (buttonWidth - (titlewidth!+imageWidth)-1))
+        btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
+        btn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
     }
     
     private func configureTV(arrName:String){
@@ -173,21 +183,11 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case "recipeTypes":
             typeTV.delegate = self
             typeTV.dataSource = self
-            let buttonWidth = typeBtn.frame.width
-            let imageWidth = typeBtn.imageView!.frame.width
-            let titlewidth = typeBtn.titleLabel?.frame.width
-            typeBtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (buttonWidth - (titlewidth!+imageWidth)-1))
-            typeBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
-            typeBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+            setBtnEdgeInsets(btn: typeBtn)
         case "Cuisines":
             cuisineTV.delegate = self
             cuisineTV.dataSource = self
-            let buttonWidth = cuisineBtn.frame.width
-            let imageWidth = cuisineBtn.imageView!.frame.width
-            let titlewidth = cuisineBtn.titleLabel?.frame.width
-            cuisineBtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (buttonWidth - (titlewidth!+imageWidth)-1))
-            cuisineBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
-            cuisineBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+            setBtnEdgeInsets(btn: cuisineBtn)
             for item in cuisines{
                 cuisinesDic[item] = false
                 for i in self.cuisinesQuery{
@@ -199,12 +199,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case "Diets":
             dietTV.delegate = self
             dietTV.dataSource = self
-            let buttonWidth = dietBtn.frame.width
-            let imageWidth = dietBtn.imageView!.frame.width
-            let titlewidth = dietBtn.titleLabel?.frame.width
-            dietBtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (buttonWidth - (titlewidth!+imageWidth)-1))
-            dietBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
-            dietBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+            setBtnEdgeInsets(btn: dietBtn)
         default:()
         }
     }
@@ -363,13 +358,13 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private func generateColoredLabel(view : UIStackView, stackViewHC: NSLayoutConstraint, text : String){
         //Text Label
         let textLabel = UILabel()
-        textLabel.backgroundColor =  #colorLiteral(red: 0.5960784314, green: 0.7520280394, blue: 0.9921568627, alpha: 0.8766588185)
-        textLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        textLabel.backgroundColor =  #colorLiteral(red: 1, green: 0.9278470278, blue: 0.6771306396, alpha: 1)
+        textLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         textLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         textLabel.text  = text
         
         //Button View
-        let deleteBtn   = UIButton(type: .roundedRect) as UIButton
+        let deleteBtn   = UIButton(type: .custom) as UIButton
         deleteBtn.translatesAutoresizingMaskIntoConstraints = false
         deleteBtn.setImage(#imageLiteral(resourceName: "icons8-delete-30 (3)"), for: .normal)
         deleteBtn.backgroundColor = textLabel.backgroundColor
@@ -387,20 +382,11 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         /* if vertical stack view is empty then add the new horizontal stack view
-            else add the new subView to the last horizontal stack view*/
+         else add the new subView to the last horizontal stack view*/
         if view.subviews.count > 0 {
             var horizontalStackView = view.subviews[view.subviews.count - 1] as! UIStackView
-            /*let horizontalStackViewWidth = Double(horizontalStackView.frame.size.width)
-            var subviewsWidth = 0.0
-            for subview in horizontalStackView.arrangedSubviews{
-                subviewsWidth = Double(+subview.frame.size.width)
-            }
-             if horizontalStackViewWidth - subviewsWidth >= Double(stackView.frame.width){
-             */
-            
-            /* if current horizontalStackView.subviews  between 0:2 then add the new subview to it else create new horizontalStackView and add the subview to it */
             if horizontalStackView.subviews.count > 0 && horizontalStackView.subviews.count < 3{
-             horizontalStackView.addArrangedSubview(stackView)
+                horizontalStackView.addArrangedSubview(stackView)
                 horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
             }else{
                 addHorizontalSubView(stackView, view)
@@ -539,17 +525,20 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.typeHC.constant = 0
                 self.isTypeTVVisiable = false
                 let type = self.recipeTypes[(indexPath as NSIndexPath).row]
-                self.typeBtn.titleLabel?.text = type
+                self.typeBtn.setTitle(type, for: .normal)
+                self.setBtnEdgeInsets(btn: self.typeBtn)
             case self.cuisineTV:
                 self.cuisineHC.constant = 0
                 self.isCuisineTVVisiable = false
                 let cuisine = self.cuisines[(indexPath as NSIndexPath).row]
-                self.cuisineBtn.titleLabel?.text = self.cuisinesQuery.joined(separator: ",")
+                self.cuisineBtn.setTitle(self.cuisinesQuery.joined(separator: ","), for: .normal)
+                self.setBtnEdgeInsets(btn: self.cuisineBtn)
             case self.dietTV:
                 self.dietHC.constant = 0
                 self.isDietTVVisiable = false
                 let diet = self.diets[(indexPath as NSIndexPath).row]
-                self.dietBtn.titleLabel?.text = diet
+                self.dietBtn.setTitle(diet, for: .normal)
+                self.setBtnEdgeInsets(btn: self.dietBtn)
             default: ()
             }
             self.view.layoutIfNeeded()
@@ -584,8 +573,7 @@ extension FilterViewController:TVCellActionDelegate{
             }else{
                 cuisinesDic[cell.label.text!] = true
                 cuisinesQuery.append(cell.label.text!)
-                self.cuisineBtn.titleLabel?.text = cuisinesQuery.joined(separator: ",")
-                print(cuisinesQuery)
+                self.cuisineBtn.setTitle(self.cuisinesQuery.joined(separator: ","), for: .normal)
             }
         }else{
             cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-unchecked-checkbox-30"), for: .normal)
@@ -595,8 +583,7 @@ extension FilterViewController:TVCellActionDelegate{
             }else{
                 cuisinesDic[cell.label.text!] = false
                 cuisinesQuery.remove(at: cuisinesQuery.firstIndex(of: cell.label.text!)!)
-                self.cuisineBtn.titleLabel?.text = cuisinesQuery.joined(separator: ",")
-                print(cuisinesQuery)
+                self.cuisineBtn.setTitle(self.cuisinesQuery.joined(separator: ","), for: .normal)
             }
         }
     }

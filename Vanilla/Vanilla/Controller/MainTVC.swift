@@ -32,7 +32,7 @@ class MainTVC: UIViewController {
         tableView.dataSource = self
         self.tableView.register(UINib(nibName: "MainTVRecipeCell", bundle: nil), forCellReuseIdentifier: "RecipeCell")
         self.navigationItem.title = "Vanilla"
-        spoonacular.sharedInstance().getRecipes() {(success, error) in
+       spoonacular.sharedInstance().getRecipes() {(success, error) in
             if success{
                 self.recipes = spoonacular.sharedInstance().recipes
                 DispatchQueue.main.async {
@@ -66,7 +66,7 @@ class MainTVC: UIViewController {
         
         if parent?.restorationIdentifier == "MainRecipes"{
             if refresh{
-                spoonacular.sharedInstance().getRecipes() {(success, error) in
+                /*spoonacular.sharedInstance().getRecipes() {(success, error) in
                     if success{
                         self.recipes = spoonacular.sharedInstance().recipes
                         DispatchQueue.main.async {
@@ -77,7 +77,7 @@ class MainTVC: UIViewController {
                             self.showAlert()
                         }
                     }
-                }
+                }*/
             }else{
                 self.recipes = spoonacular.sharedInstance().recipes
                 self.tableView.reloadData()
@@ -178,6 +178,7 @@ class MainTVC: UIViewController {
         cell.titleLabel.isHidden = withActivityIndicator
         cell.favBtn.isHidden = withActivityIndicator
         cell.shareBtn.isHidden = withActivityIndicator
+        cell.isSelected = !withActivityIndicator
     }
     
     func presentActivityVC(sourceUrl: String){

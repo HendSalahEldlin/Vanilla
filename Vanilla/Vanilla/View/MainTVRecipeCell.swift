@@ -7,6 +7,11 @@
 //
 
 import UIKit
+protocol CellActionDelegate {
+    func shareARecipe(indexPath: IndexPath)
+    func addToFav(indexPath: IndexPath)
+}
+
 class MainTVRecipeCell: UITableViewCell {
     
     @IBOutlet weak var myImageView: UIImageView!

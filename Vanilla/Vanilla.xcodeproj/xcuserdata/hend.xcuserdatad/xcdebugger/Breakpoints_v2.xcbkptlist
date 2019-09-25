@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Vanilla/Controller/MainTVC.swift"
-            timestampString = "591058721.821664"
+            timestampString = "591113916.407596"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "362"
-            endingLineNumber = "362"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
             landmarkName = "addToFav(indexPath:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,45 +74,29 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Vanilla/Controller/MainTVC.swift"
-            timestampString = "591058721.82294"
+            timestampString = "591113916.407932"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
             landmarkName = "refreshButton(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Vanilla.MainTVC.refreshButton(Any) -&gt; ()"
-                  moduleName = "Vanilla"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hend/Desktop/Vanilla/Vanilla/Vanilla/Controller/MainTVC.swift"
-                  timestampString = "591058722.201347"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "203"
-                  endingLineNumber = "203"
-                  offsetFromSymbolStart = "38">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Bool, Swift.Optional&lt;Swift.String&gt;) -&gt; () in Vanilla.MainTVC.refreshButton(Any) -&gt; ()"
-                  moduleName = "Vanilla"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hend/Desktop/Vanilla/Vanilla/Vanilla/Controller/MainTVC.swift"
-                  timestampString = "591058722.214009"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "204"
-                  endingLineNumber = "204"
-                  offsetFromSymbolStart = "229">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Vanilla/Controller/MainTVC.swift"
+            timestampString = "591113916.408065"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "viewWillAppear(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -122,12 +106,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Vanilla/Controller/FilterViewController.swift"
-            timestampString = "591058721.823656"
+            timestampString = "591121978.475662"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
-            landmarkName = "searchBtnClicked(_:)"
+            startingLineNumber = "534"
+            endingLineNumber = "534"
+            landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -137,62 +121,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Vanilla/Controller/MainTVC.swift"
-            timestampString = "591058721.823771"
+            filePath = "Vanilla/Controller/FilterViewController.swift"
+            timestampString = "591121978.477843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "searchBtnClicked(_:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Vanilla.MainTVC.viewDidLoad() -&gt; ()"
+                  symbolName = "Vanilla.FilterViewController.searchBtnClicked(__C.UIButton) -&gt; ()"
                   moduleName = "Vanilla"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hend/Desktop/Vanilla/Vanilla/Vanilla/Controller/MainTVC.swift"
-                  timestampString = "591058722.3651561"
+                  urlString = "file:///Users/hend/Desktop/Vanilla/Vanilla/Vanilla/Controller/FilterViewController.swift"
+                  timestampString = "591121979.498073"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "35"
-                  endingLineNumber = "35"
-                  offsetFromSymbolStart = "1174">
+                  startingLineNumber = "128"
+                  endingLineNumber = "128"
+                  offsetFromSymbolStart = "10315">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Bool, Swift.Optional&lt;Swift.String&gt;) -&gt; () in Vanilla.MainTVC.viewDidLoad() -&gt; ()"
+                  symbolName = "closure #3 (Swift.Bool, Swift.Optional&lt;Swift.String&gt;) -&gt; () in Vanilla.FilterViewController.searchBtnClicked(__C.UIButton) -&gt; ()"
                   moduleName = "Vanilla"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hend/Desktop/Vanilla/Vanilla/Vanilla/Controller/MainTVC.swift"
-                  timestampString = "591058722.383339"
+                  urlString = "file:///Users/hend/Desktop/Vanilla/Vanilla/Vanilla/Controller/FilterViewController.swift"
+                  timestampString = "591121979.507636"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "36"
-                  endingLineNumber = "36"
-                  offsetFromSymbolStart = "229">
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "199">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Vanilla/Controller/MainTVC.swift"
-            timestampString = "591058721.82441"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
