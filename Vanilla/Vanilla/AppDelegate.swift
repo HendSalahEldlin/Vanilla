@@ -12,16 +12,10 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    //let dataController = DataController(modelName: "Vanilla")
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        /*dataController.load()
-        
-        let tabBarController = self.window!.rootViewController as! UITabBarController
-        let navigationController = tabBarController.viewControllers![0] as! UINavigationController
-        let mainVC = navigationController.topViewController as! MainTVC
-        mainVC.dataController = dataController*/
+        spoonacular.sharedInstance().favRecipes = UserDefaults.standard.value(forKey: "favRecipes") as? [String : Date] ?? [String:Date]()
         return true
     }
 
@@ -45,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        UserDefaults.standard.set(spoonacular.sharedInstance().favRecipes, forKey: "favRecipes")
     }
 
 

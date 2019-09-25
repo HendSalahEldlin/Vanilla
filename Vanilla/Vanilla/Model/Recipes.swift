@@ -27,6 +27,7 @@ struct Recipe{
         image = dictionary[spoonacular.JSONResponseKeys.image] as? String
        }
     
+    //get the main properities to view on the main view
     static func getRecipesFromResults(_ results: [[String:AnyObject]]) -> [Recipe] {
         
         var recipes = [Recipe]()
@@ -39,6 +40,7 @@ struct Recipe{
         return recipes
     }
     
+    //when cell is selected. this function is called to set the rest properties to be presented on the details view
     mutating func setRemainPropertires(_ dictionary: [String:AnyObject]){
         readyInMinutes = dictionary[spoonacular.JSONResponseKeys.readyInMinutes] as! Int
         servings = dictionary[spoonacular.JSONResponseKeys.servings] as! Int

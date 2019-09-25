@@ -10,6 +10,9 @@ import Foundation
 class spoonacular : NSObject{
     // MARK: Properties
     public var recipes = [Recipe]()
+    // dictionary for saving the user fav recipes ids and the time of marking them as fav
+    //It's used to make one request for multipe recipes information instead of multipe requests
+    //and save them to coreData 
     public var favRecipes = [String:Date]()
     
     // shared session

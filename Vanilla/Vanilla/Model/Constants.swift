@@ -46,7 +46,7 @@ extension spoonacular {
     struct ParameterValues {
         //MARK: StudentLocation Parameter Keys
         static let apiKey = "533b313eed91460cb6bfe1e1eefe9b7f"
-        static let number = "10"
+        static let number = "50"
         static let instructionsRequired = "true"
     }
     

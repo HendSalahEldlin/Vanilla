@@ -20,7 +20,9 @@ class MainTVC: UIViewController {
     var recipes = spoonacular.sharedInstance().recipes
     var dataController : DataController!
     var fetchedresultController : NSFetchedResultsController<FavRecipe>!
+    // inial count for tableview cells
     var InializedCellCount = 20
+    //fromFilter and refresh are bool values. they are set to true if the last view contoller was the filter view controller, but their values are updated in different places
     var fromFilter = false
     var refresh = false
     
@@ -32,7 +34,9 @@ class MainTVC: UIViewController {
         tableView.dataSource = self
         self.tableView.register(UINib(nibName: "MainTVRecipeCell", bundle: nil), forCellReuseIdentifier: "RecipeCell")
         self.navigationItem.title = "Vanilla"
-       spoonacular.sharedInstance().getRecipes() {(success, error) in
+        
+        // get random recipes
+        spoonacular.sharedInstance().getRecipes() {(success, error) in
             if success{
                 self.recipes = spoonacular.sharedInstance().recipes
                 DispatchQueue.main.async {
@@ -51,11 +55,13 @@ class MainTVC: UIViewController {
         dataController = DataController(modelName: "Vanilla")
         dataController.load()
         setUpFetchedResultController()
+        
+        // make request to get fav recipes information and save them to coreData before present the view
         if spoonacular.sharedInstance().favRecipes.count>0{
             let Ids = Array(spoonacular.sharedInstance().favRecipes.keys).joined(separator: ",")
             spoonacular.sharedInstance().getRecipeInformationBulk(Ids:Ids) {(results, error) in
                 if error == nil{
-                    self.getLastAddedToFavs(results)
+                    self.saveLastAddedToFavs(results)
                 }else{
                     DispatchQueue.main.async {
                         self.showAlert()
@@ -65,8 +71,11 @@ class MainTVC: UIViewController {
         }
         
         if parent?.restorationIdentifier == "MainRecipes"{
+            // if the last view was the filter result, It will need to refresh the data to present
+            //new recipes not the filter result recipes
             if refresh{
-                /*spoonacular.sharedInstance().getRecipes() {(success, error) in
+                // get new random recipes
+                spoonacular.sharedInstance().getRecipes() {(success, error) in
                     if success{
                         self.recipes = spoonacular.sharedInstance().recipes
                         DispatchQueue.main.async {
@@ -77,7 +86,7 @@ class MainTVC: UIViewController {
                             self.showAlert()
                         }
                     }
-                }*/
+                }
             }else{
                 self.recipes = spoonacular.sharedInstance().recipes
                 self.tableView.reloadData()
@@ -93,7 +102,6 @@ class MainTVC: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        //fetchedresultController = nil
         if parent?.restorationIdentifier == "MainRecipes"{
             if fromFilter{
                 refresh = true
@@ -117,7 +125,8 @@ class MainTVC: UIViewController {
         }
     }
     
-    fileprivate func getLastAddedToFavs(_ results: [[String : AnyObject]]) {
+    // saves fav recipes information to coreData
+    fileprivate func saveLastAddedToFavs(_ results: [[String : AnyObject]]) {
         for i in 0..<results.count{
             let favRecipe = FavRecipe(context: dataController.viewContext)
             favRecipe.id = String(describing: results[i][spoonacular.JSONResponseKeys.id]!)
@@ -150,6 +159,7 @@ class MainTVC: UIViewController {
         spoonacular.sharedInstance().favRecipes.removeAll()
     }
     
+    //get image data from link
     func getImage(indexPath : IndexPath) -> Data? {
         if parent?.restorationIdentifier == "MainRecipes"{
             let recipe =  self.recipes[(indexPath as NSIndexPath).row]
@@ -167,6 +177,7 @@ class MainTVC: UIViewController {
         }
     }
     
+    //update cell design during downloading data to activityIndicator and vice versa
     func changeCellDesign(withActivityIndicator: Bool, cell : MainTVRecipeCell){
         if withActivityIndicator{
             cell.ActivityIndicator.startAnimating()
@@ -178,17 +189,18 @@ class MainTVC: UIViewController {
         cell.titleLabel.isHidden = withActivityIndicator
         cell.favBtn.isHidden = withActivityIndicator
         cell.shareBtn.isHidden = withActivityIndicator
-        cell.isSelected = !withActivityIndicator
+        cell.isUserInteractionEnabled = !withActivityIndicator
     }
     
+    //presentActivityVC to share recipe link
     func presentActivityVC(sourceUrl: String){
         let activityVC = UIActivityViewController(activityItems: [sourceUrl as Any], applicationActivities: nil)
         self.present(activityVC, animated: true, completion: nil)
     }
     
+    //show alert on network failture
     func showAlert(){
         let alert = UIAlertController(title: "OOPS!", message: "Something went wrong, Do you prefer to reload Vanilla", preferredStyle: .alert)
-        
         alert.addAction(UIAlertAction(title: "ok", style: .default, handler: { action in
             switch action.style{
             case .default:
@@ -280,7 +292,7 @@ extension MainTVC : UITableViewDelegate, UITableViewDataSource{
             
             spoonacular.sharedInstance().getRecipeInformationBulk(Ids:Ids) {(results, error) in
                 if error == nil{
-                    self.getLastAddedToFavs(results)
+                    self.saveLastAddedToFavs(results)
                 }else{
                     DispatchQueue.main.async {
                         self.showAlert()
