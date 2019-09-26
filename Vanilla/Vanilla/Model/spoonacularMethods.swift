@@ -6,7 +6,7 @@
 //  Copyright © 2019 Hend . All rights reserved.
 //
 
-extension spoonacular{
+extension Spoonacular{
     
     
     func getRecipes(completionHandlerForRecipes: @escaping (_ success : Bool, _ errorString: String?) -> Void){

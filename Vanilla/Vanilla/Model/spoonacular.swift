@@ -1,5 +1,5 @@
 //
-//  Client.swift
+//  spoonacular.swift
 //  Vanilla
 //
 //  Created by Hend  on 8/27/19.
@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class spoonacular : NSObject{
+class Spoonacular : NSObject{
     // MARK: Properties
     public var recipes = [Recipe]()
     // dictionary for saving the user fav recipes ids and the time of marking them as fav
@@ -27,8 +27,8 @@ class spoonacular : NSObject{
     func createURLFromParameters(_ parameters: [String:AnyObject], withSubdomain: String? = nil,withPathExtension: String? = nil) -> URL {
         
         var components = URLComponents()
-        components.scheme = spoonacular.Constants.ApiScheme
-        components.host = (withSubdomain ?? "") + spoonacular.Constants.ApiHost
+        components.scheme = Spoonacular.Constants.ApiScheme
+        components.host = (withSubdomain ?? "") + Spoonacular.Constants.ApiHost
         components.path = (withPathExtension ?? "")
         if parameters.count > 0{
             components.queryItems = [URLQueryItem]()
@@ -100,9 +100,9 @@ class spoonacular : NSObject{
     }
     
     // MARK: Shared Instance
-    class func sharedInstance() -> spoonacular {
+    class func sharedInstance() -> Spoonacular {
         struct Singleton {
-            static var sharedInstance = spoonacular()
+            static var sharedInstance = Spoonacular()
         }
         return Singleton.sharedInstance
     }

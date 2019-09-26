@@ -15,9 +15,10 @@
 		329DC871231D89980074577F /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329DC870231D89980074577F /* FilterViewController.swift */; };
 		32A2525123368DCC00D090A8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A2525023368DCC00D090A8 /* DataController.swift */; };
 		32AC097B2315936F00D35FFE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097A2315936F00D35FFE /* Constants.swift */; };
-		32AC097D231593D200D35FFE /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097C231593D200D35FFE /* Client.swift */; };
+		32AC097D231593D200D35FFE /* spoonacular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097C231593D200D35FFE /* spoonacular.swift */; };
 		32AC097F2315A10500D35FFE /* Recipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC097E2315A10500D35FFE /* Recipes.swift */; };
 		32AC09812315AF2100D35FFE /* spoonacularMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AC09802315AF2100D35FFE /* spoonacularMethods.swift */; };
+		32C158D5233CFD4E003AE4E5 /* MainTVCExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C158D4233CFD4E003AE4E5 /* MainTVCExtentions.swift */; };
 		32D29A1D23351A7600D75D27 /* MainTVRecipeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D29A1C23351A7600D75D27 /* MainTVRecipeCell.xib */; };
 		32D29A1F2335276F00D75D27 /* MainTVRecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D29A1E2335276F00D75D27 /* MainTVRecipeCell.swift */; };
 		32D29A2123352CA700D75D27 /* MainTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D29A2023352CA700D75D27 /* MainTVC.swift */; };
@@ -37,9 +38,10 @@
 		329DC870231D89980074577F /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		32A2525023368DCC00D090A8 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		32AC097A2315936F00D35FFE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		32AC097C231593D200D35FFE /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		32AC097C231593D200D35FFE /* spoonacular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = spoonacular.swift; sourceTree = "<group>"; };
 		32AC097E2315A10500D35FFE /* Recipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipes.swift; sourceTree = "<group>"; };
 		32AC09802315AF2100D35FFE /* spoonacularMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = spoonacularMethods.swift; sourceTree = "<group>"; };
+		32C158D4233CFD4E003AE4E5 /* MainTVCExtentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTVCExtentions.swift; sourceTree = "<group>"; };
 		32D29A1C23351A7600D75D27 /* MainTVRecipeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainTVRecipeCell.xib; sourceTree = "<group>"; };
 		32D29A1E2335276F00D75D27 /* MainTVRecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTVRecipeCell.swift; sourceTree = "<group>"; };
 		32D29A2023352CA700D75D27 /* MainTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTVC.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				32D29A2023352CA700D75D27 /* MainTVC.swift */,
+				32C158D4233CFD4E003AE4E5 /* MainTVCExtentions.swift */,
 				32D29A222335572300D75D27 /* DetailsViewController.swift */,
 				329DC870231D89980074577F /* FilterViewController.swift */,
 			);
@@ -104,7 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				32AC097A2315936F00D35FFE /* Constants.swift */,
-				32AC097C231593D200D35FFE /* Client.swift */,
+				32AC097C231593D200D35FFE /* spoonacular.swift */,
 				32AC097E2315A10500D35FFE /* Recipes.swift */,
 				32AC09802315AF2100D35FFE /* spoonacularMethods.swift */,
 				32A2525023368DCC00D090A8 /* DataController.swift */,
@@ -204,7 +207,8 @@
 				32F9F32B2333580400730786 /* TVCell.swift in Sources */,
 				32D29A2123352CA700D75D27 /* MainTVC.swift in Sources */,
 				32A2525123368DCC00D090A8 /* DataController.swift in Sources */,
-				32AC097D231593D200D35FFE /* Client.swift in Sources */,
+				32AC097D231593D200D35FFE /* spoonacular.swift in Sources */,
+				32C158D5233CFD4E003AE4E5 /* MainTVCExtentions.swift in Sources */,
 				32D29A1F2335276F00D75D27 /* MainTVRecipeCell.swift in Sources */,
 				3219797A23381FEC005F1463 /* Vanilla.xcdatamodeld in Sources */,
 				32AC097B2315936F00D35FFE /* Constants.swift in Sources */,

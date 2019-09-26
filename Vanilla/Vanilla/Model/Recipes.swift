@@ -22,9 +22,9 @@ struct Recipe{
     
     // construct a Recipes from a dictionary
     init(dictionary: [String:AnyObject]) {
-        id = String(describing: dictionary[spoonacular.JSONResponseKeys.id]!)
-        title = dictionary[spoonacular.JSONResponseKeys.title] as? String
-        image = dictionary[spoonacular.JSONResponseKeys.image] as? String
+        id = String(describing: dictionary[Spoonacular.JSONResponseKeys.id]!)
+        title = dictionary[Spoonacular.JSONResponseKeys.title] as? String
+        image = dictionary[Spoonacular.JSONResponseKeys.image] as? String
        }
     
     //get the main properities to view on the main view
@@ -42,17 +42,17 @@ struct Recipe{
     
     //when cell is selected. this function is called to set the rest properties to be presented on the details view
     mutating func setRemainPropertires(_ dictionary: [String:AnyObject]){
-        readyInMinutes = dictionary[spoonacular.JSONResponseKeys.readyInMinutes] as! Int
-        servings = dictionary[spoonacular.JSONResponseKeys.servings] as! Int
-        recipeURL = dictionary[spoonacular.JSONResponseKeys.sourceUrl] as! String
+        readyInMinutes = dictionary[Spoonacular.JSONResponseKeys.readyInMinutes] as! Int
+        servings = dictionary[Spoonacular.JSONResponseKeys.servings] as! Int
+        recipeURL = dictionary[Spoonacular.JSONResponseKeys.sourceUrl] as! String
         
-        guard let ingredientsArr = dictionary[spoonacular.JSONResponseKeys.ingredients] as? [[String:AnyObject]] else { return }
+        guard let ingredientsArr = dictionary[Spoonacular.JSONResponseKeys.ingredients] as? [[String:AnyObject]] else { return }
         ingredients = [String]()
         for ingredient in ingredientsArr{
             ingredients?.append(ingredient["original"] as! String)
         }
         
-        guard let instructionsArr = dictionary[spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }
+        guard let instructionsArr = dictionary[Spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }
         
         instructions = [String]()
         for instruction in instructionsArr{

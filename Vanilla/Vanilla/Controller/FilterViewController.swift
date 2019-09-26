@@ -75,7 +75,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func searchBtnClicked(_ sender: UIButton) {
         switch sender {
         case recipesBtn:
-            spoonacular.sharedInstance().autoCompleteRecipes(recipes: self.recipeField.text ?? ""){(recipes, error) in
+            Spoonacular.sharedInstance().autoCompleteRecipes(recipes: self.recipeField.text ?? ""){(recipes, error) in
                 if error == nil{
                     self.recipes = recipes
                     DispatchQueue.main.async {
@@ -85,7 +85,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
         case ingredientsBtn:
-            spoonacular.sharedInstance().autoCompleteIngredients(ingredient: self.ingredientsField.text ?? "") {(ingredients, error) in
+            Spoonacular.sharedInstance().autoCompleteIngredients(ingredient: self.ingredientsField.text ?? "") {(ingredients, error) in
                 if error == nil{
                     self.ingredients = ingredients
                     for item in ingredients{
@@ -125,7 +125,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let diet = (dietBtn.titleLabel?.text != "Select a Diet" ? dietBtn.titleLabel?.text : "")!
             let maxMin = Int(minField.text! == "" ? "300" : minField.text!) as! Int ?? 300
             
-            spoonacular.sharedInstance().recipesComplexSearch(recipes: recipeField.text!, ingredients: ingredientsQuery.joined(separator: ","), type: type, cuisine: cuisine, diet: diet, maxReadyTime: maxMin){(success, error) in
+            Spoonacular.sharedInstance().recipesComplexSearch(recipes: recipeField.text!, ingredients: ingredientsQuery.joined(separator: ","), type: type, cuisine: cuisine, diet: diet, maxReadyTime: maxMin){(success, error) in
                 if success{
                     DispatchQueue.main.async {
                         let mainVC = self.navigationController?.viewControllers.first! as! MainTVC
@@ -153,8 +153,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @objc func deletePressed(_ sender: UIButton){
         let parentView = sender.superview!
         let label = parentView.subviews[0] as! UILabel
-        ingredientsQuery.removeAll(where: { $0 == label.text! })
-        //ingredientsQuery.remove(at: ingredients.firstIndex(of: label.text!)!)
+        ingredientsQuery.removeAll(where: { $0 ==  label.text!})
         let horizontalSV = parentView.superview as! UIStackView
         parentView.removeFromSuperview()
         ArrangeStackViews(horizontalSV: horizontalSV)

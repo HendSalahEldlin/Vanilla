@@ -34,7 +34,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
         super.viewDidLoad()
         if recipeIndex != nil{
             //From Main View
-            recipe = spoonacular.sharedInstance().recipes[recipeIndex!]
+            recipe = Spoonacular.sharedInstance().recipes[recipeIndex!]
             recipeId = recipe?.id
             setUpFetchedResultController()
             self.titleLabel.text = recipe!.title
@@ -95,7 +95,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
     func getImage(imageURL : String) -> Data? {
         var url = URL(string: imageURL)
         if !UIApplication.shared.canOpenURL(url!){
-            url = URL(string: spoonacular.Constants.baseUri + imageURL)!
+            url = URL(string: Spoonacular.Constants.baseUri + imageURL)!
         }
         let data = try? Data(contentsOf: url!)
         return data
@@ -116,7 +116,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
     
     @IBAction func shareBtnPressed(_ sender: UIButton) {
         if recipeIndex != nil{
-            spoonacular.sharedInstance().getRecipeLink(recipeId: recipe!.id)
+            Spoonacular.sharedInstance().getRecipeLink(recipeId: recipe!.id)
             {(SourceUrl, error) in
                 if error == nil{
                     let activityVC = UIActivityViewController(activityItems: [SourceUrl as Any], applicationActivities: nil)
@@ -141,11 +141,11 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
         let myRecipeId = recipeIndex != nil ? recipe!.id : recipeId!
         if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
             favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-            spoonacular.sharedInstance().favRecipes[myRecipeId!] = Date()
+            Spoonacular.sharedInstance().favRecipes[myRecipeId!] = Date()
         }else{
             favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-            if spoonacular.sharedInstance().favRecipes[myRecipeId!] != nil{
-                spoonacular.sharedInstance().favRecipes.removeValue(forKey: myRecipeId!)
+            if Spoonacular.sharedInstance().favRecipes[myRecipeId!] != nil{
+                Spoonacular.sharedInstance().favRecipes.removeValue(forKey: myRecipeId!)
             }else{
                 guard let favRecipe = recipesFetchedresultController.fetchedObjects?.first else{
                     return
@@ -154,38 +154,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
                 dataController.hasChanges()
             }
         }
-        
-//        if recipeIndex != nil{
-//            if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
-//                favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-//                spoonacular.sharedInstance().favRecipes[recipe!.id] = Date()
-//            }else{
-//                favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-//                if spoonacular.sharedInstance().favRecipes[recipe!.id] != nil{
-//                    spoonacular.sharedInstance().favRecipes.removeValue(forKey: recipe!.id)
-//                }else{
-//                    guard let favRecipe = recipesFetchedresultController.fetchedObjects?.first else{
-//                        return
-//                    }
-//                    dataController.viewContext.delete(favRecipe)
-//                    dataController.hasChanges()
-//                }
-//            }
-//        }else{
-//            if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
-//                favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-//                spoonacular.sharedInstance().favRecipes[recipeId!] = Date()
-//            }else{
-//                favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-//                guard let favRecipe = recipesFetchedresultController.fetchedObjects?.first else{
-//                    return
-//                }
-//                dataController.viewContext.delete(favRecipe)
-//                dataController.hasChanges()
-//            }
-//        }
-        
-    }
+     }
     
 }
 

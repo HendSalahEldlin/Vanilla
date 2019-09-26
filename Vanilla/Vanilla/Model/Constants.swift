@@ -6,7 +6,7 @@
 //  Copyright © 2019 Hend . All rights reserved.
 //
 
-extension spoonacular {
+extension Spoonacular {
     // MARK: Constants
     struct Constants {
         // MARK: URLs
