@@ -137,26 +137,16 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
     }
         
     @IBAction func favBtnPressed(_ sender: UIButton) {
-        if recipeIndex != nil{
-            if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
-                favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-                spoonacular.sharedInstance().favRecipes[recipe!.id] = Date()
-            }else{
-                favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-                if spoonacular.sharedInstance().favRecipes[recipe!.id] != nil{
-                    spoonacular.sharedInstance().favRecipes.removeValue(forKey: recipe!.id)
-                }else{
-                    let favRecipe = recipesFetchedresultController.fetchedObjects?.first
-                    dataController.viewContext.delete(favRecipe!)
-                    dataController.hasChanges()
-                }
-            }
+        //if recipeIndex is not nil then it is come from main else from fav
+        let myRecipeId = recipeIndex != nil ? recipe!.id : recipeId!
+        if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
+            favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+            spoonacular.sharedInstance().favRecipes[myRecipeId!] = Date()
         }else{
-            if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
-                favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-                spoonacular.sharedInstance().favRecipes[recipe!.id] = Date()
+            favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
+            if spoonacular.sharedInstance().favRecipes[myRecipeId!] != nil{
+                spoonacular.sharedInstance().favRecipes.removeValue(forKey: myRecipeId!)
             }else{
-                favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
                 guard let favRecipe = recipesFetchedresultController.fetchedObjects?.first else{
                     return
                 }
@@ -164,6 +154,36 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
                 dataController.hasChanges()
             }
         }
+        
+//        if recipeIndex != nil{
+//            if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
+//                favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+//                spoonacular.sharedInstance().favRecipes[recipe!.id] = Date()
+//            }else{
+//                favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
+//                if spoonacular.sharedInstance().favRecipes[recipe!.id] != nil{
+//                    spoonacular.sharedInstance().favRecipes.removeValue(forKey: recipe!.id)
+//                }else{
+//                    guard let favRecipe = recipesFetchedresultController.fetchedObjects?.first else{
+//                        return
+//                    }
+//                    dataController.viewContext.delete(favRecipe)
+//                    dataController.hasChanges()
+//                }
+//            }
+//        }else{
+//            if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
+//                favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+//                spoonacular.sharedInstance().favRecipes[recipeId!] = Date()
+//            }else{
+//                favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
+//                guard let favRecipe = recipesFetchedresultController.fetchedObjects?.first else{
+//                    return
+//                }
+//                dataController.viewContext.delete(favRecipe)
+//                dataController.hasChanges()
+//            }
+//        }
         
     }
     
@@ -190,14 +210,15 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource{
         var cell = UITableViewCell()
         if tableView == ingredientsTV{
             cell = tableView.dequeueReusableCell(withIdentifier: "DetailsIngredientsTVCell")!
-            cell.textLabel?.text = recipeIndex != nil ? (recipe?.ingredients![(indexPath as NSIndexPath).row]) : IngredientsFetchedresultController.object(at: indexPath).original
+            cell.textLabel?.text = recipeIndex != nil ? (recipe?.ingredients![indexPath.row]) : IngredientsFetchedresultController.object(at: indexPath).original
         }else{
             cell = tableView.dequeueReusableCell(withIdentifier: "InstructionsTVCell")!
-            cell.textLabel!.text = "\((indexPath as NSIndexPath).row + 1)) \(recipeIndex != nil ? (recipe?.instructions![(indexPath as NSIndexPath).row])! : InstructionsFetchedresultController.object(at: indexPath).step )"
+            cell.textLabel?.text = "\(indexPath.row + 1)) \((recipeIndex != nil ? (recipe?.instructions![indexPath.row]) : InstructionsFetchedresultController.object(at: indexPath).step)! )"
         }
         cell.imageView?.image = #imageLiteral(resourceName: "icons8-filled-circle-30")
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font.withSize(12)
+
         return cell
     }
 }
