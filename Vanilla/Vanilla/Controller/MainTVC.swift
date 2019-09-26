@@ -34,7 +34,7 @@ class MainTVC: UIViewController {
         self.navigationItem.title = "Vanilla"
         
         // get random recipes
-        Spoonacular.sharedInstance().getRecipes() {(success, error) in
+        /*Spoonacular.sharedInstance().getRecipes() {(success, error) in
             if success{
                 self.recipes = Spoonacular.sharedInstance().recipes
                 DispatchQueue.main.async {
@@ -45,7 +45,7 @@ class MainTVC: UIViewController {
                     self.showAlert()
                 }
             }
-        }
+        }*/
     }
     
     override func viewWillAppear(_ animated: Bool) {

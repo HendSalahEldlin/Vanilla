@@ -80,6 +80,9 @@
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                                         <textInputTraits key="textInputTraits"/>
+                                                                        <connections>
+                                                                            <outlet property="delegate" destination="cMK-xo-CBa" id="7fI-ct-jKC"/>
+                                                                        </connections>
                                                                     </textField>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GGc-Vo-h6Y" userLabel="RecipesBtn">
                                                                         <rect key="frame" x="272" y="0.0" width="28" height="30"/>
@@ -135,6 +138,9 @@
                                                                         <nil key="textColor"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                                         <textInputTraits key="textInputTraits"/>
+                                                                        <connections>
+                                                                            <outlet property="delegate" destination="cMK-xo-CBa" id="fI8-0O-Vse"/>
+                                                                        </connections>
                                                                     </textField>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aU0-x7-1ce" userLabel="IngredientsBtn">
                                                                         <rect key="frame" x="272" y="0.0" width="28" height="30"/>

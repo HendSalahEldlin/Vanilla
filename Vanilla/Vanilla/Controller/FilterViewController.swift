@@ -7,8 +7,9 @@
 //
 
 import UIKit
-class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+class FilterViewController: UIViewController{
     
+    // MARK: IBOutlets
     
     @IBOutlet weak var recipesTV: UITableView!
     @IBOutlet weak var recipeField: UITextField!
@@ -40,6 +41,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var mainSearchBtn: UIButton!
     
+    // MARK: Variables/Constants
+    
     var ingredients = [String]()
     var ingredientsQuery = [String]()
     var ingredientsDic = [String:Bool]()
@@ -59,220 +62,39 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let diets = ["GlutenFree", "Ketogenic", "Vegetarian", "Lacto_Vegetarian", "Ovo_Vegetarian", "Vegan", "Pescetarian", "Paleo", "Primal", "Whole30"]
     var isDietTVVisiable = false
     
+    // MARK: Lifecycle Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         cuisineTV.register(UINib(nibName: "TVCell", bundle: nil), forCellReuseIdentifier: "TVCell")
         ingredientsTV.register(UINib(nibName: "TVCell", bundle: nil), forCellReuseIdentifier: "TVCell")
-        configureTV(arrName: "Recipes")
-        configureTV(arrName: "Ingredients")
-        configureTV(arrName: "recipeTypes")
-        configureTV(arrName: "Cuisines")
-        configureTV(arrName: "Diets")
+        configureUI()
         minField.delegate = self
         slider.value = 300
     }
     
-    @IBAction func searchBtnClicked(_ sender: UIButton) {
-        switch sender {
-        case recipesBtn:
-            Spoonacular.sharedInstance().autoCompleteRecipes(recipes: self.recipeField.text ?? ""){(recipes, error) in
-                if error == nil{
-                    self.recipes = recipes
-                    DispatchQueue.main.async {
-                        self.UpdateUI(arrName: "recipes")
-                        self.closeOtherTVs(UIControl: sender)
-                    }
-                }
-            }
-        case ingredientsBtn:
-            Spoonacular.sharedInstance().autoCompleteIngredients(ingredient: self.ingredientsField.text ?? "") {(ingredients, error) in
-                if error == nil{
-                    self.ingredients = ingredients
-                    for item in ingredients{
-                        self.ingredientsDic[item] = false
-                        for i in self.ingredientsQuery{
-                            if i == item{
-                                self.ingredientsDic[item] = true
-                            }
-                        }
-                    }
-                    DispatchQueue.main.async {
-                        self.UpdateUI(arrName: "ingredients")
-                        self.closeOtherTVs(UIControl: sender)
-                        self.AddDoneBtn()
-                    }
-                }
-            }
-        case typeBtn:
-            self.UpdateUI(arrName: "recipeTypes")
-            closeOtherTVs(UIControl: sender)
-        case cuisineBtn:
-            for item in cuisines{
-                for i in self.cuisinesQuery{
-                    if i == item{
-                        self.cuisinesDic[item] = true
-                    }
-                }
-            }
-            self.UpdateUI(arrName: "Cuisines")
-            closeOtherTVs(UIControl: sender)
-        case dietBtn:
-            self.UpdateUI(arrName: "Diets")
-            closeOtherTVs(UIControl: sender)
-        case mainSearchBtn:
-            let type = (typeBtn.titleLabel?.text != "Select a Recipe Type" ? typeBtn.titleLabel?.text : "")!
-            let cuisine = (cuisineBtn.titleLabel?.text != "Select a Cuisine" ? cuisineBtn.titleLabel?.text : "")!
-            let diet = (dietBtn.titleLabel?.text != "Select a Diet" ? dietBtn.titleLabel?.text : "")!
-            let maxMin = Int(minField.text! == "" ? "300" : minField.text!) as! Int ?? 300
-            
-            Spoonacular.sharedInstance().recipesComplexSearch(recipes: recipeField.text!, ingredients: ingredientsQuery.joined(separator: ","), type: type, cuisine: cuisine, diet: diet, maxReadyTime: maxMin){(success, error) in
-                if success{
-                    DispatchQueue.main.async {
-                        let mainVC = self.navigationController?.viewControllers.first! as! MainTVC
-                        mainVC.fromFilter = true
-                        self.navigationController?.popToRootViewController(animated: true)
-                    }
-                }
-            }
-        default:()
+    // MARK: Private Methods
+    
+    private func configureUI(){
+        setBtnEdgeInsets(btn: dietBtn)
+        setBtnEdgeInsets(btn: typeBtn)
+        setBtnEdgeInsets(btn: cuisineBtn)
+        for item in cuisines{
+            cuisinesDic[item] = false
         }
     }
     
-    @IBAction func sliderChanged(_ sender: UISlider) {
-        closeOtherTVs(UIControl: sender)
-        minField.text = "\(Int(sender.value))"
-    }
-    
-    @IBAction func textFieldChanged(_ sender: UITextField) {
-        if sender == minField{
-            closeOtherTVs(UIControl: sender)
-            slider.value = Float(sender.text!) as! Float ?? 0
+    private func UpdateUI(isTVVisiable : Bool, array : [String], heightConstrant : NSLayoutConstraint, tableView : UITableView) -> Bool {
+        var isVisible = isTVVisiable
+        UIView.animate(withDuration: 0.5){
+            if !isVisible{ tableView.reloadData()}
+            heightConstrant.constant = isVisible ? 0 : tableView.rowHeight * CGFloat((array.count <= 3 ? array.count : 3) )
+            isVisible = !isVisible
         }
+        return isVisible
     }
     
-    @objc func deletePressed(_ sender: UIButton){
-        let parentView = sender.superview!
-        let label = parentView.subviews[0] as! UILabel
-        ingredientsQuery.removeAll(where: { $0 ==  label.text!})
-        let horizontalSV = parentView.superview as! UIStackView
-        parentView.removeFromSuperview()
-        ArrangeStackViews(horizontalSV: horizontalSV)
-        self.view.layoutIfNeeded()
-    }
-    
-    fileprivate func setBtnEdgeInsets(btn: UIButton) {
-        let buttonWidth = btn.frame.width
-        let imageWidth = btn.imageView!.frame.width
-        let titlewidth = btn.titleLabel?.frame.width
-        btn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (buttonWidth - (titlewidth!+imageWidth)-1))
-        btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
-        btn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
-    }
-    
-    private func configureTV(arrName:String){
-        switch arrName {
-        case "Recipes":
-            recipesTV.delegate = self
-            recipesTV.dataSource = self
-            recipeField.delegate = self
-        case "Ingredients":
-            ingredientsTV.delegate = self
-            ingredientsTV.dataSource = self
-            ingredientsField.delegate = self
-        case "recipeTypes":
-            typeTV.delegate = self
-            typeTV.dataSource = self
-            setBtnEdgeInsets(btn: typeBtn)
-        case "Cuisines":
-            cuisineTV.delegate = self
-            cuisineTV.dataSource = self
-            setBtnEdgeInsets(btn: cuisineBtn)
-            for item in cuisines{
-                cuisinesDic[item] = false
-                for i in self.cuisinesQuery{
-                    if i == item{
-                        self.cuisinesDic[item] = true
-                    }
-                }
-            }
-        case "Diets":
-            dietTV.delegate = self
-            dietTV.dataSource = self
-            setBtnEdgeInsets(btn: dietBtn)
-        default:()
-        }
-    }
-    
-    private func UpdateUI(arrName: String) {
-        switch arrName {
-        case "recipes":
-            self.textFieldShouldReturn(self.recipeField)
-            UIView.animate(withDuration: 0.5){
-                if self.isRecipesTVVisiable{
-                    self.recipesHC.constant = 0
-                    self.isRecipesTVVisiable = false
-                }else{
-                    if self.recipes.count == 0 {
-                        self.recipes.append("No recipes With this title")
-                    }
-                    self.recipesTV.reloadData()
-                    self.recipesHC.constant = self.recipesTV.rowHeight * CGFloat((self.recipes.count <= 3 ? self.recipes.count : 3) )
-                    self.isRecipesTVVisiable = true
-                }
-            }
-        case "ingredients":
-            self.textFieldShouldReturn(self.recipeField)
-            UIView.animate(withDuration: 0.5){
-                if self.isIngredTVVisiable{
-                    self.ingredientsHC.constant = 0
-                    self.isIngredTVVisiable = false
-                }else{
-                    if self.ingredients.count == 0 {
-                        self.ingredients.append("No ingredients With this title")
-                    }
-                    self.ingredientsTV.reloadData()
-                    self.ingredientsHC.constant = self.ingredientsTV.rowHeight  * CGFloat((self.ingredients.count <= 3 ? self.ingredients.count : 3))
-                    self.isIngredTVVisiable = true
-                }
-            }
-        case "recipeTypes":
-            UIView.animate(withDuration: 0.5){
-                if self.isTypeTVVisiable{
-                    self.typeHC.constant = 0
-                    self.isTypeTVVisiable = false
-                }else{
-                    self.typeTV.reloadData()
-                    self.typeHC.constant = self.typeTV.rowHeight  * 3
-                    self.isTypeTVVisiable = true
-                }
-            }
-        case "Cuisines":
-            UIView.animate(withDuration: 0.5){
-                if self.isCuisineTVVisiable{
-                    self.cuisineHC.constant = 0
-                    self.isCuisineTVVisiable = false
-                }else{
-                    self.cuisineTV.reloadData()
-                    self.cuisineHC.constant = self.cuisineTV.rowHeight * 3
-                    self.isCuisineTVVisiable = true
-                }
-            }
-        case "Diets":
-            UIView.animate(withDuration: 0.5){
-                if self.isDietTVVisiable{
-                    self.dietHC.constant = 0
-                    self.isDietTVVisiable = false
-                }else{
-                    self.dietTV.reloadData()
-                    self.dietHC.constant = self.dietTV.rowHeight * 3
-                    self.isDietTVVisiable = true
-                }
-            }
-        default:()
-        }
-    }
-    
-    private func closeOtherTVs(UIControl : UIControl){
+    func closeOtherTVs(UIControl : UIControl){
         switch UIControl {
         case recipeField, recipesBtn:
             ingredientsHC.constant = 0
@@ -342,6 +164,15 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             isDietTVVisiable = false
         default:()
         }
+    }
+    
+    func setBtnEdgeInsets(btn: UIButton) {
+        let buttonWidth = btn.frame.width
+        let imageWidth = btn.imageView!.frame.width
+        let titlewidth = btn.titleLabel?.frame.width
+        btn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (buttonWidth - (titlewidth!+imageWidth)-1))
+        btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: buttonWidth-imageWidth, bottom: 0, right: -(buttonWidth-imageWidth))
+        btn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
     }
     
     fileprivate func addHorizontalSubView(_ stackView: UIStackView, _ view: UIStackView) {
@@ -445,6 +276,104 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         removeDoneBtn()
     }
     
+    @IBAction func searchBtnClicked(_ sender: UIButton) {
+       switch sender {
+        case recipesBtn:
+            Spoonacular.sharedInstance().autoCompleteRecipes(recipes: self.recipeField.text ?? ""){(recipes, error) in
+                if error == nil{
+                    self.recipes = recipes
+                    DispatchQueue.main.async {
+                        self.textFieldShouldReturn(self.recipeField)
+                        self.isRecipesTVVisiable = self.UpdateUI(isTVVisiable: self.isRecipesTVVisiable, array: self.recipes, heightConstrant: self.recipesHC, tableView: self.recipesTV)
+                        self.closeOtherTVs(UIControl: sender)
+                    }
+                }
+            }
+        case ingredientsBtn:
+            Spoonacular.sharedInstance().autoCompleteIngredients(ingredient: self.ingredientsField.text ?? "") {(ingredients, error) in
+                if error == nil{
+                    self.ingredients = ingredients
+                    for item in ingredients{
+                        self.ingredientsDic[item] = false
+                        for i in self.ingredientsQuery{
+                            if i == item{
+                                self.ingredientsDic[item] = true
+                            }
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        self.textFieldShouldReturn(self.recipeField)
+                        self.isIngredTVVisiable = self.UpdateUI(isTVVisiable: self.isIngredTVVisiable, array: self.ingredients, heightConstrant: self.ingredientsHC, tableView: self.ingredientsTV)
+                        self.closeOtherTVs(UIControl: sender)
+                        self.AddDoneBtn()
+                    }
+                }
+            }
+        case typeBtn:
+            self.isTypeTVVisiable = self.UpdateUI(isTVVisiable: self.isTypeTVVisiable, array: self.recipeTypes, heightConstrant: self.typeHC, tableView: self.typeTV)
+            closeOtherTVs(UIControl: sender)
+        case cuisineBtn:
+            /*for item in cuisines{
+                for i in self.cuisinesQuery{
+                    if i == item{
+                        self.cuisinesDic[item] = true
+                    }
+                }
+            }*/
+            if  self.isCuisineTVVisiable == true{
+                self.cuisineBtn.setTitle(self.cuisinesQuery.joined(separator: ","), for: .normal)
+                self.setBtnEdgeInsets(btn: self.cuisineBtn)
+            }
+            self.isCuisineTVVisiable = self.UpdateUI(isTVVisiable: self.isCuisineTVVisiable, array: self.cuisines, heightConstrant: self.cuisineHC, tableView: self.cuisineTV)
+            closeOtherTVs(UIControl: sender)
+        case dietBtn:
+            self.isDietTVVisiable = self.UpdateUI(isTVVisiable: self.isDietTVVisiable, array: self.diets, heightConstrant: self.dietHC, tableView: self.dietTV)
+            closeOtherTVs(UIControl: sender)
+        case mainSearchBtn:
+            let type = (typeBtn.titleLabel?.text != "Select a Recipe Type" ? typeBtn.titleLabel?.text : "")!
+            let cuisine = (cuisineBtn.titleLabel?.text != "Select a Cuisine" ? cuisineBtn.titleLabel?.text : "")!
+            let diet = (dietBtn.titleLabel?.text != "Select a Diet" ? dietBtn.titleLabel?.text : "")!
+            let maxMin = Int(minField.text! == "" ? "300" : minField.text!) as! Int ?? 300
+            
+            Spoonacular.sharedInstance().recipesComplexSearch(recipes: recipeField.text!, ingredients: ingredientsQuery.joined(separator: ","), type: type, cuisine: cuisine, diet: diet, maxReadyTime: maxMin){(success, error) in
+                if success{
+                    DispatchQueue.main.async {
+                        let mainVC = self.navigationController?.viewControllers.first! as! MainTVC
+                        mainVC.fromFilter = true
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
+            }
+        default:()
+        }
+    }
+    
+    @IBAction func sliderChanged(_ sender: UISlider) {
+        closeOtherTVs(UIControl: sender)
+        minField.text = "\(Int(sender.value))"
+    }
+    
+    @IBAction func textFieldChanged(_ sender: UITextField) {
+        if sender == minField{
+            closeOtherTVs(UIControl: sender)
+            slider.value = Float(sender.text!) as! Float ?? 0
+        }
+    }
+    
+    @objc func deletePressed(_ sender: UIButton){
+        let parentView = sender.superview!
+        let label = parentView.subviews[0] as! UILabel
+        ingredientsQuery.removeAll(where: { $0 ==  label.text!})
+        let horizontalSV = parentView.superview as! UIStackView
+        parentView.removeFromSuperview()
+        ArrangeStackViews(horizontalSV: horizontalSV)
+        self.view.layoutIfNeeded()
+    }
+    
+}
+
+extension FilterViewController : UITableViewDelegate, UITableViewDataSource{
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         switch tableView {
         case recipesTV:
@@ -477,11 +406,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.label.text = ingredient
             cell.indexPath = indexPath
             cell.tableView = tableView
-            if self.ingredientsDic[ingredient] == false{
-                cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-unchecked-checkbox-30"), for: .normal)
-            }else{
-                cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-checked-checkbox-30"), for: .normal)
-            }
+            cell.CheckBtn.setImage( self.ingredientsDic[ingredient]! ? #imageLiteral(resourceName: "icons8-checked-checkbox-30") : #imageLiteral(resourceName: "icons8-unchecked-checkbox-30") , for: .normal)
             return cell
         }else if tableView == typeTV{
             cell = tableView.dequeueReusableCell(withIdentifier: "TypeCell")!
@@ -496,11 +421,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.label!.text = cuisine
             cell.indexPath = indexPath
             cell.tableView = tableView
-            if self.cuisinesDic[cuisine] == false{
-                cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-unchecked-checkbox-30"), for: .normal)
-            }else{
-                cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-checked-checkbox-30"), for: .normal)
-            }
+            cell.CheckBtn.setImage( self.cuisinesDic[cuisine]! ? #imageLiteral(resourceName: "icons8-checked-checkbox-30") : #imageLiteral(resourceName: "icons8-unchecked-checkbox-30") , for: .normal)
             return cell
         }else if tableView == dietTV{
             cell = tableView.dequeueReusableCell(withIdentifier: "DietCell")!
@@ -526,12 +447,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let type = self.recipeTypes[(indexPath as NSIndexPath).row]
                 self.typeBtn.setTitle(type, for: .normal)
                 self.setBtnEdgeInsets(btn: self.typeBtn)
-            case self.cuisineTV:
-                self.cuisineHC.constant = 0
-                self.isCuisineTVVisiable = false
-                let cuisine = self.cuisines[(indexPath as NSIndexPath).row]
-                self.cuisineBtn.setTitle(self.cuisinesQuery.joined(separator: ","), for: .normal)
-                self.setBtnEdgeInsets(btn: self.cuisineBtn)
             case self.dietTV:
                 self.dietHC.constant = 0
                 self.isDietTVVisiable = false
@@ -541,49 +456,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             default: ()
             }
             self.view.layoutIfNeeded()
-        }
-    }
-}
-
-extension FilterViewController:  UITextFieldDelegate {
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField.tag == 0{
-            textField.tag = 1
-            textField.text = ""
-        }
-        self.closeOtherTVs(UIControl: textField)
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true;
-    }
-}
-
-extension FilterViewController:TVCellActionDelegate{
-    func CellChecked(indexPath: IndexPath, tableView: UITableView) {
-        let cell = tableView.cellForRow(at: indexPath) as! TVCell
-        if cell.CheckBtn.currentImage == #imageLiteral(resourceName: "icons8-unchecked-checkbox-30"){
-            cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-checked-checkbox-30"), for: .normal)
-            if tableView == ingredientsTV{
-                ingredientsDic[cell.label.text!] = true
-                ingredientsQuery.append(cell.label.text!)
-            }else{
-                cuisinesDic[cell.label.text!] = true
-                cuisinesQuery.append(cell.label.text!)
-                self.cuisineBtn.setTitle(self.cuisinesQuery.joined(separator: ","), for: .normal)
-            }
-        }else{
-            cell.CheckBtn.setImage(#imageLiteral(resourceName: "icons8-unchecked-checkbox-30"), for: .normal)
-            if tableView == ingredientsTV{
-                ingredientsDic[cell.label.text!] = false
-                ingredientsQuery.remove(at: ingredientsQuery.firstIndex(of: cell.label.text!)!)
-            }else{
-                cuisinesDic[cell.label.text!] = false
-                cuisinesQuery.remove(at: cuisinesQuery.firstIndex(of: cell.label.text!)!)
-                self.cuisineBtn.setTitle(self.cuisinesQuery.joined(separator: ","), for: .normal)
-            }
         }
     }
 }
