@@ -11,6 +11,7 @@ import CoreData
 
 class DataController{
     
+    
     let persistantContainer : NSPersistentContainer
     
     init(modelName:String) {
@@ -39,7 +40,12 @@ class DataController{
     func hasChanges(){
         let context = persistantContainer.viewContext
         if context.hasChanges{
-            try? context.save()
+            do {
+                try context.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
         }
     }
 }

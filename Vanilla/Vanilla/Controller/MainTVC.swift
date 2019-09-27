@@ -34,7 +34,7 @@ class MainTVC: UIViewController {
         self.navigationItem.title = "Vanilla"
         
         // get random recipes
-        /*Spoonacular.sharedInstance().getRecipes() {(success, error) in
+        Spoonacular.sharedInstance().getRecipes() {(success, error) in
             if success{
                 self.recipes = Spoonacular.sharedInstance().recipes
                 DispatchQueue.main.async {
@@ -45,7 +45,7 @@ class MainTVC: UIViewController {
                     self.showAlert()
                 }
             }
-        }*/
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,20 +53,6 @@ class MainTVC: UIViewController {
         dataController = DataController(modelName: "Vanilla")
         dataController.load()
         setUpfetchedResultController()
-        
-        // make request to get fav recipes information and save them to coreData before present the view
-        if Spoonacular.sharedInstance().favRecipes.count>0{
-            let Ids = Array(Spoonacular.sharedInstance().favRecipes.keys).joined(separator: ",")
-            Spoonacular.sharedInstance().getRecipeInformationBulk(Ids:Ids) {(results, error) in
-                if error == nil{
-                    self.saveLastAddedToFavs(results)
-                }else{
-                    DispatchQueue.main.async {
-                        self.showAlert()
-                    }
-                }
-            }
-        }
         
         if parent?.restorationIdentifier == "MainRecipes"{
             // if the last view was the filter result, It will need to refresh the data to present
@@ -201,8 +187,7 @@ class MainTVC: UIViewController {
         let alert = UIAlertController(title: "OOPS!", message: "Something went wrong, Do you prefer to reload Vanilla", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "ok", style: .default, handler: { action in
             switch action.style{
-            case .default:
-                self.viewWillAppear(true)
+            case .default:()
             @unknown default:()
             }
         }))
@@ -285,25 +270,13 @@ extension MainTVC : UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if Spoonacular.sharedInstance().favRecipes.count>0{
-            let Ids = Array(Spoonacular.sharedInstance().favRecipes.keys).joined(separator: ",")
-            
-            Spoonacular.sharedInstance().getRecipeInformationBulk(Ids:Ids) {(results, error) in
-                if error == nil{
-                    self.saveLastAddedToFavs(results)
-                }else{
-                    DispatchQueue.main.async {
-                        self.showAlert()
-                    }
-                }
-            }
-        }
+        
         let detailsVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
             detailsVC.dataController = self.dataController
         if parent?.restorationIdentifier == "MainRecipes"{
             let recipe = self.recipes[(indexPath as NSIndexPath).row]
             detailsVC.recipeIndex = (indexPath as NSIndexPath).row
-            if recipe.ingredients == nil{
+            if recipe.ingredients == nil {
                 Spoonacular.sharedInstance().getRecipeInformation(recipeId: recipe.id, recipeIndex: (indexPath as NSIndexPath).row) {(success, error) in
                     if success{
                         DispatchQueue.main.async {

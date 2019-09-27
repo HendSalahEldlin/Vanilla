@@ -39,34 +39,66 @@ extension MainTVC: CellActionDelegate {
     
     func addToFav(indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! MainTVRecipeCell
-        if parent?.restorationIdentifier == "MainRecipes"{
-            let recipeId = self.recipes[(indexPath as! NSIndexPath).row].id
-            if cell.favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
-                cell.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-                Spoonacular.sharedInstance().favRecipes[recipeId!] = Date()
-            }else{
-                cell.favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-                if Spoonacular.sharedInstance().favRecipes[recipeId!] == nil{
-                    //remove from fetchedResult
-                    for recipe in fetchedResultController.fetchedObjects as! [FavRecipe]{
-                        if recipe.id == recipeId{
-                            dataController.viewContext.delete(recipe)
-                            dataController.hasChanges()
-                            break
-                        }
-                    }
+        let recipeId = parent?.restorationIdentifier == "MainRecipes" ? self.recipes[(indexPath as! NSIndexPath).row].id : fetchedResultController.object(at: indexPath).id
+        
+        if cell.favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
+            cell.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
+            Spoonacular.sharedInstance().getRecipeInformation(recipeId: recipeId!)
+            {(recipe, error) in
+                if error == nil{
+                    self.saveRecipe(recipe: recipe)
                 }else{
-                    Spoonacular.sharedInstance().favRecipes.removeValue(forKey: recipeId!)
+                    DispatchQueue.main.async {
+                        self.showAlert()
+                    }
                 }
             }
         }else{
             cell.favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-            let recipeToDelete = fetchedResultController.object(at: indexPath)
-            dataController.viewContext.delete(recipeToDelete)
+            var recipeToDelete : FavRecipe?
+            if parent?.restorationIdentifier == "MainRecipes"{
+                for recipe in fetchedResultController.fetchedObjects as! [FavRecipe]{
+                    if recipe.id == recipeId{
+                        recipeToDelete = recipe
+                    }
+                }
+            }else{
+                recipeToDelete = fetchedResultController.object(at: indexPath)
+            }
+            dataController.viewContext.delete(recipeToDelete!)
             dataController.hasChanges()
         }
-    }
+      }
     
+    func saveRecipe(recipe:[String:AnyObject]){
+        let favRecipe = FavRecipe(context: self.dataController.viewContext)
+        favRecipe.id = String(describing: recipe[Spoonacular.JSONResponseKeys.id]!)
+        favRecipe.title = recipe[Spoonacular.JSONResponseKeys.title] as? String
+        favRecipe.minutes = Int16(recipe[Spoonacular.JSONResponseKeys.readyInMinutes] as! Int)
+        favRecipe.servings = Int16(recipe[Spoonacular.JSONResponseKeys.servings] as! Int)
+        favRecipe.url = recipe[Spoonacular.JSONResponseKeys.sourceUrl] as? String
+        favRecipe.creationDate = Date()
+        favRecipe.image = try? Data(contentsOf: URL(string: (recipe[Spoonacular.JSONResponseKeys.image] as? String)!)!)
+        
+        guard let ingredientsArr = recipe[Spoonacular.JSONResponseKeys.ingredients] as? [[String:AnyObject]] else { return }
+        for ingredient in ingredientsArr{
+            let myIngredient = Ingredient(context: self.dataController.viewContext)
+            myIngredient.recipeId = favRecipe.id
+            myIngredient.original = ingredient["original"] as? String
+            myIngredient.image = try? Data(contentsOf: URL(string: Spoonacular.Constants.ingredientsBaseUri + (ingredient["image"] as? String ?? ""))!)
+        }
+        
+        guard let instructionsArr = recipe[Spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }
+        for instruction in instructionsArr{
+            let steps = instruction["steps"] as! [[String : AnyObject]]
+            for step in steps{
+                let myStep = Instruction(context: self.dataController.viewContext)
+                myStep.recipeId = favRecipe.id
+                myStep.step = step["step"] as? String
+            }
+        }
+        dataController.hasChanges()
+    }
 }
 
 extension MainTVC: NSFetchedResultsControllerDelegate{

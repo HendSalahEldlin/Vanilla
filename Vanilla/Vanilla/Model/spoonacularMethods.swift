@@ -142,4 +142,20 @@ extension Spoonacular{
             }
         }
     }
+    
+    func getRecipeInformation(recipeId : String, completionHandlerForRecipeInformationBulk: @escaping (_ recipe : [String: AnyObject], _ errorString: String?) -> Void){
+        /* 1. Specify parameters, method */
+        let parameters = [ParameterKeys.apiKey:ParameterValues.apiKey] as! [String : AnyObject]
+        let extention = URLExtentions.recipes + recipeId + "/information"
+        taskForGETMethod(Constants.subdomain, method: extention, parameters: parameters){(results, error) in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                completionHandlerForRecipeInformationBulk([String: AnyObject](), error.userInfo["NSLocalizedDescription"] as! String)
+            } else {
+                let recipe = results as! [String: AnyObject]
+                completionHandlerForRecipeInformationBulk(recipe, nil)
+            }
+        }
+    }
 }

@@ -10,9 +10,9 @@
 struct Recipe{
     
     // MARK: Properties
-    let id : String!
-    let title : String?
-    let image : String?
+    var id : String!
+    var title : String?
+    var image : String?
     var readyInMinutes : Int?
     var servings: Int?
     var recipeURL : String?
@@ -45,6 +45,7 @@ struct Recipe{
         readyInMinutes = dictionary[Spoonacular.JSONResponseKeys.readyInMinutes] as! Int
         servings = dictionary[Spoonacular.JSONResponseKeys.servings] as! Int
         recipeURL = dictionary[Spoonacular.JSONResponseKeys.sourceUrl] as! String
+        image = dictionary[Spoonacular.JSONResponseKeys.image] as! String
         
         guard let ingredientsArr = dictionary[Spoonacular.JSONResponseKeys.ingredients] as? [[String:AnyObject]] else { return }
         ingredients = [String]()

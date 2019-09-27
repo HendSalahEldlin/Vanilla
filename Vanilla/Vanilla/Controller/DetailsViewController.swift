@@ -25,6 +25,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
     var recipe : Recipe?
     
     var recipeId : String?
+    var url : String?
     var dataController : DataController!
     var recipesFetchedresultController : NSFetchedResultsController<FavRecipe>!
     var IngredientsFetchedresultController : NSFetchedResultsController<Ingredient>!
@@ -46,6 +47,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
             if recipesFetchedresultController.fetchedObjects?.first?.id != nil{
                 self.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
             }
+            url = recipe!.recipeURL!
         }else{
             //From Fav View
             setUpFetchedResultController()
@@ -57,6 +59,7 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
             self.favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
             ingredientsHC.constant = CGFloat(IngredientsFetchedresultController.fetchedObjects?.count ?? 0) * ingredientsTV.rowHeight
             instruncionsHC.constant = CGFloat(InstructionsFetchedresultController.fetchedObjects?.count ?? 0) * instruncionsTV.rowHeight
+            url = favRecipe?.url
         }
         
     }
@@ -141,21 +144,40 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
         let myRecipeId = recipeIndex != nil ? recipe!.id : recipeId!
         if favBtn.currentImage == #imageLiteral(resourceName: "emptyHeart-30x30"){
             favBtn.setImage(#imageLiteral(resourceName: "redHeart-30x30"), for: .normal)
-            Spoonacular.sharedInstance().favRecipes[myRecipeId!] = Date()
+            saveRecipeToCoreData(recipeId: myRecipeId!)
         }else{
             favBtn.setImage(#imageLiteral(resourceName: "emptyHeart-30x30"), for: .normal)
-            if Spoonacular.sharedInstance().favRecipes[myRecipeId!] != nil{
-                Spoonacular.sharedInstance().favRecipes.removeValue(forKey: myRecipeId!)
-            }else{
-                guard let favRecipe = recipesFetchedresultController.fetchedObjects?.first else{
-                    return
-                }
-                dataController.viewContext.delete(favRecipe)
+            if let recipeToDelete = recipesFetchedresultController.fetchedObjects?.first as? FavRecipe {
+                dataController.viewContext.delete(recipeToDelete)
                 dataController.hasChanges()
             }
         }
-     }
+    }
     
+    func saveRecipeToCoreData(recipeId : String){
+        let favRecipe = FavRecipe(context: self.dataController.viewContext)
+        favRecipe.id = recipeId
+        print("Nasser: \(recipeId)")
+        favRecipe.title = self.titleLabel.text
+        favRecipe.minutes = Int16((self.timeLabel.text?.replacingOccurrences(of: " Mins", with: ""))!)!
+        favRecipe.servings = Int16(self.servingsLabel.text!.replacingOccurrences(of: " serves ", with: ""))!
+        favRecipe.url = self.url
+        favRecipe.creationDate = Date()
+        favRecipe.image = self.imageView.image?.pngData()
+        
+        for cell in ingredientsTV.visibleCells{
+            let myIngredient = Ingredient(context: self.dataController.viewContext)
+            myIngredient.recipeId = recipeId
+            myIngredient.original = cell.textLabel?.text
+            myIngredient.image = nil
+        }
+        for cell in instruncionsTV.visibleCells {
+            let Mynstruction = Instruction(context: self.dataController.viewContext)
+            Mynstruction.recipeId = recipeId
+            Mynstruction.step = cell.textLabel?.text
+        }
+        dataController.hasChanges()
+    }
 }
 
 extension DetailsViewController: UITableViewDelegate, UITableViewDataSource{

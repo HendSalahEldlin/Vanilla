@@ -313,13 +313,6 @@ class FilterViewController: UIViewController{
             self.isTypeTVVisiable = self.UpdateUI(isTVVisiable: self.isTypeTVVisiable, array: self.recipeTypes, heightConstrant: self.typeHC, tableView: self.typeTV)
             closeOtherTVs(UIControl: sender)
         case cuisineBtn:
-            /*for item in cuisines{
-                for i in self.cuisinesQuery{
-                    if i == item{
-                        self.cuisinesDic[item] = true
-                    }
-                }
-            }*/
             if  self.isCuisineTVVisiable == true{
                 self.cuisineBtn.setTitle(self.cuisinesQuery.joined(separator: ","), for: .normal)
                 self.setBtnEdgeInsets(btn: self.cuisineBtn)
