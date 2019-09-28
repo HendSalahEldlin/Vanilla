@@ -12,7 +12,6 @@
         <relationship name="instructions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Instruction" inverseName="favRecipe" inverseEntity="Instruction" syncable="YES"/>
     </entity>
     <entity name="Ingredient" representedClassName="Ingredient" syncable="YES" codeGenerationType="class">
-        <attribute name="image" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="original" attributeType="String" syncable="YES"/>
         <attribute name="recipeId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="favRecipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavRecipe" inverseName="ingredients" inverseEntity="FavRecipe" syncable="YES"/>
@@ -24,7 +23,7 @@
     </entity>
     <elements>
         <element name="FavRecipe" positionX="-54" positionY="-9" width="128" height="180"/>
-        <element name="Ingredient" positionX="-36" positionY="63" width="128" height="105"/>
+        <element name="Ingredient" positionX="-36" positionY="63" width="128" height="90"/>
         <element name="Instruction" positionX="-18" positionY="81" width="128" height="90"/>
     </elements>
 </model>

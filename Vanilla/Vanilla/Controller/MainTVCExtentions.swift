@@ -85,7 +85,6 @@ extension MainTVC: CellActionDelegate {
             let myIngredient = Ingredient(context: self.dataController.viewContext)
             myIngredient.recipeId = favRecipe.id
             myIngredient.original = ingredient["original"] as? String
-            myIngredient.image = try? Data(contentsOf: URL(string: Spoonacular.Constants.ingredientsBaseUri + (ingredient["image"] as? String ?? ""))!)
         }
         
         guard let instructionsArr = recipe[Spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }

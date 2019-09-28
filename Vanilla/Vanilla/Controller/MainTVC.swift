@@ -126,7 +126,6 @@ class MainTVC: UIViewController {
                 let myIngredient = Ingredient(context: dataController.viewContext)
                 myIngredient.recipeId = favRecipe.id
                 myIngredient.original = ingredient["original"] as! String
-                myIngredient.image = try? Data(contentsOf: URL(string: Spoonacular.Constants.ingredientsBaseUri + (ingredient["image"] as! String))!)
             }
             
             guard let instructionsArr = results[i][Spoonacular.JSONResponseKeys.instructions] as? [[String:AnyObject]] else { return }

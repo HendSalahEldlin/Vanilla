@@ -169,7 +169,6 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
             let myIngredient = Ingredient(context: self.dataController.viewContext)
             myIngredient.recipeId = recipeId
             myIngredient.original = cell.textLabel?.text
-            myIngredient.image = nil
         }
         for cell in instruncionsTV.visibleCells {
             let Mynstruction = Instruction(context: self.dataController.viewContext)
