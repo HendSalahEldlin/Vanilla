@@ -157,7 +157,6 @@ class DetailsViewController: UIViewController, NSFetchedResultsControllerDelegat
     func saveRecipeToCoreData(recipeId : String){
         let favRecipe = FavRecipe(context: self.dataController.viewContext)
         favRecipe.id = recipeId
-        print("Nasser: \(recipeId)")
         favRecipe.title = self.titleLabel.text
         favRecipe.minutes = Int16((self.timeLabel.text?.replacingOccurrences(of: " Mins", with: ""))!)!
         favRecipe.servings = Int16(self.servingsLabel.text!.replacingOccurrences(of: " serves ", with: ""))!
